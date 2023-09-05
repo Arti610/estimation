@@ -1,0 +1,166 @@
+/* Catelogue List */
+.main-product-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    /* flex-wrap: wrap; */
+}
+
+.product-container {
+    margin: 5px;
+    width: 200px;
+    height: 200px;
+    cursor: pointer;
+    border: 1px groove var(--ternary-color);
+    /* border-radius: 10px; */
+}
+
+.product-image {
+    height: 130px;
+    width: 100%;
+
+}
+
+.product-image img {
+    background-size: cover;
+    height: 130px;
+    width: 100%;
+}
+
+.product-details {
+    height: 69px;
+    width: 100%;
+    padding: 5px;
+    background-color: var(--primary-color);
+    color: var(--primary-font-color);
+}
+
+
+/* Catelogue Single Data  */
+
+.primary-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(-secondary-color);
+
+}
+
+.other-images-container {
+    /* width: 10%; */
+  
+    align-items: center;
+    display: flex;
+    /* flex-direction: column; */
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
+    /* background-color: var(--secondary-color); */
+    padding: 10px;
+}
+.other-images img {
+    width: 150px;
+    padding: 10px;
+}
+.images-container {
+    width: 40%;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.images-container img {
+    width: 300px;
+    height: auto;
+    margin: 5px;
+}
+
+.details-container {
+    width: 70%;
+}
+
+.details-container h2 {
+    /* margin-block: 25px; */
+    border-bottom: 1px groove #c8c8c8;
+}
+
+.detail-container {
+    display: flex;
+    margin-block: 30px;
+    justify-content: flex-start;
+}
+
+.left-detail-container {
+    /* background-color: red; */
+    width: 35%;
+    padding: 10px
+}
+
+.middle-container {
+    width: 35%;
+    padding: 10px
+}
+
+.right-detail-container {
+ 
+    width: 35%;
+    padding: 10px
+}
+
+.detail-label {
+    display: block;
+    padding: 5px 0px;
+    font-size: 15px;
+}
+
+.datasheet-container {
+    width: 100%;
+    background-color: var(--secondary-color);
+    padding: 10px;
+    height: max-content;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+}
+
+.certificate-container {
+    width: 100%;
+    background-color: var(--secondary-color);
+    padding: 10px;
+    height: max-content;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+}
+
+
+
+.bottom-detail-container {
+    border-top: 1px solid #c8c8c8;
+}
+
+
+.pdf-icon{
+    color: brown;
+    font-size: 20px;
+}
+
+.pdf-container{
+    padding: 5px;
+    border: 1px groove var(--primary-color);
+    margin-block: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: max-content;
+    cursor: pointer;
+    gap: 8px;
+}
+
+.pdf-container a{
+    color: var(--secondary-font-color);
+    font-weight: bold;
+}

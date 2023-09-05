@@ -1,0 +1,40 @@
+/* styles.css */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap");
+
+.Search-box {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+
+  border-radius: 4px;
+  gap: 20px;
+  font-family: "Poppins";
+  color: #221d19;
+  font-size: 20px;
+  width: 50%;
+}
+.Search-box input {
+  flex: 1;
+  padding: 5px;
+  font-size: 16px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: #333;
+  border-radius: 5px;
+  border: 1px solid #221d19;
+}
+
+.Search-box input::placeholder {
+  color: #999;
+}
+
+.Search-box input:hover {
+  background-color: #e0e0e0;
+}
+
+.Search-box input:focus {
+  background-color: #fff;
+  box-shadow: 0 0 0 2px #564c41;
+  border: none;
+}

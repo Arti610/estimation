@@ -1,0 +1,140 @@
+/* Sidebar.css */
+.main-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.topbar-container {
+  width: 100%;
+  background-color: var(--primary-color);
+  position: fixed;
+  height: 50px;
+  z-index: 1;
+}
+
+
+
+.content-container {
+  width: 100%;
+  display: flex;
+  margin-top: 50px;
+}
+
+.sidebar {
+  width: 8%;
+  background-color: var(--secondary-color);
+  height: 100%;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 50000;
+}
+
+.sidebar-element {
+  /* background-color: red; */
+  cursor: pointer;
+  width: 100%;
+  padding-block: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebar-element:hover {
+  background-color: var(--primary-color);
+
+
+  .sidebar-icons {
+    color: var(--secondary-color);
+    font-size: 20px;
+  }
+
+  .sidebar-title {
+    color: var(--secondary-color);
+    font-size: 13px;
+
+  }
+}
+
+.sidebar-icons {
+  color: var(--ternary-color);
+  font-size: 20px;
+}
+
+.sidebar-title {
+  color: var(--ternary-color);
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.sidebar-element-sales {
+  position: relative;
+}
+
+.sidebar-submenus {
+  display: none;
+  position: absolute;
+  top: 0%;
+  left: 100%;
+  width: 200px;
+  background-color: var(--primary-font-color);
+  /* Set your desired background color */
+  border: 1px solid #ccc;
+  z-index: 500;
+  border-left: 5px solid var(--primary-color);
+}
+
+
+
+.sidebar-element-sales:hover {
+  .sidebar-submenus {
+    display: block;
+    position: absolute;
+  }
+}
+
+.submenu {
+  display: flex;
+  gap: 10px;
+  padding: 6px;
+
+}
+
+.submenu-title {
+  font-size: 14px
+}
+
+.submenu:hover {
+  background-color: var(--primary-color);
+
+  .submenu-icons {
+    color: var(--primary-font-color);
+  }
+
+  .submenu-title {
+    color: var(--primary-font-color);
+  }
+}
+
+.contentbar {
+  width: 92%;
+  padding: 15px 25px;
+  margin-left: 8%;
+}
+
+
+.active {
+  background-color: var(--primary-color);
+
+  .sidebar-icons {
+    color: var(--primary-font-color);
+  }
+
+  .sidebar-title {
+    color: var(--primary-font-color);
+  }
+}

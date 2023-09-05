@@ -1,38 +1,117 @@
-.App {
-  text-align: center;
+/* @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Poppins&family=Ubuntu:wght@300;400;500&display=swap'); */
+
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Poppins&family=Roboto&family=Ubuntu:wght@300;400;500&display=swap');
+
+
+* {
+
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* font-family: 'Poppins', sans-serif; */
+  font-family: 'Roboto', sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+
+
+a {
+
+  font-weight: 500;
+
+  color: #646cff;
+
+  text-decoration: inherit;
+
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+a:hover {
+  color: #535bf2;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+
+
+
+
+h1 {
+
+  font-size: 3.2em;
+
+  line-height: 1.1;
+
+}
+
+
+
+button {
+  border-radius: 7px;
+  border: 1px solid transparent;
+  padding: 0.4rem;
+  font-size: 13.5px;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--primary-color);
+  cursor: pointer;
+  transition: border-color 0.25s;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+
+
+button:hover {
+  background-color: var(--secondary-color);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  font-weight: bolder;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+
+.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+
+  padding: 10px 14px !important;
+}
+
+.css-md26zr-MuiInputBase-root-MuiOutlinedInput-root {
+  
+  border-radius: 8px !important;
+}
+
+label {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* Dropdown mui */
+.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+  
+  padding: 9.5px 14px !important;
+}
+
+.css-1ualgfl-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root {
+
+  border-radius: 8px !important;
+}
+
+.css-1h51icj-MuiAutocomplete-root .MuiOutlinedInput-root {
+  padding: 2px !important;
+}
+
+.css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root {
+
+  border-radius: 8px !important;
+
+}
+
+.css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
+  padding: 11px 14px !important;
+}
+.border-bottom-heading{
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.upload-files-field{
+width: 100%;
+ border:1px solid #b2b2b2;
+ padding: 9px;
+ border-radius:5px 
 }

@@ -1,0 +1,22 @@
+.details-container {
+    background-color: var(--secondary-color);
+    /* background-color: red; */
+    width: 100%;
+    padding: 15px;
+    margin-block: 10px;
+}
+
+.action-btn {
+    display: flex;
+    float: right;
+    width: 50px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.delete-update-handle-btn {
+    color: red;
+    font-size: 15px;
+    font-weight: bolder;
+    cursor: pointer;
+}

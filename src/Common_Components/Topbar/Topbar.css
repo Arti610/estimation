@@ -1,0 +1,89 @@
+.main-topbar {
+    height: 50px;
+    width: 100%;
+    padding-inline: 10px;
+    font-weight: 500px;
+    font-size: 15px;
+    color: var(--primary-font-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.profile {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    border: 1px groove var(--primary-font-color);
+    align-items: center;
+    cursor: pointer;
+}
+
+
+
+.topbar-profile {
+    position: relative;
+    /* Ensure relative positioning for absolute positioning of topbar-user */
+    display: inline-block;
+    /* Display inline-block to contain both profile icon and user div */
+    cursor: pointer;
+
+}
+
+.topbar-user {
+    display: none;
+    /* Initially hide the topbar-user div */
+    position: absolute;
+    top: 100%;
+    /* Position right below the profile div */
+    right: 0px;
+    width: 200px;
+    background-color: var(--primary-font-color);
+    border: 1px solid #ccc;
+    /* z-index: 5000; */
+}
+
+
+.topbar-profile:hover .topbar-user {
+    display: block;
+    /* Show topbar-user div on profile hover */
+    position: absolute;
+
+}
+
+
+.topbar-user-element {
+    color: var(--secondary-font-color);
+    padding-bottom: 5px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 5px;
+    gap: 10px;
+
+}
+
+.element-icon {
+    color: var(--ternary-color);
+    font-size: 12px;
+}
+
+.element-text p {
+    color: var(--ternary-color);
+    font-size: 13px;
+}
+
+.topbar-user-element:hover {
+    background-color: var(--primary-color);
+
+    .element-icon {
+        color: var(--primary-font-color);
+    }
+
+    .element-text p {
+        color: var(--primary-font-color);
+    }
+}

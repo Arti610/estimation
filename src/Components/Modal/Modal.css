@@ -1,0 +1,37 @@
+.css-wmbhvf {
+    padding: 0px !important;
+}
+.css-13i4rnv-MuiGrid-root {
+    padding: 8px 20px !important;
+}
+
+
+.css-2ulfj5-MuiTypography-root{
+    font-size: 17px !important;
+}
+
+.css-mhc70k-MuiGrid-root {
+    padding: 10px 20px !important;
+}
+.modal-btn-cross{
+    cursor: pointer;
+}
+
+
+.modal-heading{
+    background-color: var(--primary-color);
+    color: var(--primary-font-color);
+    padding: 5px 8px ;
+    margin-bottom: "5vh";
+    font-weight: "600",  
+}
+
+.modal-top-container{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--primary-color);
+    color:var(--primary-font-color);
+    padding: 13px;
+}

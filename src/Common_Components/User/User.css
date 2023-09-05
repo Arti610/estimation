@@ -1,0 +1,13 @@
+
+.user-image{
+    height: 140px;
+    width: 140px;
+    margin: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: red; */
+    border: 1px solid black;
+    border-radius: 8px;
+    
+}

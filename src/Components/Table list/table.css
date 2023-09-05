@@ -1,0 +1,260 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap");
+
+.all_table_list {
+  /* margin: 2rem 2rem; */
+
+}
+
+.table table {
+  font-family: "Poppins", sans-serif;
+  border-collapse: collapse;
+  /* width: 100%; */
+  /* max-width: fit-content; */
+
+}
+
+.table-list {
+  /* overflow-x: scroll; */
+}
+
+/* .table:hover {
+  box-shadow: 0px 0px 10px #bebb9e;
+  transform: scale(1.004);
+  transition: 100ms ease-in;
+} */
+.table-list td,
+.table-list th {
+  border: 1px solid #ddd;
+  padding: 3px;
+
+}
+
+.table-list tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.table-list tr:hover {
+  /* background-color: #f1ebda; */
+
+  transition: 200ms ease-in;
+}
+
+.table-list th,
+tfoot td {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-align: center;
+  background-color: var(--primary-color);
+  color: var(--primary-font-color);
+}
+
+.Main-div {
+  position: relative;
+  width: 100%;
+  margin: 1rem auto;
+  font-family: "Poppins", sans-serif;
+}
+
+.Header-column {
+  position: absolute;
+  top: "10px";
+  left: "20px";
+  /* background: linear-gradient(to bottom, #9f8754 0, #72520e 100%); */
+  background-color: #f2f2f2;
+  border-radius: 5px;
+  width: 130px;
+  padding: 13px;
+}
+
+.Header-column>Checkbox {
+  padding: 20px;
+}
+
+.density1 {
+  padding-block: 15px;
+  text-align: center;
+  /* Adjust the value as per your desired padding */
+}
+
+.density2 {
+  padding-block: 20px;
+  text-align: center;
+  /* Adjust the value as per your desired padding */
+}
+
+.density3 {
+  padding-block: 25px;
+  text-align: center;
+  /* Adjust the value as per your desired padding */
+}
+
+/* styles.css */
+
+#density {
+  padding: 5px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #f2f2f2;
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+  height: 39px;
+}
+
+#density option {
+  padding: 5px;
+}
+
+#density option:hover {
+  background-color: #bebb9e !important;
+}
+
+#density option:first-child {
+  color: #aaa;
+}
+
+.Features-section {
+  display: flex;
+  z-index: 50000;
+  align-items: center;
+  justify-content: space-between;
+  width: 15%;
+  padding-inline: 10px;
+  /* background-color: #f2f2f2; */
+}
+.table-btn-left{
+display: flex;
+gap: 10px;
+flex-direction: column;
+width: fit-content;
+top: 13%;
+background-color: var(--secondary-color);
+padding: 10px;
+right: 0;
+position: absolute;
+z-index: 5000;
+border: 1px groove var(--secondary-color);
+border-radius: 10px;
+}
+.table-btn-left button{
+  width: 120px;
+}
+.toggle-list-all{
+  font-size: 17px;
+  border-bottom: 1px solid var(--ternary-color);
+  margin-block: 5px;
+  padding-block: 2px;
+}
+.Toggle-list label{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 7px;
+font-size: 14px;
+
+}
+.Toggle-list label input {
+  height: 20px;
+  /* width: ; */
+}
+
+.Navigation {
+  width: 100%;
+  /* display: flex; */
+  /* justify-content: space-between; */
+  /* border-top: 1px groove var(--border-color); */
+  margin-top: 30px;
+}
+
+.Navigation button {
+  background-color: white !important;
+  border-radius: 50%;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+}
+
+
+
+.NavigationButton {
+  display: flex;
+  gap: 10px;
+  margin: auto;
+}
+
+.NavigationButton button {
+  padding: 4px 4px 2px 4px;
+}
+
+.Csv>a {
+  color: #fff !important;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.EditDiv {
+  display: flex;
+  width: 70px;
+  justify-content: space-around;
+  margin: auto;
+  align-items: center;
+}
+
+.table-btn {
+  display: flex;
+  justify-content: space-between;
+  /* margin-top: 20px; */
+}
+
+
+
+/* .table ::-webkit-scrollbar {
+    width: 5px;
+    color: #333333;
+  } */
+#btn_action {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.registration_top_header p {
+  border-bottom: 1px solid #c8c8c8;
+  font-weight: bolder;
+  text-transform: capitalize;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0px;
+  /* padding: 5px 0px; */
+  color: #333333;
+  margin-bottom: 2.5rem;
+}
+.registration_top_header span{
+  font-size: 20px;
+}
+
+.registration_top_header span {
+  border-bottom: 3px solid var(--primary-color);
+  padding: 5px 0px;
+}
+
+.export-btn{
+  width: 30px;
+  height: 30px;
+  padding: 5px;
+  background-color: var(--secondary-color);
+  cursor: pointer;
+  /* color: var(--primary-font-color); */
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+}
+
+.export-btn:hover{
+  background-color: var(--primary-color);
+  color: var(--primary-font-color);
+}
+
