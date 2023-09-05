@@ -119,16 +119,19 @@ tfoot td {
   z-index: 50000;
   align-items: center;
   justify-content: space-between;
-  width: 15%;
+  width: 85%;
   padding-inline: 10px;
   /* background-color: #f2f2f2; */
+}
+.Global-filter{
+  width: 100%;
 }
 .table-btn-left{
 display: flex;
 gap: 10px;
 flex-direction: column;
 width: fit-content;
-top: 13%;
+top: 6.5%;
 background-color: var(--secondary-color);
 padding: 10px;
 right: 0;

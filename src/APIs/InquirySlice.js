@@ -56,7 +56,7 @@ export const updateInquiryData = createAsyncThunk("updateInquiryData", async (pa
     try {
         const response = await api.put(`/inquiry/${payload.id}`, payload.fData, {
             headers: {
-                "Content-Type": "application/json",
+                "Content-Type": "multipart/form-data",
                 // Authorization: `token ${payload.token}`,
                 Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
 
@@ -84,6 +84,23 @@ export const getupdateInquiryData = createAsyncThunk("getupdateInquiryData", asy
         console.log(error)
     }
 })
+export const updateInquiryDetails = createAsyncThunk("updateInquiryDetails", async (payload) => {
+
+    try {
+        const response = await api.put(`/inquiry_details_update/${payload.id}`, payload.details, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                // Authorization: `token ${payload.token}`,
+                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
+
+            },
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+});
+
 const InquirySlice = createSlice({
     name: "Inquiry",
     initialState: {
@@ -144,6 +161,17 @@ const InquirySlice = createSlice({
 
         })
         builder.addCase(updateInquiryData.rejected, (state) => {
+            state.status = "failed"
+        })
+        builder.addCase(updateInquiryDetails.pending, (state) => {
+            state.status = "loading"
+        })
+
+        builder.addCase(updateInquiryDetails.fulfilled, (state) => {
+            state.status = "succeeded"
+
+        })
+        builder.addCase(updateInquiryDetails.rejected, (state) => {
             state.status = "failed"
         })
         builder.addCase(getupdateInquiryData.pending, (state) => {

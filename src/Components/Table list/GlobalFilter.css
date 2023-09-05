@@ -4,14 +4,13 @@
 .Search-box {
   display: flex;
   align-items: center;
-  padding: 15px;
-
+  /* padding: 15px; */
   border-radius: 4px;
   gap: 20px;
   font-family: "Poppins";
   color: #221d19;
   font-size: 20px;
-  width: 50%;
+  width: 80%;
 }
 .Search-box input {
   flex: 1;
@@ -21,7 +20,7 @@
   outline: none;
   background-color: transparent;
   color: #333;
-  border-radius: 5px;
+  /* border-radius: 5px; */
   border: 1px solid #221d19;
 }
 

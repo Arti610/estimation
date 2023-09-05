@@ -9,7 +9,7 @@
 .action-btn {
     display: flex;
     float: right;
-    width: 50px;
+    width: 70px;
     justify-content: space-around;
     align-items: center;
 }

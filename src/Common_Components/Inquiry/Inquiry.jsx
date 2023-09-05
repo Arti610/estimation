@@ -13,7 +13,7 @@ import { getSourceOfInquiryData } from '../../APIs/SourceOfInquirySlice'
 import './Inquiry.css'
 import { useCookies } from 'react-cookie';
 import { getEmployerData } from '../../APIs/EmployerSlice';
-import { createInquiryData, updateInquiryData } from '../../APIs/InquirySlice'
+import { createInquiryData, updateInquiryData, updateInquiryDetails } from '../../APIs/InquirySlice'
 const Inquiry = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -28,6 +28,8 @@ const Inquiry = () => {
   const SourceOfInquiry = useSelector((state) => state.SourceOfInquiry.SourceOfInquiryData)
   const Estimator_salesman = useSelector((state) => state.User.UserData)
   const updatedInquiry = useSelector((state) => state.Inquiry.updateInquiryData)
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [editingIndex, setEditingIndex] = useState(-1); // -1 means no row is being edited initially
 
 
   const [formData, setFormData] = useState({
@@ -66,9 +68,23 @@ const Inquiry = () => {
     setFormData(newFormVal);
   };
 
-  const handleDocEdit = () => {
-    setIsupdationg(true)
-  }
+  const handleDocEdit = (index) => {
+    setIsUpdating(true);
+    setEditingIndex(index);
+  };
+  const handleSaveDetails = (index) => {
+    dispatch(
+      updateInquiryDetails({
+        id: formData.details[index].id,
+        details: formData.details[index],
+        token,
+      })
+    );
+    setIsUpdating(false);
+    setEditingIndex(index);
+    console.log("button cliked eapi called");
+  };
+
 
   const handleAutoComplete = (newValue, fieldName) => {
     const selectedValue = newValue ? newValue.id : null;
@@ -133,9 +149,9 @@ const Inquiry = () => {
       if (formData.attachments) {
         fData.append("attachments", formData.attachments);
       }
-      dispatch(updateInquiryData({ fData, token, id: updatedInquiry.id }))
+      dispatch(updateInquiryData({ fData, token, id: updatedInquiry.inquiry.id }))
       alert("updated successfully")
-      navigate("/settings/inquiry")
+      navigate("/sales/inquiry")
     } else {
       fData.append("client_reference_no", formData.client_reference_no);
       fData.append("inquirydate", formData.inquirydate);
@@ -461,11 +477,23 @@ const Inquiry = () => {
               <div className="details-lable"><label>DETAILS <span style={{ color: "red" }}>*</span></label></div>
 
               {formData.details.map((item, index) => {
+                const isDisabled = !isUpdating || editingIndex !== index;
+
                 return (
                   <div key={index} className='details-container'>
                     <div className="action-btn">
-                      {updatedInquiry && <p onClick={handleDocEdit}><BiSolidEditAlt className='delete-update-handle-btn' style={{ color: "#7c5e1e" }} /></p>}
-                      <p onClick={() => handleDocRemove(index)}><AiOutlineClose className='delete-update-handle-btn' style={{ color: "red" }} /></p>
+                    {updatedInquiry && 
+                        <p>
+                          {isDisabled ?
+                            <BiSolidEditAlt onClick={() => handleDocEdit(index)} title="Edit" className='delete-update-handle-btn' style={{ color: "#7c5e1e" }} />
+                            :
+                            <button onClick={() => handleSaveDetails(index)} style={{marginInline:"10px"}}>Save</button>
+                          }
+                        </p>}
+                     
+                      <p onClick={() => handleDocRemove(index)}>
+                        <AiOutlineClose className='delete-update-handle-btn' title='Delete' style={{ color: "red" }} />
+                      </p>
                     </div>
 
                     <Grid container spacing={2} key={index} sx={{ mb: "10px" }}>
@@ -481,7 +509,7 @@ const Inquiry = () => {
                           placeholder="Ex: 523689"
                           fullWidth
                           required
-                          disabled ={!isUpdataing}
+                          disabled={isDisabled}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6} md={2}>
@@ -496,6 +524,7 @@ const Inquiry = () => {
                           placeholder="Ex: "
                           fullWidth
                           required
+                          disabled={isDisabled}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6} md={2}>
@@ -510,6 +539,7 @@ const Inquiry = () => {
                           // placeholder="Ex: "
                           fullWidth
                           required
+                          disabled={isDisabled}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6} md={2}>
@@ -524,6 +554,7 @@ const Inquiry = () => {
                           fullWidth
                           required
                           className='quantity1'
+                          disabled={isDisabled}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6} md={2}>
@@ -537,6 +568,7 @@ const Inquiry = () => {
                           placeholder="Ex: 10"
                           fullWidth
                           required
+                          disabled={isDisabled}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6} md={2}>

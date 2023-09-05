@@ -26,7 +26,7 @@ const InquiryList = () => {
         if (value && !isNaN(new Date(value))) {
           return format(new Date(value), "dd/MM/yyyy");
         }
-        return "Invalid Date"; // Handle cases where the date is missing or invalid
+      // Handle cases where the date is missing or invalid
       },
     },
     {
@@ -36,7 +36,7 @@ const InquiryList = () => {
         if (value && !isNaN(new Date(value))) {
           return format(new Date(value), "dd/MM/yyyy");
         }
-        return "Invalid Date"; // Handle cases where the date is missing or invalid
+       // Handle cases where the date is missing or invalid
       },
     },
     

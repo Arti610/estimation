@@ -3,7 +3,7 @@ import { useTable, useGlobalFilter, usePagination } from "react-table";
 import "./table.css";
 import { Checkbox } from "./Checkbox";
 import { BiDotsVerticalRounded } from 'react-icons/bi'
-// import {GlobalFilter} from "./GlobalFilter"
+import { GlobalFilter } from "./GlobalFilter"
 import { useDownloadExcel } from "react-export-table-to-excel";
 import { useReactToPrint } from "react-to-print";
 import { CSVLink } from "react-csv";
@@ -75,7 +75,7 @@ export const BasicTable = ({
     canNextPage,
     pageOptions,
     state,
-    // setGlobalFilter,
+    setGlobalFilter,
     allColumns,
     getToggleHideAllColumnsProps,
   } = useTable(
@@ -83,11 +83,11 @@ export const BasicTable = ({
       data: rowData,
       columns,
     },
-    // useGlobalFilter,
+    useGlobalFilter,
     usePagination
   );
   const { pageIndex } = state;
-  // const { globalFilter } = state;
+  const { globalFilter } = state;
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
     filename: "Users table",
@@ -152,7 +152,8 @@ export const BasicTable = ({
               {tableHeading}
             </span>
             <div className="Features-section">
-              {/* <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} /> */}
+              <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} className="Global-filter" />
+
               <details ref={detailsRef} style={{ cursor: "pointer" }}>
                 <summary>Filter Columns</summary>
                 <div className="Header-column">
@@ -287,7 +288,7 @@ export const BasicTable = ({
                   disabled={!canPreviousPage}
 
                 >
-                  <GrPrevious className="btn-hover-color"/>
+                  <GrPrevious className="btn-hover-color" />
                 </button>
 
                 <span>
@@ -298,7 +299,7 @@ export const BasicTable = ({
                   </strong>
                 </span>
                 <button onClick={() => nextPage()} disabled={!canNextPage}>
-                  <GrNext className="btn-hover-color"/>
+                  <GrNext className="btn-hover-color" />
                 </button>
 
               </div>
