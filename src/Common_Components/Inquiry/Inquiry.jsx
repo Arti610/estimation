@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createUserData, getUserData, updateUserData } from '../../APIs/UserSlice';
 import { useNavigate } from 'react-router-dom';
@@ -6,20 +6,22 @@ import { Autocomplete, Button, Grid, TextField } from '@mui/material';
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { BiSolidEditAlt } from 'react-icons/bi'
-import { AiOutlineClose } from 'react-icons/ai'
+import { AiOutlineClose, AiFillDelete } from 'react-icons/ai'
 import { getDepartmentData } from '../../APIs/DepartmentSlice';
 import { getCustomerData } from '../../APIs/CustomerSlice'
 import { getSourceOfInquiryData } from '../../APIs/SourceOfInquirySlice'
 import './Inquiry.css'
 import { useCookies } from 'react-cookie';
 import { getEmployerData } from '../../APIs/EmployerSlice';
-import { createInquiryData, updateInquiryData, updateInquiryDetails } from '../../APIs/InquirySlice'
+import { createInquiryData, deleteInquiryDetailsData, deleteInquiryDetailsDataFailed, deleteInquiryDetailsDataSuccess, updateInquiryData, updateInquiryDetails } from '../../APIs/InquirySlice'
+
 const Inquiry = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [isUpdataing, setIsupdationg] = useState(false)
-  const fData = new FormData();
 
+  const fData = new FormData();
+  const stateStaus = useSelector((state)=>state.Inquiry.status)
+  console.log("stateStaus",stateStaus);
   const [cookies, setCookies] = useCookies(["token"])
   const token = cookies.token;
   const Department = useSelector((state) => state.Department.DepartmentData)
@@ -30,7 +32,7 @@ const Inquiry = () => {
   const updatedInquiry = useSelector((state) => state.Inquiry.updateInquiryData)
   const [isUpdating, setIsUpdating] = useState(false);
   const [editingIndex, setEditingIndex] = useState(-1); // -1 means no row is being edited initially
-
+const [status, setStatus] = useState(stateStaus)
 
   const [formData, setFormData] = useState({
     client_reference_no: null,
@@ -55,6 +57,20 @@ const Inquiry = () => {
       },
     ],
   })
+
+
+  // const deleteDetailsHandler = (index) => {
+  //   dispatch(deleteInquiryDetailsData({ token, id: formData.details[index].id }));
+  // };
+
+  // // Memoize the status variable using useMemo
+  // const memoizedStatus = useMemo(() => stateStaus, [stateStaus]);
+  const deleteDetailsHandler = useCallback((index) => {
+    dispatch(deleteInquiryDetailsData({ token, id: formData.details[index].id }));
+  }, [dispatch, formData.details, token, ]);
+  
+  // Now, deleteDetailsHandler will be memoized and will only change when its dependencies change.
+  
   const handleDocRender = () => {
     setFormData((prevState) => ({
       ...prevState,
@@ -69,6 +85,7 @@ const Inquiry = () => {
   };
 
   const handleDocEdit = (index) => {
+
     setIsUpdating(true);
     setEditingIndex(index);
   };
@@ -82,7 +99,7 @@ const Inquiry = () => {
     );
     setIsUpdating(false);
     setEditingIndex(index);
-    console.log("button cliked eapi called");
+
   };
 
 
@@ -482,18 +499,20 @@ const Inquiry = () => {
                 return (
                   <div key={index} className='details-container'>
                     <div className="action-btn">
-                    {updatedInquiry && 
+                      {updatedInquiry &&
                         <p>
                           {isDisabled ?
                             <BiSolidEditAlt onClick={() => handleDocEdit(index)} title="Edit" className='delete-update-handle-btn' style={{ color: "#7c5e1e" }} />
                             :
-                            <button onClick={() => handleSaveDetails(index)} style={{marginInline:"10px"}}>Save</button>
+                            <button onClick={() => handleSaveDetails(index)} style={{ marginInline: "10px" }}>Save</button>
                           }
                         </p>}
-                     
-                      <p onClick={() => handleDocRemove(index)}>
-                        <AiOutlineClose className='delete-update-handle-btn' title='Delete' style={{ color: "red" }} />
-                      </p>
+                      {updatedInquiry ? <p onClick={() => deleteDetailsHandler(index)}><AiFillDelete className='delete-update-handle-btn' title='Delete' style={{ color: "red" }} /></p> :
+                        <p onClick={() => handleDocRemove(index)}>
+                          <AiOutlineClose className='delete-update-handle-btn' title='Delete' style={{ color: "red" }} />
+                        </p>
+                      }
+
                     </div>
 
                     <Grid container spacing={2} key={index} sx={{ mb: "10px" }}>
@@ -509,7 +528,7 @@ const Inquiry = () => {
                           placeholder="Ex: 523689"
                           fullWidth
                           required
-                          disabled={isDisabled}
+                          disabled={updatedInquiry && isDisabled}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6} md={2}>
@@ -524,7 +543,7 @@ const Inquiry = () => {
                           placeholder="Ex: "
                           fullWidth
                           required
-                          disabled={isDisabled}
+                          disabled={updatedInquiry && isDisabled}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6} md={2}>
@@ -539,7 +558,7 @@ const Inquiry = () => {
                           // placeholder="Ex: "
                           fullWidth
                           required
-                          disabled={isDisabled}
+                          disabled={updatedInquiry && isDisabled}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6} md={2}>
@@ -554,7 +573,7 @@ const Inquiry = () => {
                           fullWidth
                           required
                           className='quantity1'
-                          disabled={isDisabled}
+                          disabled={updatedInquiry && isDisabled}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6} md={2}>
@@ -568,7 +587,7 @@ const Inquiry = () => {
                           placeholder="Ex: 10"
                           fullWidth
                           required
-                          disabled={isDisabled}
+                          disabled={updatedInquiry && isDisabled}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6} md={2}>
@@ -583,12 +602,12 @@ const Inquiry = () => {
                           disabled // To prevent user input in this field
                         />
                       </Grid>
-
                     </Grid>
                   </div>
                 )
               })}
-              <button onClick={handleDocRender}>Add More  +</button>
+              {updatedInquiry ? null : <p className="AddMore"
+               onClick={handleDocRender}>Add More +</p>}
             </Grid>
           </Grid>
           <div style={{ width: "100%", paddingBlock: "20px", display: 'flex', justifyContent: "center", alignItems: "center" }}>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {format} from 'date-fns'
+import { format } from 'date-fns'
 import { BasicTable } from '../../Components/Table list/BasicTable'
 import { useEffect } from 'react'
 import { deleteInquiryData, getInquiryData, getupdateInquiryData, updateInquiryData } from '../../APIs/InquirySlice'
@@ -26,7 +26,7 @@ const InquiryList = () => {
         if (value && !isNaN(new Date(value))) {
           return format(new Date(value), "dd/MM/yyyy");
         }
-      // Handle cases where the date is missing or invalid
+        // Handle cases where the date is missing or invalid
       },
     },
     {
@@ -36,10 +36,10 @@ const InquiryList = () => {
         if (value && !isNaN(new Date(value))) {
           return format(new Date(value), "dd/MM/yyyy");
         }
-       // Handle cases where the date is missing or invalid
+        // Handle cases where the date is missing or invalid
       },
     },
-    
+
     {
       Header: "Customer",
       accessor: "customer.name",
@@ -87,7 +87,7 @@ const InquiryList = () => {
   }, [])
   return (
     <>
-      { InquiryData ?
+      {InquiryData ?
         <BasicTable
           colHeader={header}
           rowData={InquiryData}
@@ -96,14 +96,14 @@ const InquiryList = () => {
           createHandler={createHandler}
           tableHeading="Inquiry"
         />
-        :    <BasicTable
-        colHeader={header}
-        rowData={InquiryDataBlank}
-        updateHandler={editHandler}
-        deleteHandler={deleteHandler}
-        createHandler={createHandler}
-        tableHeading="Inquiry"
-      />}
+        : <BasicTable
+          colHeader={header}
+          rowData={InquiryDataBlank}
+          updateHandler={editHandler}
+          deleteHandler={deleteHandler}
+          createHandler={createHandler}
+          tableHeading="Inquiry"
+        />}
     </>
   )
 }

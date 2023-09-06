@@ -34,22 +34,20 @@ export const createInquiryData = createAsyncThunk("createInquiryData", async (pa
     }
 })
 
-export const deleteInquiryData = createAsyncThunk("deleteInquiryData", async (id, token) => {
+export const deleteInquiryData = createAsyncThunk("deleteInquiryData", async (payload) => {
     try {
-        const response = await api.delete(`/delete_inquiry/${id}`,
-            {
-                headers: {
-                    // Authorization: `token ${token}`,
-                    Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-
-                }
+        const response = await api.delete(`/delete_inquiry/${payload.id}`, {
+            headers: {
+                // Authorization: `token ${payload.token}`,
+                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
             }
-        )
-        return response.data
+        });
+        return response.data;
     } catch (error) {
         throw error;
     }
-})
+});
+
 
 export const updateInquiryData = createAsyncThunk("updateInquiryData", async (payload) => {
 
@@ -101,6 +99,21 @@ export const updateInquiryDetails = createAsyncThunk("updateInquiryDetails", asy
     }
 });
 
+export const deleteInquiryDetailsData = createAsyncThunk("deleteInquiryDetailsData", async (payload) => {
+    try {
+        const response = await api.delete(`/inquiry_details_delete/${payload.id}`, {
+            headers: {
+                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
+            },
+        });
+
+        // Assuming your API returns some data, you can include it in the response object
+        return { status: 'succeeded', data: response.data };
+    } catch (error) {
+        throw error;
+    }
+});
+
 const InquirySlice = createSlice({
     name: "Inquiry",
     initialState: {
@@ -109,7 +122,10 @@ const InquirySlice = createSlice({
             create: null,
             update: null,
             updating: null,
-            delete: null
+            delete: null,
+            deleteDetails: null,
+            updateDetails: null
+             // Add a status for deleting details
         },
         InquiryData: null,
         error: null,
@@ -117,76 +133,97 @@ const InquirySlice = createSlice({
     },
     reducers: {
 
+       
     },
     extraReducers: (builder) => {
         builder.addCase(getInquiryData.pending, (state) => {
-            state.status = "loading"
+            state.status.get = "loading"
         })
         builder.addCase(getInquiryData.fulfilled, (state, action) => {
-            state.status = "succeeded"
+            state.status.get = "succeeded"
             state.InquiryData = action.payload
 
         })
         builder.addCase(getInquiryData.rejected, (state) => {
-            state.status = "failed"
+            state.status.get = "failed"
         })
         builder.addCase(deleteInquiryData.pending, (state) => {
-            state.status = "loading"
+            state.status.delete = 'loading'; // Use 'loading' here
         })
 
         builder.addCase(deleteInquiryData.fulfilled, (state) => {
-            state.status = "succeeded"
+            state.status.delete = 'succeeded';
+        })
 
-        })
         builder.addCase(deleteInquiryData.rejected, (state) => {
-            state.status = "failed"
+            state.status.delete = 'failed';
         })
+
         builder.addCase(createInquiryData.pending, (state) => {
-            state.status = "loading"
+            state.status.create = "loading"
         })
 
         builder.addCase(createInquiryData.fulfilled, (state) => {
-            state.status = "succeeded"
+            state.status.create = "succeeded"
 
         })
         builder.addCase(createInquiryData.rejected, (state) => {
-            state.status = "failed"
+            state.status.create = "failed"
         })
         builder.addCase(updateInquiryData.pending, (state) => {
-            state.status = "loading"
+            state.status.update = "loading"
         })
 
         builder.addCase(updateInquiryData.fulfilled, (state) => {
-            state.status = "succeeded"
+            state.status.update = "succeeded"
 
         })
         builder.addCase(updateInquiryData.rejected, (state) => {
-            state.status = "failed"
+            state.status.update = "failed"
         })
-        builder.addCase(updateInquiryDetails.pending, (state) => {
-            state.status = "loading"
-        })
-
-        builder.addCase(updateInquiryDetails.fulfilled, (state) => {
-            state.status = "succeeded"
-
-        })
-        builder.addCase(updateInquiryDetails.rejected, (state) => {
-            state.status = "failed"
-        })
+       
         builder.addCase(getupdateInquiryData.pending, (state) => {
-            state.status = "loading"
+            state.status.updating = "loading"
         })
 
         builder.addCase(getupdateInquiryData.fulfilled, (state, action) => {
-            state.status = "succeeded"
+            state.status.updating = "succeeded"
             state.updateInquiryData = action.payload
 
         })
         builder.addCase(getupdateInquiryData.rejected, (state) => {
-            state.status = "failed"
+            state.status.updating = 'failed';
+        })
+        builder.addCase(deleteInquiryDetailsData.pending, (state) => {
+            state.status.deleteDetails = 'loading';
+        })
+
+        builder.addCase(deleteInquiryDetailsData.fulfilled, (state, action) => {
+            state.status.deleteDetails = 'succeeded';
+            // You can also update your state with data from the action if needed
+            // state.someData = action.payload.data;
+        })
+
+        builder.addCase(deleteInquiryDetailsData.rejected, (state) => {
+            state.status.deleteDetails = 'failed';
+        })
+        builder.addCase(updateInquiryDetails.pending, (state) => {
+            state.status.updateDetails = "loading"
+        })
+
+        builder.addCase(updateInquiryDetails.fulfilled, (state) => {
+            state.status.updateDetails = "succeeded"
+
+        })
+        builder.addCase(updateInquiryDetails.rejected, (state) => {
+            state.status.updateDetails = "failed"
         })
     }
 })
+
+export const {
+    deleteInquiryDetailsDataSuccess,
+    deleteInquiryDetailsDataFailed,
+} = InquirySlice.actions;
 
 export default InquirySlice.reducer;

@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ImgUrl } from '../../Config/Config'
 import './Catelogue.css'
-import {FaFilePdf} from 'react-icons/fa'
+import { FaFilePdf } from 'react-icons/fa'
 import { getupdateCatelogueData } from '../../APIs/CatelogueSlice'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
@@ -10,10 +10,10 @@ const Catelogue = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const CatelogueData = useSelector((state) => state.Catelogue.updateCatelogueData)
-  const [cookies, setCookies]= useState(['token'])
+  const [cookies, setCookies] = useState(['token'])
   const token = cookies.token
   const updateHandler = (id) => {
-    dispatch(getupdateCatelogueData({token, id}))
+    dispatch(getupdateCatelogueData({ token, id }))
     navigate("/sales/catelogue-registration")
   }
   return (
@@ -27,7 +27,7 @@ const Catelogue = () => {
           </p>
         </div>
         <div className="main-catelogue-container">
-        <button onClick={() => updateHandler(CatelogueData && CatelogueData.catelouge.id)}>Edit</button>
+          <button onClick={() => updateHandler(CatelogueData && CatelogueData.catelouge.id)}>Edit</button>
 
           <div className="primary-container">
 
@@ -79,7 +79,7 @@ const Catelogue = () => {
                   </div>
                 </>
               )
-            }):(<p>No Images Found</p>)}
+            }) : (<p>No Images Found</p>)}
           </div>
           <label>DATASHEETS</label>
           <div className="datasheet-container">
@@ -87,11 +87,11 @@ const Catelogue = () => {
               return (
                 <>
                   <div className='pdfs' key={i}>
-                 <span className="pdf-container"> <FaFilePdf className='pdf-icon'/>  <a href={`${ImgUrl}${item.datasheet}`} target="_blank" download>{item.datasheet.replace('/media/catalogueSheet/', '')}</a></span>
+                    <span className="pdf-container"> <FaFilePdf className='pdf-icon' /> <a href={`${ImgUrl}${item.datasheet}`} target="_blank" download>{item.datasheet.replace('/media/catalogueSheet/', '')}</a></span>
                   </div>
                 </>
               )
-            }):<p>No Datasheet Uploaded</p>}
+            }) : <p>No Datasheet Uploaded</p>}
           </div>
           <label>CERTIFICATES</label>
           <div className="certificate-container">
@@ -99,11 +99,11 @@ const Catelogue = () => {
               return (
                 <>
                   <div className='pdfs' key={i}>
-                <span className="pdf-container">  <FaFilePdf className='pdf-icon'/><a href={`${ImgUrl}${item.files}`} target="_blank" download>{item.files.replace('/media/Catalouge_certificate/', '')}</a></span>
+                    <span className="pdf-container">  <FaFilePdf className='pdf-icon' /><a href={`${ImgUrl}${item.files}`} target="_blank" download>{item.files.replace('/media/Catalouge_certificate/', '')}</a></span>
                   </div>
                 </>
               )
-            }):"No Certificate Uploaded"}
+            }) : "No Certificate Uploaded"}
           </div>
         </div>
       </div>

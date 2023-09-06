@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
+import { FaFilePdf } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { Grid, ImageList, ImageListItem, TextField } from '@mui/material';
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useCookies } from 'react-cookie';
-
+import { AiFillDelete } from 'react-icons/ai'
 import { ImgUrl } from '../../Config/Config';
-import { createCatelogueData, getCatelogueData, updateCatelogueData } from '../../APIs/CatelogueSlice';
+import { createCatelogueData, deleteCatelogueCertificates, deleteCatelogueDatasheets, deleteCatelogueImages, getCatelogueData, updateCatelogueData } from '../../APIs/CatelogueSlice';
 import { updateDepartmentData } from '../../APIs/DepartmentSlice';
 
 const CatelogueRegistration = () => {
@@ -21,7 +21,7 @@ const CatelogueRegistration = () => {
   const [baseOfPricing, setBaseOfPricing] = useState('');
   const [cookies, setCookies] = useCookies(["token"])
   const token = cookies.token;
-
+  const CatelogueData = useSelector((state) => state.Catelogue.updateCatelogueData)
   const updatedCatelogue = useSelector((state) => state.Catelogue.updateCatelogueData)
 
   const [formData, setFormData] = useState({
@@ -44,12 +44,12 @@ const CatelogueRegistration = () => {
     is_active: null,
     primary_image: '',
     imgFile: null,
-    image: null,
+    images: null,
     datasheet: null,
     certificate: null,
   })
 
- const handleSingleImageChange = (e) => {
+  const handleSingleImageChange = (e) => {
     const { files } = e.target;
     if (files) {
       formData.imgFile = null;
@@ -68,7 +68,7 @@ const CatelogueRegistration = () => {
     // Update the formData state with the new array of files
     setFormData((prevData) => ({
       ...prevData,
-      image: filesArray,
+      images: filesArray,
     }));
   };
 
@@ -97,8 +97,16 @@ const CatelogueRegistration = () => {
     }));
   };
 
-
- 
+  //Delete handler
+  const deleteImagesHandler = (id) => {
+    dispatch(deleteCatelogueImages({ token, id }))
+  }
+  const deleteDatasheetHandler = (id) => {
+    dispatch(deleteCatelogueDatasheets({ token, id }))
+  }
+  const deleteCertificateHandler = (id) => {
+    dispatch(deleteCatelogueCertificates({ token, id }))
+  }
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -171,9 +179,9 @@ const CatelogueRegistration = () => {
         fData.append("primary_image", formData.primary_image);
       }
 
-      if (formData.image) {
-        formData.image.forEach((file, index) => {
-          fData.append(`image`, file);
+      if (formData.images) {
+        formData.images.forEach((file, index) => {
+          fData.append(`images`, file);
         });
       }
 
@@ -211,8 +219,8 @@ const CatelogueRegistration = () => {
       fData.append("base_of_pricing", formData.base_of_pricing);
       // fData.append("is_active", formData.is_active);
       fData.append("primary_image", formData.primary_image);
-      formData.image.forEach((file, index) => {
-        fData.append(`image`, file);
+      formData.images.forEach((file, index) => {
+        fData.append(`images`, file);
       });
       formData.datasheet.forEach((file, index) => {
         fData.append(`datasheet`, file);
@@ -251,7 +259,8 @@ const CatelogueRegistration = () => {
         base_of_pricing: updatedCatelogue.catelouge.base_of_pricing,
         is_active: updatedCatelogue.catelouge.is_active,
         // primary_image: updatedCatelogue.catelouge.primary_image
-        imgFile: updatedCatelogue.catelouge.primary_image
+        imgFile: updatedCatelogue.catelouge.primary_image,
+        // images: updatedCatelogue.images
       });
     }
   }, [token, updatedCatelogue]);
@@ -533,44 +542,7 @@ const CatelogueRegistration = () => {
                 helperText={baseOfPricing}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <label>UPLOAD DATASHEETS <span style={{ color: "red" }}>*</span></label>
-              <div className="App">
-                <label htmlFor="upload-photo">
-                  <input
-                    className="upload-files-field"
-                    id="upload-photo"
-                    name="datasheet"
-                    type="file"
-                    multiple
-                    onChange={handleSinglePdfChange}
-                    required={!updatedCatelogue}
 
-                  />
-                </label>{" "}
-              </div>
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <label>UPLOAD CERTIFICATES <span style={{ color: "red" }}>*</span></label>
-              <div className="App">
-                <label htmlFor="upload-photo">
-                  <input
-                    className="upload-files-field"
-                    id="upload-photo"
-                    name="certificate"
-                    type="file"
-                    multiple
-                    onChange={handleFileChange}
-                    required={!updatedCatelogue}
-
-                  />
-                </label>{" "}
-              </div>
-            </Grid>
-
-
-          </Grid>
-          <Grid container spacing={2}>
             <Grid item xs={12} sm={6} md={4}>
               <label>UPLOAD PHOTO <span style={{ color: "red" }}>*</span></label>
               <div className="App">
@@ -588,34 +560,7 @@ const CatelogueRegistration = () => {
                 </label>{" "}
               </div>
             </Grid>
-
-
-
             <Grid item xs={12} sm={6} md={4}>
-              <label>
-                UPLOAD OTHER PHOTOS <span style={{ color: "red" }}>*</span>
-              </label>
-              <div className="App">
-                <input
-                  className="upload-files-field"
-                  name="image"
-                  type="file"
-                  accept=".jpg, .jpeg, .png"
-                  multiple
-                  onChange={handleImageChange}
-                  required={!updatedCatelogue}
-
-                />
-              </div>
-            </Grid>
-
-
-          </Grid>
-
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6} md={4}>
-
-              <label>PRIMARY IMAGE</label>
               <div style={{ marginBlock: "5%", display: "flex", alignItems: "center" }}>
                 <ImageList
                   sx={{ width: 200, height: "auto" }}
@@ -643,28 +588,99 @@ const CatelogueRegistration = () => {
                   </ImageListItem>
                 </ImageList>
               </div>
-
-
-
-
             </Grid>
-            <Grid item xs={12} sm={6} md={8}>
-              <label>SECONDARY IMAGES</label>
-              <div style={{ marginBlock: "5%", display: "flex", alignItems: "center" }}>
-                <ImageList sx={{ width: 200, height: "200" }} cols={10} >
-                  {console.log("formData.image", formData.image)}
-                {formData.image && formData.image.map((file, index) => (
-                    <ImageListItem key={index}>
-                      {file && (
+          </Grid>
+          <Grid container spacing={2}>
+            {updatedCatelogue ? null : <Grid item xs={12} sm={6} md={4}>
+              <label>
+                UPLOAD OTHER PHOTOS <span style={{ color: "red" }}>*</span>
+              </label>
+              <div className="App">
+                <input
+                  className="upload-files-field"
+                  name="images"
+                  type="file"
+                  accept=".jpg, .jpeg, .png"
+                  multiple
+                  onChange={handleImageChange}
+                  required={!updatedCatelogue}
+
+                />
+              </div>
+            </Grid>}
+            {updatedCatelogue ? null : <Grid item xs={12} sm={6} md={4}>
+              <label>UPLOAD DATASHEETS <span style={{ color: "red" }}>*</span></label>
+              <div className="App">
+                <label htmlFor="upload-photo">
+                  <input
+                    className="upload-files-field"
+                    id="upload-photo"
+                    name="datasheet"
+                    type="file"
+                    multiple
+                    onChange={handleSinglePdfChange}
+                    required={!updatedCatelogue}
+
+                  />
+                </label>{" "}
+              </div>
+            </Grid>}
+            {updatedCatelogue ? null : <Grid item xs={12} sm={6} md={4}>
+              <label>UPLOAD CERTIFICATES </label>
+              <div className="App">
+                <label htmlFor="upload-photo">
+                  <input
+                    className="upload-files-field"
+                    id="upload-photo"
+                    name="certificate"
+                    type="file"
+                    multiple
+                    onChange={handleFileChange}
+                    required={!updatedCatelogue}
+
+                  />
+                </label>{" "}
+              </div>
+            </Grid>}
+
+          </Grid>
+          <Grid container spacing={2}>
+            {updatedCatelogue ?
+              <Grid item xs={12} sm={6} md={12}>
+                 <label>
+                  OTHER IMAGES
+                </label>
+                <div className="App">
+                  <label htmlFor="upload-photo">
+                    <input
+                      className="upload-files-field"
+                      id="upload-photo"
+                      name="images"
+                      type="file"
+                      multiple
+                      onChange={handleImageChange}
+                      required={!updatedCatelogue}
+
+                    />
+                  </label>{" "}
+                </div>
+                <ImageList cols={10}>
+                  {CatelogueData ? CatelogueData.images.map((image, index) => (
+                    <div key={index} style={{ display: "flex", alignItems: "center", margin: "8px", justifyContent: "center" }} >
+                      {image && (
                         <img
-                        src={`${ImgUrl}${file}`}
+                          style={{ width: "80px", height: "80px" }}
+                          src={`${ImgUrl}${image.files}`} // Replace YOUR_BASE_URL with the actual base URL for your images
                           alt={`Uploaded file ${index}`}
                           loading="lazy"
                         />
                       )}
-                    </ImageListItem>
-                  ))}
-                  {formData.image && formData.image.map((file, index) => (
+                      <span style={{ cursor: "pointer" }} onClick={() => deleteImagesHandler(image.id)}><AiFillDelete /></span>
+                    </div>
+                  )) : "No Images Uploaded"}
+
+
+                  {/* {formData.image && formData.image.map((file, index) => (
                     <ImageListItem key={index}>
                       {file && (
                         <img
@@ -674,11 +690,83 @@ const CatelogueRegistration = () => {
                         />
                       )}
                     </ImageListItem>
-                  ))}
+                  ))} */}
                 </ImageList>
-              </div>
-            </Grid>
+
+              </Grid> : null}
           </Grid>
+          <Grid container spacing={2}>
+            {updatedCatelogue ?
+              <Grid item xs={12} sm={6} md={12}>
+                <label>
+                  DATASHEETS
+                </label>
+                <div className="App">
+                  <label htmlFor="upload-photo">
+                    <input
+                      className="upload-files-field"
+                      id="upload-photo"
+                      name="datasheet"
+                      type="file"
+                      multiple
+                      onChange={handleSinglePdfChange}
+                      required={!updatedCatelogue}
+
+                    />
+                  </label>{" "}
+                </div>
+
+                <div className="registration-flex">
+                  {CatelogueData ? CatelogueData.datasheet.map((item, i) => {
+                    return (
+                      <>
+                        <div className='pdfs' key={i}>
+                          <span className="pdf-container"> <FaFilePdf className='pdf-icon' />  <a href={`${ImgUrl}${item.datasheet}`} target="_blank" download>{item.datasheet.replace('/media/catalogueSheet/', '')}</a></span>
+                          <span style={{ cursor: "pointer" }} onClick={() => deleteDatasheetHandler(item.id)}><AiFillDelete /></span>
+                        </div>
+                      </>
+                    )
+                  }) : <p>No Datasheet Uploaded</p>}
+                </div>
+              </Grid> : null}
+          </Grid>
+          <Grid container spacing={2}>
+            {updatedCatelogue ?
+              <Grid item xs={12} sm={6} md={12}>
+                <label>
+                  CERTIFICATES
+                </label>
+                <div className="App">
+                  <label htmlFor="upload-photo">
+                    <input
+                      className="upload-files-field"
+                      id="upload-photo"
+                      name="certificate"
+                      type="file"
+                      multiple
+                      onChange={handleFileChange}
+                      required={!updatedCatelogue}
+
+                    />
+                  </label>{" "}
+                </div>
+                <div className="registration-flex">
+
+                  {CatelogueData ? CatelogueData.certificates.map((item, i) => {
+                    return (
+                      <>
+                        <div className='pdfs' key={i}>
+                          <span className="pdf-container">  <FaFilePdf className='pdf-icon' /><a href={`${ImgUrl}${item.files}`} target="_blank" download>{item.files.replace('/media/Catalouge_certificate/', '')}</a></span>
+                          <span style={{ cursor: "pointer" }} onClick={() => deleteCertificateHandler(item.id)}><AiFillDelete /></span>
+                        </div>
+                      </>
+                    )
+                  }) : "No Certificate Uploaded"}
+                </div>
+              </Grid>
+              : null}
+          </Grid>
+
           <div style={{ width: "100%", paddingBlock: "20px", display: 'flex', justifyContent: "center", alignItems: "center" }}>
 
             {updatedCatelogue ? (
