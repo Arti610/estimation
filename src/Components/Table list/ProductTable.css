@@ -5,14 +5,17 @@
 }
 
 .product-container {
-    width: 250px;
+    width: 200px;
     height: 150px;
-    padding: 20px;
+    /* padding: 20px; */
     border: 1px solid #e8e8e8;
     background-color: var(--primary-font-color);
     border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
 }
 
-.td_column{
-    background-color: red   ;
-}
+

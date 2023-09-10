@@ -165,16 +165,14 @@ export const ProductTable = ({
                                         return (
                                             <div {...row.getRowProps()}  className="product-container">
                                                 {row.cells.map((cell, i) => {
-                                                    return (
-                                                        <div                                           
-                                                            id="td_column"
-                                                            {...cell.getCellProps()}
-                                                        >
+                                                    return (                               
+                                                     <>
+                                                        <div id="td_column" {...cell.getCellProps()}>                                  
                                                             {cell.render("Cell")}
                                                         </div>
+                                                     </>
                                                     );
                                                 })}
-
                                             </div>
                                         );
                                     })}

@@ -19,6 +19,7 @@
     margin: 10px;
     /* max-width: 500px; */
     width: 230px;
+    border: 1px solid #e8e8e8;
   }
   
   /* .card-data-container:hover {
