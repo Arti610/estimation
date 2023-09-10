@@ -33,7 +33,7 @@ const Card = ({ path, pic, title, count }) => {
       <Link to={path} className="card-link">
         <div className="card-content">
           <img src={pic} alt={title} className="card-image" />
-          <h3 className="card-title">{title}</h3>
+          <h4 className="card-title">{title}</h4>
         </div>
         <div className="card-count">
           <span>{count}</span>

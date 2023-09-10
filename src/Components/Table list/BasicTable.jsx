@@ -13,7 +13,8 @@ import { GrPrevious } from "react-icons/gr";
 import { MdDelete } from "react-icons/md";
 import AOS from "aos";
 import "aos/dist/aos.css";
-
+import { PiExportBold } from 'react-icons/pi'
+import { MdOutlineAdd } from 'react-icons/md'
 // import { PropaneSharp } from "@mui/icons-material";
 
 export const BasicTable = ({
@@ -21,9 +22,10 @@ export const BasicTable = ({
   rowData,
   deleteHandler,
   updateHandler,
+  pageHeading,
   tableHeading,
   createHandler,
-
+  createBtn
 }) => {
   const tableRef = useRef(null);
   const [densityState, setDensityState] = useState("hoverEffect");
@@ -148,14 +150,11 @@ export const BasicTable = ({
       >
         <div className="registration_top_header">
           <p>
-            <span>
-              {tableHeading}
-            </span>
+            <h2>{pageHeading}</h2>
             <div className="Features-section">
               <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} className="Global-filter" />
-
               <details ref={detailsRef} style={{ cursor: "pointer" }}>
-                <summary>Filter Columns</summary>
+                <summary>Filter</summary>
                 <div className="Header-column">
                   <div className="toggle-list-all">
                     <Checkbox {...getToggleHideAllColumnsProps()} /> Toggle All
@@ -174,36 +173,35 @@ export const BasicTable = ({
                   <br />
                 </div>
               </details>
-              <div className="export-btn" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+              <button onClick={generatePdf} className="secondary-btn"><PiExportBold />Export</button>
+              <button onClick={createHandler} >
+                <MdOutlineAdd /> {createBtn} Add {pageHeading}
+              </button>
+           
+           
+            </div>
+          </p>
+
+        </div>
+
+        <div className="table">
+          
+          <div className="Main-div">
+            <div className="table-heading">
+              <h4>{tableHeading}</h4>
+                 <div className="export-btn" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                 <BiDotsVerticalRounded />
                 {isHovered && (
                   <div className="table-btn-left">
-                    <button onClick={generatePdf}>Export as PDF</button>
-                    <button onClick={download}>Export as Excel</button>
+                    {/* <button onClick={generatePdf}>Export as PDF</button> */}
+                    <span onClick={download}>Export as Excel</span>
                     <CSVLink data={rowData.slice(0, 10)}>
-                      <button className="Csv">Export as CSV</button>
+                      <span className="Csv">Export as CSV</span>
                     </CSVLink>
                   </div>
                 )}
               </div>
             </div>
-          </p>
-
-          <div className="table-btn">
-
-            <button onClick={createHandler} style={{ marginInline: "15px" }}>
-              Create +
-            </button>
-
-          </div>
-        </div>
-
-        <div
-
-          className="table"
-        >
-          <div className="Main-div">
-
             <div className="table-list" ref={tableRef}>
               <table {...getTableProps()}>
                 <thead>
@@ -232,7 +230,6 @@ export const BasicTable = ({
                             <td
                               className={densityState}
                               id="td_column"
-                              style={{ paddingInline: "20px", width: "15rem" }}
                               {...cell.getCellProps()}
                             >
                               {cell.render("Cell")}
@@ -283,25 +280,18 @@ export const BasicTable = ({
             </div>
             <div className="Navigation">
               <div className="NavigationButton">
-                <button
-                  onClick={() => previousPage()}
-                  disabled={!canPreviousPage}
-
-                >
-                  <GrPrevious className="btn-hover-color" />
-                </button>
-
-                <span>
-                  page{" "}
-                  <strong>
-                    {" "}
-                    {pageIndex + 1} of {pageOptions.length}
-                  </strong>
-                </span>
-                <button onClick={() => nextPage()} disabled={!canNextPage}>
-                  <GrNext className="btn-hover-color" />
-                </button>
-
+                <div>
+                  <span>page<strong> {pageIndex + 1} of {pageOptions.length}</strong></span>
+                </div>
+                <div style={{ display: "flex", float: "right", gap: '10px' }}>
+                  <button className="secondary-btn" onClick={() => previousPage()} disabled={!canPreviousPage}>
+                    {/* <GrPrevious className="btn-hover-color" /> */}
+                    Previous
+                  </button>
+                  <button className="secondary-btn" onClick={() => nextPage()} disabled={!canNextPage}>
+                    {/* <GrNext className="btn-hover-color" /> */} Next
+                  </button>
+                </div>
               </div>
             </div>
           </div>

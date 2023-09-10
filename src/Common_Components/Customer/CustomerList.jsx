@@ -196,7 +196,8 @@ const CustomerList = () => {
                 updateHandler={editHandler}
                 deleteHandler={deleteHandler}
                 createHandler={openModal}
-                tableHeading="Customer"
+                tableHeading="All Customers"
+                pageHeading = "Customer"
 
             />
                 : <BasicTable
@@ -205,7 +206,8 @@ const CustomerList = () => {
                     updateHandler={editHandler}
                     deleteHandler={deleteHandler}
                     createHandler={openModal}
-                    tableHeading="Customer"
+                    tableHeading="All Customers"
+                    pageHeading = "Customer"
 
                 />}
             <ModalComp modalOpen={modalOpen} handleModalInputChange={handleModalInputChange} createOrUpdateHandler={createOrUpdateHandler} openModal={openModal} closeModal={closeModal} modalData={modalData} label="ADD Customer" heading="Customer" nameError={nameError} lastNameError={lastNameError} phoneNumberError={phoneNumberError} emailError={emailError} countryError={countryError} />

@@ -163,7 +163,8 @@ const TaxList = () => {
                     updateHandler={editHandler}
                     deleteHandler={deleteHandler}
                     createHandler={openModal}
-                    tableHeading="Tax"
+                    tableHeading="All Taxes"
+                    pageHeading='Tax'
                 />
             ) : (
                 <BasicTable
@@ -172,7 +173,8 @@ const TaxList = () => {
                     updateHandler={editHandler}
                     deleteHandler={deleteHandler}
                     createHandler={openModal}
-                    tableHeading="Tax"
+                    tableHeading="All Taxes"
+                    pageHeading='Tax'
                 />
             )}
 

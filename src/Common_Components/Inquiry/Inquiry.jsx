@@ -21,7 +21,6 @@ const Inquiry = () => {
 
   const fData = new FormData();
   const stateStaus = useSelector((state)=>state.Inquiry.status)
-  console.log("stateStaus",stateStaus);
   const [cookies, setCookies] = useCookies(["token"])
   const token = cookies.token;
   const Department = useSelector((state) => state.Department.DepartmentData)
@@ -234,9 +233,9 @@ const [status, setStatus] = useState(stateStaus)
       >
         <div className="registration_top_header">
           <p>
-            <span className='border-bottom-heading'>
+            <h2 className='border-bottom-heading'>
               Inquiry Registration
-            </span>
+            </h2>
           </p>
         </div>
         <form onSubmit={handleSubmit}>

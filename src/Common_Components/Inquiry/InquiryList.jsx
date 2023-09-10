@@ -94,7 +94,8 @@ const InquiryList = () => {
           updateHandler={editHandler}
           deleteHandler={deleteHandler}
           createHandler={createHandler}
-          tableHeading="Inquiry"
+          tableHeading="All Inquiries"
+          pageHeading='Inquiry'
         />
         : <BasicTable
           colHeader={header}
@@ -102,7 +103,8 @@ const InquiryList = () => {
           updateHandler={editHandler}
           deleteHandler={deleteHandler}
           createHandler={createHandler}
-          tableHeading="Inquiry"
+          tableHeading="All Inquiries"
+          pageHeading='Inquiry'
         />}
     </>
   )

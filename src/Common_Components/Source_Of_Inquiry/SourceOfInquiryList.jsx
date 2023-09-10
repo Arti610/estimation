@@ -111,7 +111,8 @@ const SourceOfInquiryList = () => {
           updateHandler={editHandler}
           deleteHandler={deleteHandler}
           createHandler={openModal}
-          tableHeading="Source Of Inquiry"
+          tableHeading="All Source Of Inquiries"
+          pageHeading='Source Of Inquiry'
         />
       ) : <BasicTable
         colHeader={header}
@@ -119,7 +120,8 @@ const SourceOfInquiryList = () => {
         updateHandler={editHandler}
         deleteHandler={deleteHandler}
         createHandler={openModal}
-        tableHeading="Source Of Inquiry"
+        tableHeading="All Source Of Inquiries"
+        pageHeading='Source Of Inquiry'
       />}
 
       <SourceOfInquiryModal modalOpen={modalOpen} handleModalInputChange={handleModalInputChange} handleAutoComplete={handleAutoComplete} createOrUpdateHandler={createOrUpdateHandler} openModal={openModal} closeModal={closeModal} modalData={modalData} label="ADD SOURCE OF INQUIRY" heading="Source Of Inquiry" />

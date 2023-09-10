@@ -14,7 +14,7 @@
 
 // const EstimationData = useSelector((state)=>state.Estimation.EstimationData)
 // const header = [
-  
+
 //   {
 //     Header: "Estimation Data",  
 //     accessor: "estimation_date",
@@ -22,7 +22,7 @@
 //       return format(new Date(value), "dd/MM/yyyy");
 //     },
 //   },
- 
+
 //   {
 //     Header: "Customer",
 //     accessor: "customer.name",
@@ -78,6 +78,8 @@
 //           deleteHandler={deleteHandler}
 //           createHandler={createHandler}
 //           tableHeading="Estimation"
+// tableHeading="All Estimations"
+// pageHeading='Estimation'
 //         />
 //       ) : ("loading")}
 //    </>
