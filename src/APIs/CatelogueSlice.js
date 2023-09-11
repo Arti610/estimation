@@ -11,6 +11,7 @@ export const getCatelogueData = createAsyncThunk("getCatelogueData", async (toke
                 // Authorization: `arti`
             },
         })
+
         return response.data
     } catch (error) {
         throw error;

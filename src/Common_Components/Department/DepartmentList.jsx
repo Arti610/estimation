@@ -111,15 +111,17 @@ const DepartmentList = () => {
           updateHandler={editHandler}
           deleteHandler={deleteHandler}
           createHandler={openModal}
-          tableHeading="Department"
-        />
-      ) : <BasicTable
-        colHeader={header}
-        rowData={DepartmentDataBlank}
-        updateHandler={editHandler}
-        deleteHandler={deleteHandler}
-        createHandler={openModal}
-        tableHeading="Department"
+          tableHeading="All Departments"
+          pageHeading='Department'
+          />
+          ) : <BasicTable
+          colHeader={header}
+          rowData={DepartmentDataBlank}
+          updateHandler={editHandler}
+          deleteHandler={deleteHandler}
+          createHandler={openModal}
+          tableHeading="All Departments"
+          pageHeading='Department'
       />}
 
       <DepartmentModal modalOpen={modalOpen} handleModalInputChange={handleModalInputChange} handleAutoComplete={handleAutoComplete} createOrUpdateHandler={createOrUpdateHandler} openModal={openModal} closeModal={closeModal} modalData={modalData} label="ADD DEPARTMENT" heading="Department" />

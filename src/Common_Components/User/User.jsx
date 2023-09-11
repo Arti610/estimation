@@ -242,9 +242,9 @@ const User = () => {
       >
         <div className="registration_top_header">
           <p>
-            <span className='border-bottom-heading'>
+            <h2 className='border-bottom-heading'>
               User Registration
-            </span>
+            </h2>
           </p>
         </div>
         <form onSubmit={handleSubmit}>

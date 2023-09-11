@@ -94,7 +94,9 @@ const UserList = () => {
           updateHandler={editHandler}
           deleteHandler={deleteHandler}
           createHandler={createHandler}
-          tableHeading="User"
+          pageHeading="User"
+          tableHeading ="All Users"
+        
         />
       ) : ( <BasicTable
         colHeader={header}

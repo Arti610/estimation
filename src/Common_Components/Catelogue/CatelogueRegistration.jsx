@@ -212,6 +212,30 @@ const CatelogueRegistration = () => {
       alert("updated successfully")
       navigate("/sales/catelogue")
     } else {
+      setFormData({
+        name: null,
+        type: null,
+        category: null,
+        sub_category: null,
+        type_sub_category: null,
+        origin: null,
+        finish: null,
+        brand: null,
+        series: null,
+        model: null,
+        size: null,
+        specification: null,
+        list_price: null,
+        currency: null,
+        discount: null,
+        base_of_pricing: null,
+        is_active: null,
+        primary_image: '',
+        imgFile: null,
+        images: null,
+        datasheet: null,
+        certificate: null,
+      })
       fData.append("name", formData.name);
       fData.append("type", formData.type);
       fData.append("category", formData.category);
@@ -276,7 +300,10 @@ const CatelogueRegistration = () => {
         imgFile: updatedCatelogue.catelouge.primary_image,
         // images: updatedCatelogue.images
       });
+     
     }
+    
+    
   }, [token, updatedCatelogue]);
 
   return (

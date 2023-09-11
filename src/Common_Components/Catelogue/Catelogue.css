@@ -123,8 +123,8 @@
     padding: 10px;
     height: max-content;
     display: flex;
-    justify-content: space-around;
-
+    justify-content: flex-start;
+    flex-wrap: wrap;
 }
 
 .certificate-container {
@@ -133,8 +133,8 @@
     padding: 10px;
     height: max-content;
     display: flex;
-    justify-content: space-around;
-
+    justify-content: flex-start;
+    flex-wrap: wrap;
 }
 
 .registration-flex {

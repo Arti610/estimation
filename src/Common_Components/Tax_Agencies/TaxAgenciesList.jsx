@@ -108,7 +108,8 @@ const TaxAgenciesList = () => {
           updateHandler={editHandler}
           deleteHandler={deleteHandler}
           createHandler={openModal}
-          tableHeading="Tax Agency"
+          tableHeading="All Tax Agencies"
+          pageHeading='Tax Agency'
         />
       ) : (<BasicTable
         colHeader={header}
@@ -116,7 +117,8 @@ const TaxAgenciesList = () => {
         updateHandler={editHandler}
         deleteHandler={deleteHandler}
         createHandler={openModal}
-        tableHeading="Tax Agency"
+        tableHeading="All Tax Agencies"
+        pageHeading='Tax Agency'
       />)}
 
       <TaxAgencyModal modalOpen={modalOpen} handleModalInputChange={handleModalInputChange} createOrUpdateHandler={createOrUpdateHandler} openModal={openModal} closeModal={closeModal} modalData={modalData} label="ADD TAX ACGENCY" heading="Tax Agency" />

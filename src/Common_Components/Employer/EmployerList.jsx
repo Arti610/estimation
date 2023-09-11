@@ -160,7 +160,8 @@ const EmployerList = () => {
                     updateHandler={editHandler}
                     deleteHandler={deleteHandler}
                     createHandler={openModal}
-                    tableHeading="Employer"
+                    tableHeading="All Employers"
+                    pageHeading='Employer'
                 />
             ) : <BasicTable
                 colHeader={header}
@@ -168,7 +169,8 @@ const EmployerList = () => {
                 updateHandler={editHandler}
                 deleteHandler={deleteHandler}
                 createHandler={openModal}
-                tableHeading="Employer"
+                tableHeading="All Employers"
+                pageHeading='Employer'
             />}
 
             <EmployerModal modalOpen={modalOpen} handleModalInputChange={handleModalInputChange} createOrUpdateHandler={createOrUpdateHandler} openModal={openModal} closeModal={closeModal} modalData={modalData} label="ADD EMPLOYER" heading="Employer" nameError={nameError} emailError={emailError} phoneNumberError={phoneNumberError} countryError={countryError} />

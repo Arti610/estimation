@@ -234,9 +234,9 @@ const Inquiry = () => {
       >
         <div className="registration_top_header">
           <p>
-            <span className='border-bottom-heading'>
+            <h2 className='border-bottom-heading'>
               Inquiry Registration
-            </span>
+            </h2>
           </p>
         </div>
         <form onSubmit={handleSubmit}>
