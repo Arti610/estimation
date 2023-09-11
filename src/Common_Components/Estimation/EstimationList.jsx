@@ -84,7 +84,8 @@ const EstimationList = () => {
           updateHandler={editHandler}
           deleteHandler={deleteHandler}
           createHandler={createHandler}
-          tableHeading="Estimation"
+          tableHeading="All Estimations"
+          pageHeading='Estimation'
         />
       ) : (<BasicTable
         colHeader={header}
@@ -92,7 +93,8 @@ const EstimationList = () => {
         updateHandler={editHandler}
         deleteHandler={deleteHandler}
         createHandler={createHandler}
-        tableHeading="Estimation"
+        tableHeading="All Estimations"
+        pageHeading='Estimation'
       />)}
     </>
   )
