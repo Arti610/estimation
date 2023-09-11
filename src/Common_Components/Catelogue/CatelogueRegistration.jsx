@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FaFilePdf } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { Grid, ImageList, ImageListItem, TextField } from '@mui/material';
+import { Autocomplete, Grid, ImageList, ImageListItem, TextField } from '@mui/material';
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useCookies } from 'react-cookie';
@@ -10,6 +10,7 @@ import { AiFillDelete } from 'react-icons/ai'
 import { ImgUrl } from '../../Config/Config';
 import { createCatelogueData, deleteCatelogueCertificates, deleteCatelogueDatasheets, deleteCatelogueImages, getCatelogueData, updateCatelogueData } from '../../APIs/CatelogueSlice';
 import { updateDepartmentData } from '../../APIs/DepartmentSlice';
+import { getTaxData } from '../../APIs/TaxSlice';
 
 const CatelogueRegistration = () => {
   const navigate = useNavigate()
@@ -21,6 +22,7 @@ const CatelogueRegistration = () => {
   const [baseOfPricing, setBaseOfPricing] = useState('');
   const [cookies, setCookies] = useCookies(["token"])
   const token = cookies.token;
+  const Tax = useSelector((state)=>state.Tax.TaxData)
   const CatelogueData = useSelector((state) => state.Catelogue.updateCatelogueData)
   const updatedCatelogue = useSelector((state) => state.Catelogue.updateCatelogueData)
 
@@ -42,6 +44,7 @@ const CatelogueRegistration = () => {
     discount: null,
     base_of_pricing: null,
     is_active: null,
+    tax: null,
     primary_image: '',
     imgFile: null,
     images: null,
@@ -96,7 +99,14 @@ const CatelogueRegistration = () => {
       certificate: filesArray
     }));
   };
+  const handleAutoComplete = (newValue, fieldName) => {
+    const selectedValue = newValue ? newValue.id : null;
 
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [fieldName]: selectedValue,
+    }));
+  };
   //Delete handler
   const deleteImagesHandler = (id) => {
     dispatch(deleteCatelogueImages({ token, id }))
@@ -174,6 +184,7 @@ const CatelogueRegistration = () => {
       fData.append("currency", formData.currency);
       fData.append("discount", formData.discount);
       fData.append("base_of_pricing", formData.base_of_pricing);
+      fData.append("tax", formData.tax);
 
       if (formData.primary_image) {
         fData.append("primary_image", formData.primary_image);
@@ -217,6 +228,7 @@ const CatelogueRegistration = () => {
       fData.append("currency", formData.currency);
       fData.append("discount", formData.discount);
       fData.append("base_of_pricing", formData.base_of_pricing);
+      fData.append("tax", formData.tax);
       // fData.append("is_active", formData.is_active);
       fData.append("primary_image", formData.primary_image);
       formData.images.forEach((file, index) => {
@@ -236,6 +248,7 @@ const CatelogueRegistration = () => {
   }
   useEffect(() => {
     AOS.init();
+    dispatch(getTaxData(token))
     dispatch(updateDepartmentData(token))
     dispatch(updateCatelogueData(token))
     if (updatedCatelogue) {
@@ -256,6 +269,7 @@ const CatelogueRegistration = () => {
         list_price: updatedCatelogue.catelouge.list_price,
         currency: updatedCatelogue.catelouge.currency,
         discount: updatedCatelogue.catelouge.discount,
+        tax: String(updatedCatelogue.catelouge.tax),
         base_of_pricing: updatedCatelogue.catelouge.base_of_pricing,
         is_active: updatedCatelogue.catelouge.is_active,
         // primary_image: updatedCatelogue.catelouge.primary_image
@@ -542,8 +556,34 @@ const CatelogueRegistration = () => {
                 helperText={baseOfPricing}
               />
             </Grid>
-
             <Grid item xs={12} sm={6} md={4}>
+              <label>
+                TAX <span style={{ color: "red" }}>*</span>
+              </label>
+              <Autocomplete
+                name="tax"
+                value={
+                  Tax &&
+                  formData.tax &&
+                  Tax.find((item) => item.id === Number(formData.tax))
+                }
+                onChange={(event, value) => handleAutoComplete(value, "tax")}
+
+                disablePortal
+                id="combo-box-demo"
+                options={Tax}
+                getOptionLabel={(option) => option.name}
+                required
+                renderInput={(params) => (
+                  <TextField
+                    className="bg-color"
+                    placeholder="Select Tax"
+                    {...params}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={2}>
               <label>UPLOAD PHOTO <span style={{ color: "red" }}>*</span></label>
               <div className="App">
                 <label htmlFor="upload-photo">
@@ -560,7 +600,7 @@ const CatelogueRegistration = () => {
                 </label>{" "}
               </div>
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={12} sm={6} md={2}>
               <div style={{ marginBlock: "5%", display: "flex", alignItems: "center" }}>
                 <ImageList
                   sx={{ width: 200, height: "auto" }}
@@ -660,9 +700,8 @@ const CatelogueRegistration = () => {
                       multiple
                       onChange={handleImageChange}
                       required={!updatedCatelogue}
-
                     />
-                  </label>{" "}
+                  </label>
                 </div>
                 <ImageList cols={10}>
                   {CatelogueData ? CatelogueData.images.map((image, index) => (

@@ -84,6 +84,22 @@ export const getupdateEstimationData = createAsyncThunk("getupdateEstimationData
         console.log(error)
     }
 })
+
+export const createEstimationResourceData = createAsyncThunk("createEstimationResourceData", async (payload) => {
+    try {
+        const response = await api.post("/estimation_resource_details", payload.fData, {
+            headers: {
+                'content-type': 'multipart/form-data',
+                // Authorization: `token ${payload.token}`,
+                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
+                // Authorization: `arti`
+            }
+        })
+        return response.data
+    } catch (error) {
+        return error.msg
+    }
+})
 const EstimationSlice = createSlice({
     name: "Estimation",
     initialState: {
@@ -156,6 +172,19 @@ const EstimationSlice = createSlice({
 
         })
         builder.addCase(getupdateEstimationData.rejected, (state) => {
+            state.status = "failed"
+        })
+
+
+        builder.addCase(createEstimationResourceData.pending, (state) => {
+            state.status = "loading"
+        })
+
+        builder.addCase(createEstimationResourceData.fulfilled, (state) => {
+            state.status = "succeeded"
+
+        })
+        builder.addCase(createEstimationResourceData.rejected, (state) => {
             state.status = "failed"
         })
     }

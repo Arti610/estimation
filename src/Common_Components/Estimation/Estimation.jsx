@@ -1,20 +1,48 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createUserData, getUserData, updateUserData } from '../../APIs/UserSlice';
 import { useNavigate } from 'react-router-dom';
-import { Autocomplete, Button, Grid, TextField } from '@mui/material';
+import { Autocomplete, Box, Grid, Modal, TextField } from '@mui/material';
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { BiSolidEditAlt } from 'react-icons/bi'
-import { AiOutlineClose } from 'react-icons/ai'
-import { getDepartmentData } from '../../APIs/DepartmentSlice';
-import { getCustomerData } from '../../APIs/CustomerSlice'
-import { getSourceOfInquiryData } from '../../APIs/SourceOfInquirySlice'
 import './Estimation.css'
 import { useCookies } from 'react-cookie';
-import { getEmployerData } from '../../APIs/EmployerSlice';
-import { createEstimationData, updateEstimationData } from '../../APIs/EstimationSlice'
+import { createEstimationData, createEstimationResourceData, updateEstimationData } from '../../APIs/EstimationSlice'
+import { getInquiryData, getupdateInquiryData } from '../../APIs/InquirySlice';
+import './Estimation.css'
+import { RxCross2 } from "react-icons/rx";
+import { getCatelogueData, getupdateCatelogueData } from '../../APIs/CatelogueSlice';
+import { ImgUrl } from '../../Config/Config';
+
 const Estimation = () => {
+  const style = {
+    position: "absolute",
+    top: "30%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    backgroundColor: "#fff",
+    borderRadius: "10px",
+    height: "fit-content",
+    overflow: "auto",
+    "@media (max-width: 576px)": {
+      width: "90%",
+    },
+  };
+  const CateStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    width: "1100px",
+    transform: "translate(-50%, -50%)",
+    backgroundColor: "#fff",
+    // border: "1px solid #6e85b7",
+    borderRadius: "10px",
+    height: "fit-content",
+    overflow: "auto",
+    height: "550px",
+    "@media (max-width: 576px)": {
+      width: "90%",
+    },
+  }
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -22,99 +50,135 @@ const Estimation = () => {
 
   const [cookies, setCookies] = useCookies(["token"])
   const token = cookies.token;
-  const Department = useSelector((state) => state.Department.DepartmentData)
-  const Employer = useSelector((state) => state.Employer.EmployerData)
-  const Customer = useSelector((state) => state.Customer.CustomerData)
-  const SourceOfInquiry = useSelector((state) => state.SourceOfInquiry.SourceOfInquiryData)
-  const Estimator_salesman = useSelector((state) => state.User.UserData)
+  const Inquiry = useSelector((state) => state.Inquiry.InquiryData)
+  const InquiryData = useSelector((state) => state.Inquiry.updateInquiryData)
+  // console.log("InquiryData",InquiryData.detail);
   const updatedEstimation = useSelector((state) => state.Estimation.updateUserData)
-
-
+  const CatelogueData = useSelector((state) => state.Catelogue.updateCatelogueData)
+  const catelogueData = useSelector((state) => state.Catelogue.CatelogueData);
   const [formData, setFormData] = useState({
+    inquiry_no: null,
     client_reference_no: null,
-    Estimationdate: null,
-    submission_date: null,
-    customer: null,
-    employer: null,
-    source_of_Estimation: null,
-    department: null,
-    estimator: null,
-    salesman: null,
-    scope_of_work: null,
-    attachments: null,
-    details: [
+    detail: [
       {
+        id: null,
         boq_number: null,
         boq_description: null,
+        unit: null,
         quantity: null,
-        unit:null,
         rate: null,
         total_price: null,
-      },
-    ],
+        inquiryno: null
+      }
+    ]
   })
-  const handleDocRender = () => {
-    setFormData((prevState) => ({
-      ...prevState,
-      details: [
-        ...prevState.details, {}]
-    }))
+  const [estiFormData, setEstiFormData] = useState({
+    // quantity: null,
+    // listPrice: null,
+    // discount: null,
+    // vatPercent: null,
+    // estimatedRate: null,
+    quantity: 0,
+    list_price: 0,
+    estimation_rate: 0,
+  })
+  const [erModal, setErModal] = useState(false)
+  const openERModal = () => {
+    setErModal(true)
   }
-  const handleDocRemove = (index) => {
-    const newFormVal = { ...formData };
-    newFormVal.details.splice(index, 1);
-    setFormData(newFormVal);
+  const closeERModal = () => {
+    setErModal(false)
+  }
+  const handleModalOpen = () => {
+    openERModal()
+  }
+  const handleSave = () => {
+  
+  }
+  const handleClick = (id) => {
+    dispatch(getupdateCatelogueData({ id, token }))
+    setCateModalOpen(false)
+  }
+  const handleAddMore = () => {
+    setEstiFormData((prevData) => ({
+      ...prevData,
+      item_name: [...prevData.item_name, null],
+    }));
   };
+  const [cateModalOpen, setCateModalOpen] = useState(false)
 
-  const handleDocEdit = () => {
-
+  const handleModalInputChange = (e) => {
+    const { name, value } = e.target
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
   }
-
   const handleAutoComplete = (newValue, fieldName) => {
     const selectedValue = newValue ? newValue.id : null;
-
+    dispatch(getupdateInquiryData({ token, id: newValue.id }))
     setFormData((prevFormData) => ({
       ...prevFormData,
       [fieldName]: selectedValue,
     }));
   };
   const handleChange = (e) => {
-    
-    const {name, value} = e.target
-      setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-    console.log(formData, 'formDaata');
-  };
-  const handleChangePrice = (index, name, value)=>{
-    const newDetails = [...formData.details];
-    newDetails[index] = {
-      ...newDetails[index],
-      [name]: value,
-    };
 
-    // Calculate Total Price
-    const quantity = parseFloat(newDetails[index].quantity);
-    const rate = parseFloat(newDetails[index].rate);
-
-    if (!isNaN(quantity) && !isNaN(rate)) {
-      newDetails[index].total_price = (quantity * rate).toFixed(2);
-    } else {
-      newDetails[index].total_price = '';
-    }
+    const { name, value } = e.target
     setFormData((prevFormData) => ({
       ...prevFormData,
-      details: newDetails,
+      [name]: value,
     }));
-  }
-  const handleImageChange = (e) => {
-    const { files } = e.target;
+  };
+  const handleChangePrice = (name, value) => {
+    setEstiFormData((prevData) => ({
+      ...prevData,
+      [name]: parseFloat(value) || 0, // Convert the value to a number or set it to 0 if it's not a valid number
+      estimation_rate: calculateEstimatedRate(parseFloat(value) || 0),
+    }));
+  };
 
-    setFormData((previous) => ({
-      ...previous,
-      attachments: files[0],
+  const calculateEstimatedRate = () => {
+    const quantity = parseFloat(estiFormData.quantity) || 0;
+    const listPrice = parseFloat(CatelogueData && CatelogueData.catelouge.list_price) || 0;
+    const discount = parseFloat(CatelogueData && CatelogueData.catelouge.discount) || 0;
+    const vatPercent = parseFloat(CatelogueData && CatelogueData.catelouge.tax.rate) || 0;
+
+    const estimatedRate =
+      quantity * listPrice - discount + ((quantity * listPrice - discount) / 100) * vatPercent;
+
+    return estimatedRate;
+  };
+  useEffect(() => {
+    const newEstimatedRate = calculateEstimatedRate();
+    setEstiFormData((prevData) => ({
+      ...prevData,
+      estimation_rate: newEstimatedRate,
     }));
+  }, [estiFormData.quantity, CatelogueData]);
+
+  // const estiHandleSubmit = (e)=>{
+  //   e.preventDefault()
+  //   InquiryData.detail.forEach((file, index) => {
+  //     fData.append(`inquiry_detail`, file.id);
+  //   });
+  //   // fData.append("inquiry_detail", InquiryData.detail.id);
+  //   fData.append("item", CatelogueData.catelouge.id);
+  //   fData.append("quantity", estiFormData.quantity);
+  //   // fData.append("total_price", estiFormData.total_price);
+  //   fData.append("estimation_rate", estiFormData.estimation_rate);
+  //   dispatch(createEstimationResourceData({fData, token}))
+  // }
+  const estiHandleSubmit = (e, index) => {
+    e.preventDefault();
+    // Get the ID of the specific inquiry_detail at the given index
+    const inquiryDetailId = InquiryData.detail[index].id;
+    // Append the specific ID to your FormData
+    fData.append("inquiry_detail", inquiryDetailId);
+    fData.append("item", CatelogueData.catelouge.id);
+    fData.append("quantity", estiFormData.quantity);
+    fData.append("estimation_rate", estiFormData.estimation_rate);
+    dispatch(createEstimationResourceData({ fData, token }));
   };
 
   const handleSubmit = (e) => {
@@ -165,18 +229,11 @@ const Estimation = () => {
     }
   }
 
-
   useEffect(() => {
     AOS.init();
-    dispatch(getDepartmentData(token));
-    dispatch(getEmployerData(token))
-    dispatch(getCustomerData(token))
-    dispatch(getSourceOfInquiryData(token))
-    dispatch(getUserData(token))
+    dispatch(getInquiryData(token))
+    dispatch(getCatelogueData(token))
     dispatch(updateEstimationData(token))
-    if (updatedEstimation) {
-      console.log("updatedEstimation", updatedEstimation);
-    }
     if (updatedEstimation) {
       setFormData({
         client_reference_no: updatedEstimation.client_reference_no,
@@ -196,11 +253,7 @@ const Estimation = () => {
 
   return (
     <>
-      <div
-
-        data-aos="fade-left"
-        data-aos-duration="1000"
-      >
+      <div data-aos="fade-left" data-aos-duration="1000">
         <div className="registration_top_header">
           <p>
             <span className='border-bottom-heading'>
@@ -210,10 +263,36 @@ const Estimation = () => {
         </div>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-         
             <Grid item xs={12} sm={6} md={4}>
               <label>
-                ESTIMATION DATE <span style={{ color: "red" }}>*</span>
+                INQUIRY NUMBER
+              </label>
+              <Autocomplete
+                name="inquiry_no"
+                value={
+                  Inquiry &&
+                  formData.inquiry_no &&
+                  Inquiry.find((item) => item.id === Number(formData.inquiry_no))
+                }
+                onChange={(event, value) => handleAutoComplete(value, "inquiry_no")}
+                // disabled = {null}
+                disablePortal
+                id="combo-box-demo"
+                options={Inquiry}
+                getOptionLabel={(option) => option.id}
+                required
+                renderInput={(params) => (
+                  <TextField
+                    className="bg-color"
+                    placeholder="Select Inquiry"
+                    {...params}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <label>
+                ESTIMATION DATE
               </label>
               <TextField
                 type="date"
@@ -226,325 +305,325 @@ const Estimation = () => {
 
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <label>
-                INQUIRY NUMBER <span style={{ color: "red" }}>*</span>
-              </label>
-              <TextField
-                type="date"
-                name="submission_date"
-                onChange={handleChange}
-                value={formData.submission_date}
-                placeholder="example@gmail.com"
-                fullWidth
-                required
-
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <label>
-                CLIENT REF NUMBER <span style={{ color: "red" }}>*</span>
-              </label>
-              <TextField
-                type="text"
-                name="client_reference_no"
-                onChange={handleChange}
-                value={formData.client_reference_no}
-                placeholder="Ex: 42365212"
-                fullWidth
-                required
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6} md={4}>
-              <label>
-                CUSTOMER <span style={{ color: "red" }}>*</span>
-              </label>
-              <Autocomplete
-                name="customer"
-                value={
-                  Customer &&
-                  formData.customer &&
-                  Customer.find((item) => item.id === Number(formData.customer))
-                }
-                onChange={(event, value) => handleAutoComplete(value, "customer")}
-
-                disablePortal
-                id="combo-box-demo"
-                options={Customer}
-                getOptionLabel={(option) => option.name}
-                required
-                renderInput={(params) => (
-                  <TextField
-                    className="bg-color"
-                    placeholder="Select Department"
-                    {...params}
-                  />
-                )}
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={6} md={4}>
-              <label>
-                EMPLOYER <span style={{ color: "red" }}>*</span>
-              </label>
-              <Autocomplete
-                name="employer"
-                value={
-                  Employer &&
-                  formData.employer &&
-                  Employer.find((item) => item.id === Number(formData.employer))
-                }
-                onChange={(event, value) => handleAutoComplete(value, "employer")}
-                disablePortal
-                id="combo-box-demo"
-                options={Employer}
-                getOptionLabel={(option) => option.name}
-                required
-                renderInput={(params) => (
-                  <TextField
-                    className="bg-color"
-                    placeholder="Select Employer"
-                    {...params}
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <label>
-                SOURCE OF Estimation <span style={{ color: "red" }}>*</span>
-              </label>
-              <Autocomplete
-                name="source_of_Estimation"
-                value={
-                  SourceOfInquiry &&
-                  formData.source_of_Estimation &&
-                  SourceOfInquiry.find((item) => item.id === Number(formData.source_of_Estimation))
-                }
-                onChange={(event, value) => handleAutoComplete(value, "source_of_Estimation")}
-
-                disablePortal
-                id="combo-box-demo"
-                options={SourceOfInquiry}
-                getOptionLabel={(option) => option.name}
-                required
-                renderInput={(params) => (
-                  <TextField
-                    className="bg-color"
-                    placeholder="Select Department"
-                    {...params}
-                  />
-                )}
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={2}>
-
-            <Grid item xs={12} sm={6} md={4}>
-              <label>
-                DEPARTMENT <span style={{ color: "red" }}>*</span>
-              </label>
-              <Autocomplete
-                name="department"
-                value={
-                  Department &&
-                  formData.department &&
-                  Department.find((item) => item.id === Number(formData.department))
-                }
-                onChange={(event, value) => handleAutoComplete(value, "department")}
-                disablePortal
-                id="combo-box-demo"
-                options={Department}
-                getOptionLabel={(option) => option.name}
-                required
-                renderInput={(params) => (
-                  <TextField
-                    className="bg-color"
-                    placeholder="Select Department"
-                    {...params}
-                  />
-                )}
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={6} md={4}>
-              <label>
-                ESTIMATOR <span style={{ color: "red" }}>*</span>
-              </label>
-
-              <Autocomplete
-                name="estimator"
-                value={
-                  Estimator_salesman &&
-                  formData.estimator &&
-                  Estimator_salesman.find((item) => item.id === Number(formData.estimator))
-                }
-                onChange={(event, value) => handleAutoComplete(value, "estimator")}
-
-                disablePortal
-                id="combo-box-demo"
-                options={Estimator_salesman}
-                getOptionLabel={(option) => option.first_name}
-                required
-                renderInput={(params) => (
-                  <TextField
-                    className="bg-color"
-                    placeholder="Select Estimator"
-                    {...params}
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <label>
-                SALESMAN <span style={{ color: "red" }}>*</span>
-              </label>
-
-              <Autocomplete
-                name="salesman"
-                value={
-                  Estimator_salesman &&
-                  formData.salesman &&
-                  Estimator_salesman.find((item) => item.id === Number(formData.salesman))
-                }
-                onChange={(event, value) => handleAutoComplete(value, "salesman")}
-
-                disablePortal
-                id="combo-box-demo"
-                options={Estimator_salesman}
-                getOptionLabel={(option) => option.first_name}
-                required
-                renderInput={(params) => (
-                  <TextField
-                    className="bg-color"
-                    placeholder="Select Salesman"
-                    {...params}
-                  />
-                )}
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={2}>
-     
-            <Grid item xs={12} sm={6} md={12}>
-              <label>
-                SCOPE OF WORK <span style={{ color: "red" }}>*</span>
-              </label>
-              <TextField
-                name="scope_of_work"
-                onChange={handleChange}
-                value={formData.scope_of_work}
-                placeholder="Scope of Work"
-                fullWidth
-                required
-              />
-
-            </Grid>
 
           </Grid>
+
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12} md={12}>
-              <div className="details-lable"> <label>DETAILS <span style={{ color: "red" }}>*</span></label></div>
+              <div className="details-lable"> <label>DETAILS </label></div>
+              <table className='enquiry-details-table'>
+                <thead>
+                  <tr >
+                    <th>BOQ NUMBER</th>
+                    <th>BOQ DESCRIPTION</th>
+                    <th>UNIT</th>
+                    <th>QUANTITY</th>
+                    <th>RATE</th>
+                    <th>TOTAL AMOUNT</th>
+                    <th>ESTIMATION RATE</th>
+                    <th>MARKUP</th>
+                    <th>SALES PRICE</th>
+                    <th>NET TOTAL</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {InquiryData && InquiryData.detail.map((item, index) => {
+                    return (
+                      <tr key={index} >
+                        <td>
+                          <div className='estimation-inquiry-details'>
+                            <TextField
+                              name="boq_number"
+                              // onChange={handleChange}
+                              value={item.boq_number}
+                              onChange={(e) => handleChangePrice(index, 'boq_number', e.target.value)}
+                              placeholder="Ex: 523689"
+                              fullWidth
+                              required
+                              disabled={item.boq_number !== null}
+                            />
+                          </div>
+                        </td>
+                        <td>
+                          <div className='estimation-inquiry-details'>
 
-              {formData.details.map((item, index) => {
-                return (
-                  <div
-                    key={index}
-                    className='details-container'
-                  >
-                    <div className="action-btn">
-                      <p onClick={handleDocEdit}><BiSolidEditAlt className='delete-update-handle-btn' style={{ color: "#7c5e1e" }} /></p>
-                      <p onClick={() => handleDocRemove(index)}><AiOutlineClose className='delete-update-handle-btn' style={{ color: "red" }} /></p>
-                    </div>
-                    <Grid container spacing={2} key={index} sx={{ mb: "10px" }}>
-                      <Grid item xs={12} sm={6} md={2}>
-                        <label>
-                          BOQ NUMBER <span style={{ color: "red" }}>*</span>
-                        </label>
-                        <TextField
-                          name="boq_number"
-                          // onChange={handleChange}
-                          value={item.boq_number}
-                          onChange={(e) => handleChangePrice(index, 'boq_number', e.target.value)}
-                          placeholder="Ex: 523689"
-                          fullWidth
-                          required
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6} md={2}>
-                        <label>
-                          BOQ DESCRIPTION <span style={{ color: "red" }}>*</span>
-                        </label>
-                        <TextField
-                          name="boq_description"
-                          // onChange={handleChange}
-                          value={item.boq_description}
-                          onChange={(e) => handleChangePrice(index, 'boq_description', e.target.value)}
-                          placeholder="Ex: "
-                          fullWidth
-                          required
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6} md={2}>
-                        <label>
-                          UNIT <span style={{ color: "red" }}>*</span>
-                        </label>
-                        <TextField
-                          name="unit"
-                          // onChange={handleChange}
-                          onChange={(e) => handleChangePrice(index, 'unit', e.target.value)}
-                          value={item.unit}
-                          // placeholder="Ex: "
-                          fullWidth
-                          required
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6} md={2}>
-                        <label>
-                          QUANTITY <span style={{ color: "red" }}>*</span>
-                        </label>
-                        <TextField
-                          name="quantity"
-                          onChange={(e) => handleChangePrice(index, 'quantity', e.target.value)}
-                          value={item.quantity}
-                          placeholder="Ex: 5"
-                          fullWidth
-                          required
-                          className='quantity1'
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6} md={2}>
-                        <label>
-                          RATE  <span style={{ color: "red" }}>*</span>
-                        </label>
-                        <TextField
-                          name="rate"
-                          onChange={(e) => handleChangePrice(index, 'rate', e.target.value)}
-                          value={item.rate}
-                          placeholder="Ex: 10"
-                          fullWidth
-                          required
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6} md={2}>
-                        <label>
-                          TOTAL PRICE <span style={{ color: "red" }}>*</span>
-                        </label>
-                        <TextField
-                          name="total_price"
-                          value={item.total_price}
-                          fullWidth
-                          required
-                          disabled // To prevent user input in this field
-                        />
-                      </Grid>
+                            <TextField
+                              name="boq_description"
+                              // onChange={handleChange}
+                              value={item.boq_description}
+                              onChange={(e) => handleChangePrice(index, 'boq_number', e.target.value)}
+                              placeholder="Ex: 523689"
+                              fullWidth
+                              required
+                              disabled={item.boq_description !== null}
+                            />
+                          </div>
+                        </td>
+                        <td>
+                          <div className='estimation-inquiry-details'>
 
-                    </Grid>
-                  </div>
-                )
-              })}
-              <button onClick={handleDocRender}>Add More  +</button>
+                            <TextField
+                              name="unit"
+                              // onChange={handleChange}
+                              value={item.unit}
+                              onChange={(e) => handleChangePrice(index, 'boq_number', e.target.value)}
+                              placeholder="Ex: 523689"
+                              fullWidth
+                              required
+                              disabled={item.unit !== null}
+                            />
+                          </div>
+                        </td>
+                        <td>
+                          <div className='estimation-inquiry-details'>
+
+                            <TextField
+                              name="quantity"
+                              // onChange={handleChange}
+                              value={item.quantity}
+                              onChange={(e) => handleChangePrice(index, 'boq_number', e.target.value)}
+                              placeholder="Ex: 523689"
+                              fullWidth
+                              required
+                              disabled={item.quantity !== null}
+                            />
+                          </div>
+                        </td>
+                        <td>
+
+                          <div className='estimation-inquiry-details'>
+                            <TextField
+                              name="rate"
+                              // onChange={handleChange}
+                              value={item.rate}
+                              onChange={(e) => handleChangePrice(index, 'boq_number', e.target.value)}
+                              placeholder="Ex: 523689"
+                              fullWidth
+                              required
+                              disabled={item.rate !== null}
+                            />
+                          </div>
+                        </td>
+                        <td>
+                          <div className='estimation-inquiry-details'>
+                            <TextField
+                              name="total_price"
+                              // onChange={handleChange}
+                              value={item.total_price}
+                              onChange={(e) => handleChangePrice(index, 'boq_number', e.target.value)}
+                              placeholder="Ex: 523689"
+                              fullWidth
+                              required
+                              disabled={item.total_price !== null}
+                            />
+                          </div>
+                        </td>
+                        <td>
+                          <div className='estimation-inquiry-details'>
+                            <TextField
+                              name="boq_number"
+                              // onChange={handleChange}
+                              // value={item.boq_number}
+                              onClick={handleModalOpen}
+                              onChange={(e) => handleChangePrice(index, 'boq_number', e.target.value)}
+
+                              fullWidth
+                              required
+                            />
+                          </div>
+                        </td>
+                        <td>
+                          <div className='estimation-inquiry-details'>
+                            <TextField
+                              name="boq_number"
+                              // onChange={handleChange}
+                              //  value={item.boq_number}
+                              onChange={(e) => handleChangePrice(index, 'boq_number', e.target.value)}
+
+                              fullWidth
+                              required
+                            />
+                          </div>
+                        </td>
+                        <td>
+                          <div className='estimation-inquiry-details'>
+                            <TextField
+                              name="boq_number"
+                              // onChange={handleChange}
+                              //  value={item.boq_number}
+                              onChange={(e) => handleChangePrice(index, 'boq_number', e.target.value)}
+
+                              fullWidth
+                              required
+                            />
+                          </div>
+                        </td>
+                        <td>
+                          <div className='estimation-inquiry-details'>
+                            <TextField
+                              name="boq_number"
+                              // onChange={handleChange}
+                              //  value={item.boq_number}
+                              onChange={(e) => handleChangePrice(index, 'boq_number', e.target.value)}
+
+                              fullWidth
+                              required
+                            />
+                          </div>
+                        </td>
+                           {/* Estimation Rate Modal Start  */}
+      <Modal
+        open={erModal}
+        // onClose={props.closeERModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+
+        <Box sx={style} >
+          <div className="modal-top-container">
+            <h4> ESTIMATION RESOURCE DETAILS</h4>
+            <RxCross2 onClick={closeERModal} className="modal-btn-cross" />
+          </div>
+
+          {/* <button onClick={handleAddMore}>Add More</button> */}
+          <form>
+            <div className="estimation-resouce-details" >
+              <div className="estimation-resouce-list">
+                <label>
+                  ITEM NAME
+                </label>
+                <TextField
+                  type="text"
+                  className="inputfield bg-color"
+                  name="item_name"
+                  // value={estiFormData.item_name[index]}
+                  // onChange={handleModalInputChange}
+                  value={CatelogueData && CatelogueData.catelouge.name}
+                  placeholder="Select Catelogue"
+                  fullWidth
+                  required
+                  onClick={() => setCateModalOpen(true)}
+                // error={Boolean(props.nameError)}
+                // helperText={props.nameError}
+                />
+
+              </div>
+              <div className="estimation-resouce-list">
+                <label>
+                  UNIT
+                </label>
+                <TextField
+                  type="text"
+                  className="inputfield bg-color"
+                  name="unit_of_measurement"
+                  onChange={handleModalInputChange}
+                  value={CatelogueData && CatelogueData.catelouge.unit_of_measurement}
+                  // placeholder="Select Catelogue"
+                  fullWidth
+                  required
+                // error={Boolean(props.nameError)}
+                // helperText={props.nameError}
+                />
+              </div>
+              <div className="estimation-resouce-list">
+                <label>QUANTITY </label>
+                <TextField
+                  type="text"
+                  className="inputfield bg-color"
+                  name="quantity"
+                  onChange={(e) => handleChangePrice('quantity', e.target.value)}
+                  fullWidth
+                  required
+                />
+
+
+
+              </div>
+              <div className="estimation-resouce-list">
+                <label>RATE</label>
+                <TextField
+                  type="text"
+                  className="inputfield bg-color"
+                  name="list_price"
+                  // onChange={handleRateInputChange}
+                  value={CatelogueData && CatelogueData.catelouge.list_price}
+                  fullWidth
+                  required
+                />
+              </div>
+              <div className="estimation-resouce-list">
+                <label>DISCOUNT</label>
+                <TextField
+                  type="text"
+                  className="inputfield bg-color"
+                  name="discount"
+                  onChange={handleModalInputChange}
+                  value={CatelogueData && CatelogueData.catelouge.discount}
+                  // placeholder="Select Catelogue"
+                  fullWidth
+                  required
+                // error={Boolean(props.nameError)}
+                // helperText={props.nameError}
+                />
+
+              </div>
+              <div className="estimation-resouce-list">
+                <label>VAT TYPE</label>
+                <TextField
+                  type="text"
+                  className="inputfield bg-color"
+                  name="vat_type"
+                  onChange={handleModalInputChange}
+                  value={CatelogueData && CatelogueData.catelouge.tax.name}
+                  // placeholder="Select Catelogue"
+                  fullWidth
+                  required
+                // error={Boolean(props.nameError)}
+                // helperText={props.nameError}
+                />
+              </div>
+              <div className="estimation-resouce-list">
+                <label>VAT PERCENT</label>
+                <TextField
+                  type="text"
+                  className="inputfield bg-color"
+                  name="vat_percent"
+                  onChange={handleModalInputChange}
+                  value={CatelogueData && CatelogueData.catelouge.tax.rate}
+                  // placeholder="Select Catelogue"
+                  fullWidth
+                  required
+                // error={Boolean(props.nameError)}
+                // helperText={props.nameError}
+                />
+              </div>
+              <div className="estimation-resouce-list">
+                <label>ESTIMATION</label>
+                <TextField
+                  type="text"
+                  className="inputfield bg-color"
+                  name="estimation_rate"
+                  value={estiFormData.estimation_rate}
+                  fullWidth
+                  required
+                  readOnly // Make it read-only to prevent user input
+                />
+              </div>
+            </div>
+            <button variant="outlined" type="submit"  onClick={(e) => estiHandleSubmit(e, index)}>
+              Save
+            </button>
+          </form>
+        </Box>
+      </Modal>
+      {/* Estimation Rate Modal End  */}
+                      </tr>
+
+                    )
+                  })}
+                </tbody>
+              </table>
+
             </Grid>
           </Grid>
           <div style={{ width: "100%", paddingBlock: "20px", display: 'flex', justifyContent: "center", alignItems: "center" }}>
@@ -564,6 +643,40 @@ const Estimation = () => {
         </form>
 
       </div>
+   
+      {/* Catelogue Modal Start */}
+      <Modal
+        open={cateModalOpen}
+        // onClose={props.closeERModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+
+        <Box sx={CateStyle} className="scroll-bar">
+          <div className="modal-top-container">
+            <h4>CETELOGUE ITEMS</h4>
+            <RxCross2 onClick={() => setCateModalOpen(false)} className="modal-btn-cross" />
+
+          </div>
+          <div className="main-product-container">
+            {catelogueData && catelogueData ? catelogueData.map((item, index) => (
+
+              <div className="product-container" key={index} onClick={() => handleClick(item.id)}>
+                <div className="product-image">
+                  <img src={`${ImgUrl}${item.primary_image}`} alt="image" />
+                </div>
+                <div className="product-details">
+                  <h3>{item.name}</h3>
+                  <p><span>{item.model}</span><span>{ }</span></p>
+                  {item.isactive ? "Active" : "Inactive"}
+                </div>
+              </div>
+
+            )) : "Loading....."}
+          </div>
+        </Box>
+      </Modal>
+      {/* Catelogue Modal End */}
     </>
   )
 }

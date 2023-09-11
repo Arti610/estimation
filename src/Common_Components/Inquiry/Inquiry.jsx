@@ -13,15 +13,15 @@ import { getSourceOfInquiryData } from '../../APIs/SourceOfInquirySlice'
 import './Inquiry.css'
 import { useCookies } from 'react-cookie';
 import { getEmployerData } from '../../APIs/EmployerSlice';
-import { createInquiryData, deleteInquiryDetailsData, deleteInquiryDetailsDataFailed, deleteInquiryDetailsDataSuccess, updateInquiryData, updateInquiryDetails } from '../../APIs/InquirySlice'
+import { createInquiryData, deleteInquiryDetailsData, deleteInquiryDetailsDataFailed, deleteInquiryDetailsDataSuccess, getupdateInquiryData, updateInquiryData, updateInquiryDetails } from '../../APIs/InquirySlice'
 
 const Inquiry = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const fData = new FormData();
-  const stateStaus = useSelector((state)=>state.Inquiry.status)
-  console.log("stateStaus",stateStaus);
+  const stateStaus = useSelector((state) => state.Inquiry.status)
+  console.log("stateStaus", stateStaus);
   const [cookies, setCookies] = useCookies(["token"])
   const token = cookies.token;
   const Department = useSelector((state) => state.Department.DepartmentData)
@@ -32,7 +32,7 @@ const Inquiry = () => {
   const updatedInquiry = useSelector((state) => state.Inquiry.updateInquiryData)
   const [isUpdating, setIsUpdating] = useState(false);
   const [editingIndex, setEditingIndex] = useState(-1); // -1 means no row is being edited initially
-const [status, setStatus] = useState(stateStaus)
+  const [status, setStatus] = useState(stateStaus)
 
   const [formData, setFormData] = useState({
     client_reference_no: null,
@@ -65,12 +65,13 @@ const [status, setStatus] = useState(stateStaus)
 
   // // Memoize the status variable using useMemo
   // const memoizedStatus = useMemo(() => stateStaus, [stateStaus]);
-  const deleteDetailsHandler = useCallback((index) => {
+  const deleteDetailsHandler = useCallback((index, id) => {
     dispatch(deleteInquiryDetailsData({ token, id: formData.details[index].id }));
-  }, [dispatch, formData.details, token, ]);
-  
+    dispatch(getupdateInquiryData({ id, token }))
+  }, [dispatch, formData.details, token,]);
+
   // Now, deleteDetailsHandler will be memoized and will only change when its dependencies change.
-  
+
   const handleDocRender = () => {
     setFormData((prevState) => ({
       ...prevState,
@@ -101,7 +102,6 @@ const [status, setStatus] = useState(stateStaus)
     setEditingIndex(index);
 
   };
-
 
   const handleAutoComplete = (newValue, fieldName) => {
     const selectedValue = newValue ? newValue.id : null;
@@ -607,7 +607,7 @@ const [status, setStatus] = useState(stateStaus)
                 )
               })}
               {updatedInquiry ? null : <p className="AddMore"
-               onClick={handleDocRender}>Add More +</p>}
+                onClick={handleDocRender}>Add More +</p>}
             </Grid>
           </Grid>
           <div style={{ width: "100%", paddingBlock: "20px", display: 'flex', justifyContent: "center", alignItems: "center" }}>

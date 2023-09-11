@@ -68,25 +68,28 @@ export const updateCatelogueData = createAsyncThunk("updateCatelogueData", async
         throw error;
     }
 });
-
 export const getupdateCatelogueData = createAsyncThunk("getupdateCatelogueData", async (payload) => {
     try {
-        const response = await api.get(`/catalogue/${payload.id}`,
-            {
-                headers: {
-                    // Authorization: `token ${payload.token}`,
-                    Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                    // Authorization: `arti`
-                },
-            })
+        const response = await api.get(`/catalogue/${payload.id}`, {
+            headers: {
+                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
+            },
+        });
+        
+        // const responseIndex = payload.index;
+        
+        // const responseData = {
+        //     data: response.data,
+        //     index: responseIndex,
+        // };
 
-        return response.data
 
-
+        return response.data;
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
-})
+});
+
 
 // Delete Images
 export const deleteCatelogueImages = createAsyncThunk("deleteCatelogueImages", async (payload) => {
