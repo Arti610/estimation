@@ -9,6 +9,8 @@ import UserSlice from "./APIs/UserSlice";
 import CatelogueSlice from "./APIs/CatelogueSlice";
 import InquirySlice from "./APIs/InquirySlice";
 import EstimationSlice from "./APIs/EstimationSlice";
+import UserlogSlice from "./APIs/UserlogSlice";
+
 const Store = configureStore({
   reducer: {
     Customer: CustomerSlice,
@@ -20,7 +22,8 @@ const Store = configureStore({
     SourceOfInquiry: SourceOfInquirySlice,
     Catelogue: CatelogueSlice,
     Inquiry: InquirySlice,
-    Estimation: EstimationSlice
+    Estimation: EstimationSlice,
+    UserLog: UserlogSlice
   },
 });
 

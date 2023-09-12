@@ -20,7 +20,7 @@ const InquiryList = () => {
       accessor: "client_reference_no",
     },
     {
-      Header: "Inquiry Data",
+      Header: "Inquiry Date",
       accessor: "inquirydate",
       Cell: ({ value }) => {
         if (value && !isNaN(new Date(value))) {
@@ -30,7 +30,7 @@ const InquiryList = () => {
       },
     },
     {
-      Header: "Submission Data",
+      Header: "Submission Date",
       accessor: "submission_date",
       Cell: ({ value }) => {
         if (value && !isNaN(new Date(value))) {

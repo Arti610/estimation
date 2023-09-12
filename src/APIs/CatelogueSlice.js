@@ -75,16 +75,8 @@ export const getupdateCatelogueData = createAsyncThunk("getupdateCatelogueData",
             headers: {
                 Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
             },
-        });
-        
-        // const responseIndex = payload.index;
-        
-        // const responseData = {
-        //     data: response.data,
-        //     index: responseIndex,
-        // };
-
-
+        });   
+        console.log("response.data get id", response.data);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -104,6 +96,7 @@ export const deleteCatelogueImages = createAsyncThunk("deleteCatelogueImages", a
                 }
             }
         )
+    
         return response.data
     } catch (error) {
         throw error;

@@ -12,7 +12,8 @@ import './Estimation.css'
 import { RxCross2 } from "react-icons/rx";
 import { getCatelogueData, getupdateCatelogueData } from '../../APIs/CatelogueSlice';
 import { ImgUrl } from '../../Config/Config';
-
+import axios from 'axios'; // Import Axios if you haven't already
+import api from '../../Config/Apis';
 const Estimation = () => {
   const style = {
     position: "absolute",
@@ -73,14 +74,14 @@ const Estimation = () => {
     ]
   })
   const [estiFormData, setEstiFormData] = useState({
-    // quantity: null,
-    // listPrice: null,
-    // discount: null,
-    // vatPercent: null,
-    // estimatedRate: null,
-    quantity: 0,
-    list_price: 0,
-    estimation_rate: 0,
+    item_name: [null],
+    unit: [null],
+    quantity: [null],
+    list_price: [null],
+    discount: [null],
+    vatType: [null],
+    vatPercent: [null],
+    estimation_rate: [null],
   })
   const [erModal, setErModal] = useState(false)
   const openERModal = () => {
@@ -92,28 +93,23 @@ const Estimation = () => {
   const handleModalOpen = () => {
     openERModal()
   }
-  const handleSave = () => {
-  
-  }
-  const handleClick = (id) => {
-    dispatch(getupdateCatelogueData({ id, token }))
-    setCateModalOpen(false)
-  }
+
   const handleAddMore = () => {
+
     setEstiFormData((prevData) => ({
       ...prevData,
       item_name: [...prevData.item_name, null],
+      unit: [...prevData.unit, null],
+      quantity: [...prevData.quantity, null],
+      list_price: [...prevData.list_price, null],
+      discount: [...prevData.discount, null],
+      vatType: [...prevData.vatType, null],
+      vatPercent: [...prevData.vatPercent, null],
+      // estimation_rate: [...prevData.estimation_rate, null],
     }));
   };
-  const [cateModalOpen, setCateModalOpen] = useState(false)
+  const [cateModalOpen, setCateModalOpen] = useState({ modalValue: false, index: null })
 
-  const handleModalInputChange = (e) => {
-    const { name, value } = e.target
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  }
   const handleAutoComplete = (newValue, fieldName) => {
     const selectedValue = newValue ? newValue.id : null;
     dispatch(getupdateInquiryData({ token, id: newValue.id }))
@@ -130,15 +126,71 @@ const Estimation = () => {
       [name]: value,
     }));
   };
-  const handleChangePrice = (name, value) => {
-    setEstiFormData((prevData) => ({
-      ...prevData,
-      [name]: parseFloat(value) || 0, // Convert the value to a number or set it to 0 if it's not a valid number
-      estimation_rate: calculateEstimatedRate(parseFloat(value) || 0),
-    }));
+
+  const catelogModal = (e) => {
+    const index = e.target.name.split("-")[1]
+    setCateModalOpen({ modalValue: true, index: index })
+  }
+
+
+  const handleClick = async (e, myIOuter, id, token) => {
+    try {
+      // Make the API call using Axios
+
+      const response = await api.get(`/catalogue/${id}`, {
+        headers: {
+          Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
+        },
+      });
+      // Check if the response contains the expected data structure
+
+      const { data } = response;
+      if (data && data.catelouge && data.catelouge) {
+        const { name, unit_of_measurement, list_price, discount, tax } = data.catelouge;
+
+        setEstiFormData((prev) => {
+          const UpdatedName = [...prev.item_name];
+          UpdatedName[myIOuter] = name;
+          const UpdatedUnit = [...prev.unit];
+          UpdatedUnit[myIOuter] = unit_of_measurement;
+          const Updatedrate = [...prev.list_price];
+          Updatedrate[myIOuter] = list_price;
+          const UpdatedDiscount = [...prev.discount];
+          UpdatedDiscount[myIOuter] = discount;
+          const UpdatedVatType = [...prev.vatType];
+          UpdatedVatType[myIOuter] = tax.name;
+          const UpdatedVatRate = [...prev.vatPercent];
+          UpdatedVatRate[myIOuter] = tax.rate;
+          // const UpdatedQuantity = [...prev.quantity];
+          // UpdatedQuantity[myIOuter] = quantity;
+          return {
+            ...prev,
+            item_name: UpdatedName,
+            unit: UpdatedUnit,
+            list_price: Updatedrate,
+            discount: UpdatedDiscount,
+            vatType: UpdatedVatType,
+            vatPercent: UpdatedVatRate,
+            // quantity:UpdatedQuantity
+          };
+        });
+      } else {
+        // Handle the case where the API response is missing the expected data
+        console.error('API response is missing name data');
+      }
+
+      // Close the modal
+      setCateModalOpen({ modalValue: false, index: null });
+    } catch (error) {
+      // Handle any errors that occur during the API call
+      console.error('Error fetching data from the API:', error);
+    }
   };
 
+
+
   const calculateEstimatedRate = () => {
+
     const quantity = parseFloat(estiFormData.quantity) || 0;
     const listPrice = parseFloat(CatelogueData && CatelogueData.catelouge.list_price) || 0;
     const discount = parseFloat(CatelogueData && CatelogueData.catelouge.discount) || 0;
@@ -149,6 +201,28 @@ const Estimation = () => {
 
     return estimatedRate;
   };
+  // const handleChangePrice = (name, value, myI) => {
+  //   console.log("handle change id", myI);
+
+  //   setEstiFormData((prevData) => ({
+  //     ...prevData,
+  //     [name]: parseFloat(value) || 0, // Convert the value to a number or set it to 0 if it's not a valid number
+  //     estimation_rate: calculateEstimatedRate(parseFloat(value) || 0),
+  //   }));
+  // };
+  const handleChangePrice = (name, value, myI) => {
+    setEstiFormData((prevData) => {
+      const updatedQuantity = [...prevData.quantity];
+      if (name === 'quantity') {
+        updatedQuantity[myI] = value;
+      }
+      return {
+        ...prevData,
+        quantity: updatedQuantity,
+      };
+    });
+  };
+
   useEffect(() => {
     const newEstimatedRate = calculateEstimatedRate();
     setEstiFormData((prevData) => ({
@@ -157,18 +231,7 @@ const Estimation = () => {
     }));
   }, [estiFormData.quantity, CatelogueData]);
 
-  // const estiHandleSubmit = (e)=>{
-  //   e.preventDefault()
-  //   InquiryData.detail.forEach((file, index) => {
-  //     fData.append(`inquiry_detail`, file.id);
-  //   });
-  //   // fData.append("inquiry_detail", InquiryData.detail.id);
-  //   fData.append("item", CatelogueData.catelouge.id);
-  //   fData.append("quantity", estiFormData.quantity);
-  //   // fData.append("total_price", estiFormData.total_price);
-  //   fData.append("estimation_rate", estiFormData.estimation_rate);
-  //   dispatch(createEstimationResourceData({fData, token}))
-  // }
+
   const estiHandleSubmit = (e, index) => {
     e.preventDefault();
     // Get the ID of the specific inquiry_detail at the given index
@@ -250,7 +313,9 @@ const Estimation = () => {
       });
     }
   }, [token, updatedEstimation]);
-
+  useEffect(() => {
+    console.log("estiFormData", estiFormData);
+  }, [estiFormData])
   return (
     <>
       <div data-aos="fade-left" data-aos-duration="1000">
@@ -421,12 +486,9 @@ const Estimation = () => {
                         <td>
                           <div className='estimation-inquiry-details'>
                             <TextField
-                              name="boq_number"
-                              // onChange={handleChange}
-                              // value={item.boq_number}
+                              name="estimation_rate"
                               onClick={handleModalOpen}
-                              onChange={(e) => handleChangePrice(index, 'boq_number', e.target.value)}
-
+                              onChange={(e) => handleChangePrice(index, 'estimation_rate', e.target.value)}
                               fullWidth
                               required
                             />
@@ -471,154 +533,194 @@ const Estimation = () => {
                             />
                           </div>
                         </td>
-                           {/* Estimation Rate Modal Start  */}
-      <Modal
-        open={erModal}
-        // onClose={props.closeERModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+                        {/* Estimation Rate Modal Start  */}
+                        <Modal
+                          open={erModal}
+                          // onClose={props.closeERModal}
+                          aria-labelledby="modal-modal-title"
+                          aria-describedby="modal-modal-description"
+                        >
 
-        <Box sx={style} >
-          <div className="modal-top-container">
-            <h4> ESTIMATION RESOURCE DETAILS</h4>
-            <RxCross2 onClick={closeERModal} className="modal-btn-cross" />
-          </div>
+                          <Box sx={style} >
+                            <div className="modal-top-container">
+                              <h4> ESTIMATION RESOURCE DETAILS</h4>
+                              <RxCross2 onClick={closeERModal} className="modal-btn-cross" />
+                            </div>
 
-          {/* <button onClick={handleAddMore}>Add More</button> */}
-          <form>
-            <div className="estimation-resouce-details" >
-              <div className="estimation-resouce-list">
-                <label>
-                  ITEM NAME
-                </label>
-                <TextField
-                  type="text"
-                  className="inputfield bg-color"
-                  name="item_name"
-                  // value={estiFormData.item_name[index]}
-                  // onChange={handleModalInputChange}
-                  value={CatelogueData && CatelogueData.catelouge.name}
-                  placeholder="Select Catelogue"
-                  fullWidth
-                  required
-                  onClick={() => setCateModalOpen(true)}
-                // error={Boolean(props.nameError)}
-                // helperText={props.nameError}
-                />
+                            <button onClick={handleAddMore}>Add More</button>
+                            <form>
+                              {estiFormData.item_name.map((item, myI) => {
+                                const myIOuter = myI;
+                                return (
+                                  <div className="estimation-resouce-details" >
+                                    <div className="estimation-resouce-list">
+                                      <label>
+                                        ITEM NAME
+                                      </label>
+                                      <TextField
+                                        type="text"
+                                        className="inputfield bg-color"
+                                        name={`item_name-${myI}`}
+                                        // value={estiFormData.item_name[index]}
+                                        // onChange={handleModalInputChange}
+                                        value={estiFormData && estiFormData.item_name[myI]}
+                                        placeholder="Select Catelogue"
+                                        fullWidth
+                                        required
+                                        onClick={(e, myI) => catelogModal(e, myI)}
+                                      // error={Boolean(props.nameError)}
+                                      // helperText={props.nameError}
+                                      />
 
-              </div>
-              <div className="estimation-resouce-list">
-                <label>
-                  UNIT
-                </label>
-                <TextField
-                  type="text"
-                  className="inputfield bg-color"
-                  name="unit_of_measurement"
-                  onChange={handleModalInputChange}
-                  value={CatelogueData && CatelogueData.catelouge.unit_of_measurement}
-                  // placeholder="Select Catelogue"
-                  fullWidth
-                  required
-                // error={Boolean(props.nameError)}
-                // helperText={props.nameError}
-                />
-              </div>
-              <div className="estimation-resouce-list">
-                <label>QUANTITY </label>
-                <TextField
-                  type="text"
-                  className="inputfield bg-color"
-                  name="quantity"
-                  onChange={(e) => handleChangePrice('quantity', e.target.value)}
-                  fullWidth
-                  required
-                />
+                                    </div>
+                                    <div className="estimation-resouce-list">
+                                      <label>
+                                        UNIT
+                                      </label>
+                                      <TextField
+                                        type="text"
+                                        className="inputfield bg-color"
+                                        name={`unit_of_measurement${myI}`}
+                                        // onChange={handleModalInputChange}
+                                        value={estiFormData && estiFormData.unit[myI]}
+                                        // placeholder="Select Catelogue"
+                                        fullWidth
+                                        required
+                                      // error={Boolean(props.nameError)}
+                                      // helperText={props.nameError}
+                                      />
+                                    </div>
+                                    <div className="estimation-resouce-list">
+                                      <label>QUANTITY </label>
+                                      <TextField
+                                        type="text"
+                                        className="inputfield bg-color"
+                                        name={`quantity${myI}`}
+                                        onChange={(e) => handleChangePrice('quantity', e.target.value, myI)}
+                                        // value={estiFormData && estiFormData.quantity[myI]} 
+                                        fullWidth
+                                        required
+                                      />
 
+                                    </div>
+                                    <div className="estimation-resouce-list">
+                                      <label>RATE</label>
+                                      <TextField
+                                        type="text"
+                                        className="inputfield bg-color"
+                                        name={`list_price${myI}`}
+                                        // onChange={handleRateInputChange}
+                                        value={estiFormData && estiFormData.list_price[myI]}
+                                        fullWidth
+                                        required
+                                      />
+                                    </div>
+                                    <div className="estimation-resouce-list">
+                                      <label>DISCOUNT</label>
+                                      <TextField
+                                        type="text"
+                                        className="inputfield bg-color"
+                                        name={`discount${myI}`}
+                                        // onChange={handleModalInputChange}
+                                        value={estiFormData && estiFormData.discount[myI]}
+                                        // placeholder="Select Catelogue"
+                                        fullWidth
+                                        required
+                                      // error={Boolean(props.nameError)}
+                                      // helperText={props.nameError}
+                                      />
 
+                                    </div>
+                                    <div className="estimation-resouce-list">
+                                      <label>VAT TYPE</label>
+                                      <TextField
+                                        type="text"
+                                        className="inputfield bg-color"
 
-              </div>
-              <div className="estimation-resouce-list">
-                <label>RATE</label>
-                <TextField
-                  type="text"
-                  className="inputfield bg-color"
-                  name="list_price"
-                  // onChange={handleRateInputChange}
-                  value={CatelogueData && CatelogueData.catelouge.list_price}
-                  fullWidth
-                  required
-                />
-              </div>
-              <div className="estimation-resouce-list">
-                <label>DISCOUNT</label>
-                <TextField
-                  type="text"
-                  className="inputfield bg-color"
-                  name="discount"
-                  onChange={handleModalInputChange}
-                  value={CatelogueData && CatelogueData.catelouge.discount}
-                  // placeholder="Select Catelogue"
-                  fullWidth
-                  required
-                // error={Boolean(props.nameError)}
-                // helperText={props.nameError}
-                />
+                                        name={`vat_type${myI}`}
+                                        // onChange={handleModalInputChange}
+                                        value={estiFormData && estiFormData.vatType[myI]}
+                                        // placeholder="Select Catelogue"
+                                        fullWidth
+                                        required
+                                      // error={Boolean(props.nameError)}
+                                      // helperText={props.nameError}
+                                      />
+                                    </div>
+                                    <div className="estimation-resouce-list">
+                                      <label>VAT PERCENT</label>
+                                      <TextField
+                                        type="text"
+                                        className="inputfield bg-color"
+                                        name={`vat_percent${myI}`}
+                                        // onChange={handleModalInputChange}
+                                        // value={CatelogueData && CatelogueData.catelouge.tax.rate}
+                                        value={estiFormData && estiFormData.vatPercent[myI]}
+                                        // placeholder="Select Catelogue"
+                                        fullWidth
+                                        required
+                                      // error={Boolean(props.nameError)}
+                                      // helperText={props.nameError}
+                                      />
+                                    </div>
+                                    <div className="estimation-resouce-list">
+                                      <label>ESTIMATION</label>
+                                      <TextField
+                                        type="text"
+                                        className="inputfield bg-color"
+                                        name={`estimation_rate${myI}`}
+                                        value={estiFormData.estimation_rate[myI]}
+                                        fullWidth
+                                        required
+                                        readOnly // Make it read-only to prevent user input
+                                      />
+                                    </div>
+                                    {/* Catelogue Modal Start */}
+                                    <Modal
+                                      open={cateModalOpen.modalValue}
+                                      // onClose={props.closeERModal}
+                                      aria-labelledby="modal-modal-title"
+                                      aria-describedby="modal-modal-description"
+                                    >
 
-              </div>
-              <div className="estimation-resouce-list">
-                <label>VAT TYPE</label>
-                <TextField
-                  type="text"
-                  className="inputfield bg-color"
-                  name="vat_type"
-                  onChange={handleModalInputChange}
-                  value={CatelogueData && CatelogueData.catelouge.tax.name}
-                  // placeholder="Select Catelogue"
-                  fullWidth
-                  required
-                // error={Boolean(props.nameError)}
-                // helperText={props.nameError}
-                />
-              </div>
-              <div className="estimation-resouce-list">
-                <label>VAT PERCENT</label>
-                <TextField
-                  type="text"
-                  className="inputfield bg-color"
-                  name="vat_percent"
-                  onChange={handleModalInputChange}
-                  value={CatelogueData && CatelogueData.catelouge.tax.rate}
-                  // placeholder="Select Catelogue"
-                  fullWidth
-                  required
-                // error={Boolean(props.nameError)}
-                // helperText={props.nameError}
-                />
-              </div>
-              <div className="estimation-resouce-list">
-                <label>ESTIMATION</label>
-                <TextField
-                  type="text"
-                  className="inputfield bg-color"
-                  name="estimation_rate"
-                  value={estiFormData.estimation_rate}
-                  fullWidth
-                  required
-                  readOnly // Make it read-only to prevent user input
-                />
-              </div>
-            </div>
-            <button variant="outlined" type="submit"  onClick={(e) => estiHandleSubmit(e, index)}>
-              Save
-            </button>
-          </form>
-        </Box>
-      </Modal>
-      {/* Estimation Rate Modal End  */}
+                                      <Box sx={CateStyle} className="scroll-bar">
+                                        <div className="modal-top-container">
+                                          <h4>CETELOGUE ITEMS</h4>
+                                          <RxCross2 onClick={() => setCateModalOpen(false)} className="modal-btn-cross" />
+
+                                        </div>
+                                        <div className="main-product-container">
+                                          {catelogueData && catelogueData ? catelogueData.map((item, index) => (
+                                            <div className="product-container" key={index} onClick={(e) => handleClick(e, myIOuter, item.id)}>
+                                              {console.warn("iiiiiiii", myIOuter)}
+                                              <div className="product-image">
+                                                <img src={`${ImgUrl}${item.primary_image}`} alt="image" />
+                                              </div>
+                                              <div className="product-details">
+                                                <h3>{item.name}</h3>
+                                                <p><span>{item.model}</span></p>
+                                                {item.isactive ? "Active" : "Inactive"}
+                                              </div>
+                                            </div>
+                                          )) : "Loading....."}
+
+                                        </div>
+                                      </Box>
+                                    </Modal>
+                                    {/* Catelogue Modal End */}
+                                  </div>
+
+                                )
+                              })}
+                              <button variant="outlined" type="submit" onClick={(e) => estiHandleSubmit(e, index)}>
+                                Save
+                              </button>
+                            </form>
+                          </Box>
+                        </Modal>
+                        {/* Estimation Rate Modal End  */}
+
                       </tr>
-
                     )
                   })}
                 </tbody>
@@ -643,40 +745,8 @@ const Estimation = () => {
         </form>
 
       </div>
-   
-      {/* Catelogue Modal Start */}
-      <Modal
-        open={cateModalOpen}
-        // onClose={props.closeERModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
 
-        <Box sx={CateStyle} className="scroll-bar">
-          <div className="modal-top-container">
-            <h4>CETELOGUE ITEMS</h4>
-            <RxCross2 onClick={() => setCateModalOpen(false)} className="modal-btn-cross" />
 
-          </div>
-          <div className="main-product-container">
-            {catelogueData && catelogueData ? catelogueData.map((item, index) => (
-
-              <div className="product-container" key={index} onClick={() => handleClick(item.id)}>
-                <div className="product-image">
-                  <img src={`${ImgUrl}${item.primary_image}`} alt="image" />
-                </div>
-                <div className="product-details">
-                  <h3>{item.name}</h3>
-                  <p><span>{item.model}</span><span>{ }</span></p>
-                  {item.isactive ? "Active" : "Inactive"}
-                </div>
-              </div>
-
-            )) : "Loading....."}
-          </div>
-        </Box>
-      </Modal>
-      {/* Catelogue Modal End */}
     </>
   )
 }

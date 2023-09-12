@@ -177,8 +177,6 @@ export const BasicTable = ({
               <button onClick={createHandler} >
                 <MdOutlineAdd /> {createBtn} Add {pageHeading}
               </button>
-           
-           
             </div>
           </p>
 
@@ -193,7 +191,7 @@ export const BasicTable = ({
                 <BiDotsVerticalRounded />
                 {isHovered && (
                   <div className="table-btn-left">
-                    {/* <button onClick={generatePdf}>Export as PDF</button> */}
+            
                     <span onClick={download}>Export as Excel</span>
                     <CSVLink data={rowData.slice(0, 10)}>
                       <span className="Csv">Export as CSV</span>

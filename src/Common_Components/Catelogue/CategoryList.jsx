@@ -55,10 +55,11 @@ const CategoryList = () => {
       accessor: "name",
     }
   ];
-  const handleClick = (id) => {
-    dispatch(getupdateCatelogueData({ token, id }))
-    navigate("/sales/catelogue-details")
-  }
+  // const handleClick = (id) => {
+  //   console.log("clicked");
+  //   dispatch(getupdateCatelogueData({ token, id }))
+  //   navigate("/sales/catelogue-details")
+  // }
   const createHandler = () => {
     navigate("/sales/catelogue-registration")
 
@@ -113,7 +114,7 @@ const CategoryList = () => {
         // deleteHandler={deleteHandler}
         createHandler={createHandler}
         tableHeading="All Catelogues"
-        handleClick={handleClick}
+        // handleClick={handleClick}
         pageHeading="Catelogue" /> :
       "loading...."}
 

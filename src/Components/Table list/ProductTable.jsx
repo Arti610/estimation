@@ -15,6 +15,10 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { PiExportBold } from 'react-icons/pi'
 import { MdOutlineAdd } from 'react-icons/md'
+import { useDispatch } from "react-redux";
+import { getupdateCatelogueData } from "../../APIs/CatelogueSlice";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 // import { PropaneSharp } from "@mui/icons-material";
 
 export const ProductTable = ({
@@ -25,15 +29,16 @@ export const ProductTable = ({
     pageHeading,
     tableHeading,
     createHandler,
-    createBtn
+    createBtn,
+    
 }) => {
     const tableRef = useRef(null);
     const [densityState, setDensityState] = useState("hoverEffect");
     const [gg, setGg] = useState(true);
-
-
-
-
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const [cookies, setCookies] = useState(['token'])
+    const token = cookies.token;
     const columns = useMemo(() => colHeader, []);
     // const data = useMemo(() => {rowData}, []);
     // const columns = useMemo(() => COLUMNS, []);
@@ -94,7 +99,11 @@ export const ProductTable = ({
         }, 700);
     };
     const detailsRef = useRef(null);
-
+    const handleClick = (id) => {
+        console.log("clicked");
+        dispatch(getupdateCatelogueData({ token, id }))
+        navigate("/sales/catelogue-details")
+      }
     useEffect(() => {
         AOS.init();
         const handleClickOutside = (event) => {
@@ -165,10 +174,13 @@ export const ProductTable = ({
                                         return (
                                             <div {...row.getRowProps()}  className="product-container">
                                                 {row.cells.map((cell, i) => {
+                                                      const cellId = cell.row.original.id;
+                                                      const cellName = cell.row.original.name;
                                                     return (                               
                                                      <>
-                                                        <div id="td_column" {...cell.getCellProps()}>                                  
+                                                        <div id="td_column" {...cell.getCellProps()}  onClick={() => handleClick(cellId)}>                                  
                                                             {cell.render("Cell")}
+                                                            {/* <span>{cellName}</span> */}
                                                         </div>
                                                      </>
                                                     );

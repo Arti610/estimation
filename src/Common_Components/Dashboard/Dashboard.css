@@ -1,7 +1,44 @@
-.card-container{
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin: 10px;
-    padding: 10px;
+.card-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  /* margin: 10px;
+    padding: 10px; */
+}
+
+.log-container {
+  position: relative;
+  width: 100%;
+  margin: 1rem auto;
+  font-family: "Poppins", sans-serif;
+  border: 1px groove #e8e8e8;
+  border-radius: 10px;
+  background-color: white;
+  margin: 10px;
+  /* padding: 10px; */
+
+}
+
+.userlog {
+  /* padding: 10px; */
+  display: flex;
+  flex-direction: column;
+}
+
+.userlog-heading {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  /* You can change the background color as needed */
+  z-index: 1;
+}
+
+.userlog-data {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  /* Add any desired styles for the log data */
+  overflow-y: auto;
+  /* Add scroll to the log data */
+  max-height: 300px;
 }
