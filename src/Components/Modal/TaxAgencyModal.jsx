@@ -24,7 +24,7 @@ const TaxAgencyModal = (props) => {
         <>
             <Modal
                 open={props.modalOpen}
-                onClose={props.closeModal}
+                // onClose={props.closeModal}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >

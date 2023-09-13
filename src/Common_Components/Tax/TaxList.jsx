@@ -110,6 +110,7 @@ const TaxList = () => {
     };
     const deleteHandler = (id) => {
         dispatch(deleteTaxData(id));
+        window.location.reload();
     };
 
     useEffect(() => {
@@ -180,7 +181,7 @@ const TaxList = () => {
 
             <Modal
                 open={modalOpen}
-                onClose={closeModal}
+                // onClose={closeModal}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >

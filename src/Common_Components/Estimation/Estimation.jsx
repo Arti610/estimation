@@ -46,7 +46,7 @@ const Estimation = () => {
   }
   const navigate = useNavigate()
   const dispatch = useDispatch()
-
+  const [selectedItemId, setSelectedItemId] = useState(null);
   const fData = new FormData();
 
   const [cookies, setCookies] = useCookies(["token"])
@@ -74,6 +74,7 @@ const Estimation = () => {
     ]
   })
   const [estiFormData, setEstiFormData] = useState({
+    cate_id: [null],
     item_name: [null],
     unit: [null],
     quantity: [null],
@@ -82,32 +83,50 @@ const Estimation = () => {
     vatType: [null],
     vatPercent: [null],
     estimation_rate: [null],
+    estimation_rate_total: null
   })
-  const [erModal, setErModal] = useState(false)
+  const [erModal, setErModal] = useState({ erModalValue: false, i: null })
   const openERModal = () => {
-    setErModal(true)
+    setErModal({ erModalValue: true, i: null })
   }
   const closeERModal = () => {
-    setErModal(false)
+    setErModal({ erModalValue: false, i: null })
   }
-  const handleModalOpen = () => {
+  const handleModalOpen = (itemId) => {
     openERModal()
   }
 
   const handleAddMore = () => {
+    const hasNullFields = estiFormData.item_name.some((itemName, myI) => {
+      // Check if any of the fields in the current row is null
+      return (
+        itemName === null ||
+        estiFormData.unit[myI] === null ||
+        estiFormData.quantity[myI] === null ||
+        estiFormData.list_price[myI] === null ||
+        estiFormData.discount[myI] === null ||
+        estiFormData.vatType[myI] === null ||
+        estiFormData.vatPercent[myI] === null
+      );
+    });
 
-    setEstiFormData((prevData) => ({
-      ...prevData,
-      item_name: [...prevData.item_name, null],
-      unit: [...prevData.unit, null],
-      quantity: [...prevData.quantity, null],
-      list_price: [...prevData.list_price, null],
-      discount: [...prevData.discount, null],
-      vatType: [...prevData.vatType, null],
-      vatPercent: [...prevData.vatPercent, null],
-      // estimation_rate: [...prevData.estimation_rate, null],
-    }));
+    if (!hasNullFields) {
+      setEstiFormData((prevData) => ({
+        ...prevData,
+        item_name: [...prevData.item_name, null],
+        unit: [...prevData.unit, null],
+        quantity: [...prevData.quantity, null],
+        list_price: [...prevData.list_price, null],
+        discount: [...prevData.discount, null],
+        vatType: [...prevData.vatType, null],
+        vatPercent: [...prevData.vatPercent, null],
+        // estimation_rate: [...prevData.estimation_rate, null],
+      }));
+    } else {
+      alert("Please fill in all required fields in the current row before adding a new row.");
+    }
   };
+
   const [cateModalOpen, setCateModalOpen] = useState({ modalValue: false, index: null })
 
   const handleAutoComplete = (newValue, fieldName) => {
@@ -132,7 +151,6 @@ const Estimation = () => {
     setCateModalOpen({ modalValue: true, index: index })
   }
 
-
   const handleClick = async (e, myIOuter, id, token) => {
     try {
       // Make the API call using Axios
@@ -146,9 +164,11 @@ const Estimation = () => {
 
       const { data } = response;
       if (data && data.catelouge && data.catelouge) {
-        const { name, unit_of_measurement, list_price, discount, tax } = data.catelouge;
+        const { id, name, unit_of_measurement, list_price, discount, tax } = data.catelouge;
 
         setEstiFormData((prev) => {
+          const UpdatedId = [...prev.cate_id];
+          UpdatedId[myIOuter] = id;
           const UpdatedName = [...prev.item_name];
           UpdatedName[myIOuter] = name;
           const UpdatedUnit = [...prev.unit];
@@ -161,17 +181,15 @@ const Estimation = () => {
           UpdatedVatType[myIOuter] = tax.name;
           const UpdatedVatRate = [...prev.vatPercent];
           UpdatedVatRate[myIOuter] = tax.rate;
-          // const UpdatedQuantity = [...prev.quantity];
-          // UpdatedQuantity[myIOuter] = quantity;
           return {
             ...prev,
+            cate_id: UpdatedId,
             item_name: UpdatedName,
             unit: UpdatedUnit,
             list_price: Updatedrate,
             discount: UpdatedDiscount,
             vatType: UpdatedVatType,
             vatPercent: UpdatedVatRate,
-            // quantity:UpdatedQuantity
           };
         });
       } else {
@@ -187,61 +205,100 @@ const Estimation = () => {
     }
   };
 
-
-
-  const calculateEstimatedRate = () => {
-
-    const quantity = parseFloat(estiFormData.quantity) || 0;
-    const listPrice = parseFloat(CatelogueData && CatelogueData.catelouge.list_price) || 0;
-    const discount = parseFloat(CatelogueData && CatelogueData.catelouge.discount) || 0;
-    const vatPercent = parseFloat(CatelogueData && CatelogueData.catelouge.tax.rate) || 0;
+  const calculateEstimatedRate = (index) => {
+    const quantity = parseFloat(estiFormData.quantity[index]) || 0;
+    // const listPrice = parseFloat(CatelogueData && CatelogueData.catelouge.list_price[index]) || 0;
+    // console.log("listPrice", listPrice);
+    // const discount = parseFloat(CatelogueData && CatelogueData.catelouge.discount[index]) || 0;
+    // const vatPercent = parseFloat(CatelogueData && CatelogueData.catelouge.tax.rate[index]) || 0;
+    const listPrice = parseFloat(estiFormData.list_price[index]) || 0;
+    const discount = parseFloat(estiFormData.discount[index]) || 0;
+    const vatPercent = parseFloat(estiFormData.vatPercent[index]) || 0;
 
     const estimatedRate =
       quantity * listPrice - discount + ((quantity * listPrice - discount) / 100) * vatPercent;
 
     return estimatedRate;
   };
-  // const handleChangePrice = (name, value, myI) => {
-  //   console.log("handle change id", myI);
 
-  //   setEstiFormData((prevData) => ({
-  //     ...prevData,
-  //     [name]: parseFloat(value) || 0, // Convert the value to a number or set it to 0 if it's not a valid number
-  //     estimation_rate: calculateEstimatedRate(parseFloat(value) || 0),
-  //   }));
-  // };
   const handleChangePrice = (name, value, myI) => {
     setEstiFormData((prevData) => {
       const updatedQuantity = [...prevData.quantity];
+      const updatedEstiRate = [...prevData.estimation_rate];
+
       if (name === 'quantity') {
         updatedQuantity[myI] = value;
+      }
+      if (name === 'estimation_rate') {
+        updatedEstiRate[myI] = value;
       }
       return {
         ...prevData,
         quantity: updatedQuantity,
+        estimation_rate: updatedEstiRate
       };
     });
   };
 
   useEffect(() => {
-    const newEstimatedRate = calculateEstimatedRate();
-    setEstiFormData((prevData) => ({
-      ...prevData,
-      estimation_rate: newEstimatedRate,
-    }));
+    const newEstiFormData = { ...estiFormData };
+    let totalEstimationRate = 0; // Initialize the total to 0
+
+    estiFormData.item_name.forEach((item, myI) => {
+      newEstiFormData.estimation_rate[myI] = calculateEstimatedRate(myI);
+      totalEstimationRate += newEstiFormData.estimation_rate[myI]; // Add each item's estimation_rate to the total
+    });
+
+    // Round the total to two decimal places using toFixed(2)
+    newEstiFormData.estimation_rate_total = parseFloat(totalEstimationRate.toFixed(2));
+
+    setEstiFormData(newEstiFormData);
   }, [estiFormData.quantity, CatelogueData]);
 
 
-  const estiHandleSubmit = (e, index) => {
+  const estiHandleSubmit = (e, index, itemId) => {
     e.preventDefault();
-    // Get the ID of the specific inquiry_detail at the given index
-    const inquiryDetailId = InquiryData.detail[index].id;
+    console.log(itemId, "itemId");
+
+    // Find the inquiryDetail with matching itemId
+    const matchingDetail = InquiryData.detail.find((detail) => detail.id === itemId);
+
+    if (matchingDetail) {
+      const inquiryDetailId = matchingDetail.id;
+      fData.append("inquiry_detail", inquiryDetailId);
+      // Rest of your code here
+    } else {
+      console.error("Matching detail not found for itemId", itemId);
+    }
     // Append the specific ID to your FormData
-    fData.append("inquiry_detail", inquiryDetailId);
-    fData.append("item", CatelogueData.catelouge.id);
-    fData.append("quantity", estiFormData.quantity);
-    fData.append("estimation_rate", estiFormData.estimation_rate);
+    // fData.append("item", estiFormData.cate_id);
+    // fData.append("quantity", estiFormData.quantity);
+    // fData.append("estimation_rate", estiFormData.estimation_rate);
+    fData.append("total_price", estiFormData.estimation_rate_total);
+    estiFormData.cate_id.forEach((file, index) => {
+      fData.append(`item`, file)
+    })
+    estiFormData.quantity.forEach((file, index) => {
+      fData.append(`quantity`, file)
+    })
+    estiFormData.estimation_rate.forEach((file, index) => {
+      fData.append(`estimation_rate`, file)
+    })
     dispatch(createEstimationResourceData({ fData, token }));
+    alert("Estimation Resource Details save successfully")
+    setErModal({ erModalValue: false, i: itemId })
+    setEstiFormData({
+      cate_id: [null],
+      item_name: [null],
+      unit: [null],
+      quantity: [null],
+      list_price: [null],
+      discount: [null],
+      vatType: [null],
+      vatPercent: [null],
+      estimation_rate: [null],
+      estimation_rate_total: null
+    })
   };
 
   const handleSubmit = (e) => {
@@ -315,6 +372,7 @@ const Estimation = () => {
   }, [token, updatedEstimation]);
   useEffect(() => {
     console.log("estiFormData", estiFormData);
+
   }, [estiFormData])
   return (
     <>
@@ -446,7 +504,7 @@ const Estimation = () => {
                               name="quantity"
                               // onChange={handleChange}
                               value={item.quantity}
-                              onChange={(e) => handleChangePrice(index, 'boq_number', e.target.value)}
+                              onChange={(e) => handleChangePrice(index, 'quantity', e.target.value)}
                               placeholder="Ex: 523689"
                               fullWidth
                               required
@@ -485,10 +543,21 @@ const Estimation = () => {
                         </td>
                         <td>
                           <div className='estimation-inquiry-details'>
+                            {/* <TextField
+                              name="estimation_rate"
+                              onClick={() => handleModalOpen(item.id)}
+                              onChange={(e) => handleChangePrice('estimation_rate', e.target.value, index)}
+
+                              fullWidth
+                              required
+                            /> */}
                             <TextField
                               name="estimation_rate"
-                              onClick={handleModalOpen}
-                              onChange={(e) => handleChangePrice(index, 'estimation_rate', e.target.value)}
+                              onClick={() => {
+                                handleModalOpen(item.id); // Call handleModalOpen with item.id
+                                setSelectedItemId(item.id); // Set the selected item ID in state
+                              }}
+                              onChange={(e) => handleChangePrice('estimation_rate', e.target.value, index)}
                               fullWidth
                               required
                             />
@@ -535,7 +604,7 @@ const Estimation = () => {
                         </td>
                         {/* Estimation Rate Modal Start  */}
                         <Modal
-                          open={erModal}
+                          open={erModal.erModalValue}
                           // onClose={props.closeERModal}
                           aria-labelledby="modal-modal-title"
                           aria-describedby="modal-modal-description"
@@ -547,7 +616,7 @@ const Estimation = () => {
                               <RxCross2 onClick={closeERModal} className="modal-btn-cross" />
                             </div>
 
-                            <button onClick={handleAddMore}>Add More</button>
+
                             <form>
                               {estiFormData.item_name.map((item, myI) => {
                                 const myIOuter = myI;
@@ -712,9 +781,26 @@ const Estimation = () => {
 
                                 )
                               })}
-                              <button variant="outlined" type="submit" onClick={(e) => estiHandleSubmit(e, index)}>
+                              <div className="estimation-resouce-list">
+                                <label>ESTIMATION RATE</label>
+                                <TextField
+                                  type="text"
+                                  className="inputfield bg-color"
+                                  fullWidth
+                                  required
+                                  value={estiFormData.estimation_rate_total} // Display the total
+                                  readOnly // Make it read-only to prevent user input
+                                />
+                              </div>
+                              <div style={{ padding: "10px" }}> <button onClick={handleAddMore}>Add More</button></div>
+                              <button
+                                variant="outlined"
+                                type="submit"
+                                onClick={(e) => estiHandleSubmit(e, index, selectedItemId)} // Use selectedItemId
+                              >
                                 Save
                               </button>
+
                             </form>
                           </Box>
                         </Modal>

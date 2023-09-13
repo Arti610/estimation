@@ -32,7 +32,7 @@ const Dashboard = () => {
         <Card title="Total Estimation" count={EstimationData ? EstimationData.length : 0} pic='https://cdn1.iconfinder.com/data/icons/engineering-aesthetics-vol-1/256/Estimate-512.png' path='/sales/estimation' />
       </div>
 
-      <div className="log-container">
+      {/* <div className="log-container">
       <div className="userlog">
             <div className='userlog-heading'>  <h4>helo</h4></div>
              <div className="userlog-data">
@@ -46,7 +46,7 @@ const Dashboard = () => {
             }):"No Logs Available"}
              </div>
             </div>
-      </div>
+      </div> */}
     </>
   )
 }
