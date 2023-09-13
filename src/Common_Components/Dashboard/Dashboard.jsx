@@ -27,7 +27,7 @@ const Dashboard = () => {
   return (
     <>
       <div className="card-container">
-        <Card title="Total Customer" count={CustomerData ? CustomerData.length : 0} pic="https://th.bing.com/th/id/OIP.jDXaAhD9ijyiFihWNqFAYQHaGg?pid=ImgDet&rs=1"  path='/sales/customer' />
+        <Card title="Total Customer" count={CustomerData ? CustomerData.length : 0} pic="https://th.bing.com/th/id/OIP.jDXaAhD9ijyiFihWNqFAYQHaGg?pid=ImgDet&rs=1"  path='/settings/customer' />
         <Card title="Total Inquiry" count={InquiryData ? InquiryData.length : 0} pic="https://th.bing.com/th/id/OIP.w6TN1JaDuyED5jdvtFZC_wHaHa?pid=ImgDet&rs=1" path='/sales/inquiry' />
         <Card title="Total Estimation" count={EstimationData ? EstimationData.length : 0} pic='https://cdn1.iconfinder.com/data/icons/engineering-aesthetics-vol-1/256/Estimate-512.png' path='/sales/estimation' />
       </div>

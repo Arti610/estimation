@@ -315,9 +315,9 @@ const CatelogueRegistration = () => {
       >
         <div className="registration_top_header">
           <p>
-            <span className='border-bottom-heading'>
+            <h2>
               Catelogue Registration
-            </span>
+            </h2>
           </p>
         </div>
         <form onSubmit={handleSubmit}>

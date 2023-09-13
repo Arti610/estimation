@@ -78,9 +78,18 @@ const InquiryList = () => {
     dispatch(getupdateInquiryData({ id, token }))
     navigate("/sales/inquiry-registration")
   }
+
   const deleteHandler = (id) => {
-    dispatch(deleteInquiryData({ id, token }))
-  }
+    dispatch(deleteInquiryData(id))
+      .then(() => {
+        // Once the delete action is completed successfully, dispatch the get action
+        dispatch(getInquiryData(token));
+      })
+      .catch((error) => {
+        // Handle any errors from the delete operation
+        alert("wait")
+      });
+  };
 
   useEffect(() => {
     dispatch(getInquiryData(token))

@@ -7,25 +7,33 @@
 }
 
 .action-btn {
+
+   width: 100%;
+   display: flex;
+   justify-content: flex-end;
+   margin-bottom: 20px;
+}
+
+
+
+.btn-width{
+    width: 100px;
     display: flex;
-    float: right;
-    width: 70px;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
+    padding: 0px 10px;
 }
 
-.delete-update-handle-btn {
-    color: red;
-    font-size: 15px;
-    font-weight: bolder;
+.btn-style{
     cursor: pointer;
+    float: right;
+    width: 20px;
 }
-
 .AddMore{
     background-color: var(--primary-color);
     padding: 5px;
     display: inline-block;
-    border-radius: 10px;
+    border-radius: 5px;
     color: var(--primary-font-color);
     font-size: 13px;
     cursor: pointer;

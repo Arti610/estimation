@@ -68,10 +68,18 @@ const EstimationList = () => {
     dispatch(getupdateEstimationData({ id, token }))
     navigate("/sales/Estimation-registration")
   }
-  const deleteHandler = (id) => {
-    dispatch(deleteEstimationData({ id, token }))
-  }
 
+  const deleteHandler = (id) => {
+    dispatch(deleteEstimationData(id))
+      .then(() => {
+        // Once the delete action is completed successfully, dispatch the get action
+        dispatch(getEstimationData(token));
+      })
+      .catch((error) => {
+        // Handle any errors from the delete operation
+        alert("wait")
+      });
+  };
   useEffect(() => {
     dispatch(getEstimationData(token))
   }, [])

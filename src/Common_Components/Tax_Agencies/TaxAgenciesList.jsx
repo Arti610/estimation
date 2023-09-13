@@ -81,10 +81,16 @@ const TaxAgenciesList = () => {
   };
 
   const deleteHandler = (id) => {
-    dispatch(deleteTaxAgencyData(id));
-
+    dispatch(deleteTaxAgencyData(id))
+      .then(() => {
+        // Once the delete action is completed successfully, dispatch the get action
+        dispatch(getTaxAgencyData(token));
+      })
+      .catch((error) => {
+        // Handle any errors from the delete operation
+        alert("wait")
+      });
   };
-
   useEffect(() => {
 
     dispatch(getTaxAgencyData(token));

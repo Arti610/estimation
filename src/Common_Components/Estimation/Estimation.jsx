@@ -379,9 +379,9 @@ const Estimation = () => {
       <div data-aos="fade-left" data-aos-duration="1000">
         <div className="registration_top_header">
           <p>
-            <span className='border-bottom-heading'>
+            <h2>
               Estimation Registration
-            </span>
+            </h2>
           </p>
         </div>
         <form onSubmit={handleSubmit}>

@@ -499,22 +499,38 @@ const Inquiry = () => {
                 return (
                   <div key={index} className='details-container'>
                     <div className="action-btn">
-                      {updatedInquiry &&
+                      
+                      {/* {updatedInquiry &&
                         <p>
                           {isDisabled ?
                             <BiSolidEditAlt onClick={() => handleDocEdit(index)} title="Edit" className='delete-update-handle-btn' style={{ color: "#7c5e1e" }} />
                             :
                             <button onClick={() => handleSaveDetails(index)} style={{ marginInline: "10px" }}>Save</button>
                           }
-                        </p>}
-                      {updatedInquiry ? <p onClick={() => deleteDetailsHandler(index)}><AiFillDelete className='delete-update-handle-btn' title='Delete' style={{ color: "red" }} /></p> :
-                        <p onClick={() => handleDocRemove(index)}>
-                          <AiOutlineClose className='delete-update-handle-btn' title='Delete' style={{ color: "red" }} />
-                        </p>
+                        </p>} */}
+                        <div className="btn-width">
+                        {updatedInquiry && isDisabled ?
+                      <div onClick={() => handleDocEdit(index)} className='btn-style'>
+                         <BiSolidEditAlt  title="Edit"  style={{ color: "#7c5e1e" }} />
+                      </div> 
+                        :
+                      <div onClick={() => handleSaveDetails(index)} className='btn-style'>
+                          <button style={{ marginInline: "10px" }}>Save</button>
+                      </div>
                       }
-
+                      {updatedInquiry ? 
+                      <div onClick={() => deleteDetailsHandler(index)} className='btn-style'>
+                        <AiFillDelete  title='Delete' style={{ color: "red" }} />
+                      </div> 
+                        :
+                      <div onClick={() => handleDocRemove(index)} className='btn-style'>
+                          <AiOutlineClose  title='Delete' style={{ color: "red" }} />
+                      </div>
+                      }
+                        </div>
                     </div>
 
+                    
                     <Grid container spacing={2} key={index} sx={{ mb: "10px" }}>
                       <Grid item xs={12} sm={6} md={2}>
                         <label>

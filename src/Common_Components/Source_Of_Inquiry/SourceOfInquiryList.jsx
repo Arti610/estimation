@@ -9,7 +9,12 @@ import SourceOfInquiryModal from '../../Components/Modal/SourceOfInquiryModal';
 const SourceOfInquiryList = () => {
   const dispatch = useDispatch();
   const SourceOfInquiryDataBlank = ["Data Not Found"]
-  const SourceOfInquiryData = useSelector((state) => state.SourceOfInquiry.SourceOfInquiryData);
+  // const SourceOfInquiryData = useSelector((state) => state.SourceOfInquiry.SourceOfInquiryData);
+  const SourceOfInquiryData =[{
+    name:"New",
+    description:"new"
+  }]
+
   const [modalOpen, setModalOpen] = useState(false);
   const [cookies, setCookies] = useCookies(["token"])
   const token = cookies.token;
@@ -80,9 +85,17 @@ const SourceOfInquiryList = () => {
   };
 
   const deleteHandler = (id) => {
-    dispatch(deleteSourceOfInquiryData(id));
-
+    dispatch(deleteSourceOfInquiryData(id))
+      .then(() => {
+        // Once the delete action is completed successfully, dispatch the get action
+        dispatch(getSourceOfInquiryData(token));
+      })
+      .catch((error) => {
+        // Handle any errors from the delete operation
+        alert("wait")
+      });
   };
+  
 
   useEffect(() => {
 

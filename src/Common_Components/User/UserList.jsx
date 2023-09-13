@@ -30,9 +30,17 @@ const UserList = () => {
     navigate(`/settings/user-registration`); // Make sure to pass the user ID in the URL
   }
   
+  
   const deleteHandler = (id) => {
-    dispatch(deleteUserData(id));
-    window.location.reload()
+    dispatch(deleteUserData(id))
+      .then(() => {
+        // Once the delete action is completed successfully, dispatch the get action
+        dispatch(getUserData(token));
+      })
+      .catch((error) => {
+        // Handle any errors from the delete operation
+        alert("wait")
+      });
   };
 
   useEffect(() => {
@@ -104,7 +112,8 @@ const UserList = () => {
         updateHandler={editHandler}
         deleteHandler={deleteHandler}
         createHandler={createHandler}
-        tableHeading="User"
+        tableHeading="All Users"
+        pageHeading='User'
       />)}
 
       {/* <UserModal modalOpen={modalOpen} handleModalInputChange={handleModalInputChange} handleAutoComplete={handleAutoComplete} createOrUpdateHandler={createOrUpdateHandler} openModal={openModal} closeModal={closeModal} modalData={modalData} label="ADD SOURCE OF INQUIRY" heading="Source Of Inquiry" /> */}

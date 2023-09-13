@@ -5,9 +5,6 @@ import { BasicTable } from '../../Components/Table list/BasicTable';
 import { getCustomerData, deleteCustomerData, createCustomerData, updateCustomerData } from '../../APIs/CustomerSlice';
 import ModalComp from '../../Components/Modal/ModalComp';
 
-
-
-
 const CustomerList = () => {
     const dispatch = useDispatch();
     const CustomerDataBlank = ["Data Not Found"]
@@ -63,20 +60,20 @@ const CustomerList = () => {
 
         switch (name) {
             case "name":
-                if (!/^[A-Za-z]+$/.test(value)) {
-                    error = 'Name should only contain alphabetical characters';
+                if (!/^[A-Za-z\s]+$/.test(value)) {
+                    error = 'Name should only contain alphabetical characters and spaces';
                 }
                 setNameError(error);
                 break;
-
+            
             case "contact_person":
-                if (!/^[A-Za-z]+$/.test(value)) {
+                if (!/^[A-Za-z\s]+$/.test(value)) {
                     error = 'Person name should only contain alphabetical characters';
                 }
                 setLastNameError(error);
                 break;
             case "country":
-                if (!/^[A-Za-z]+$/.test(value)) {
+                if (!/^[A-Za-z\s]+$/.test(value)) {
                     error = 'Country name should only contain alphabetical characters';
                 }
                 setCountryError(error);
@@ -144,10 +141,18 @@ const CustomerList = () => {
         }
     };
 
+ 
     const deleteHandler = (id) => {
-        dispatch(deleteCustomerData(id));
-
-    };
+        dispatch(deleteCustomerData(id))
+          .then(() => {
+            // Once the delete action is completed successfully, dispatch the get action
+            dispatch(getCustomerData(token));
+          })
+          .catch((error) => {
+            // Handle any errors from the delete operation
+            alert("wait")
+          });
+      };
 
     useEffect(() => {
 
@@ -161,17 +166,19 @@ const CustomerList = () => {
             accessor: "name",
         },
         {
-            Header: "Address",
-            accessor: "address",
+            Header: "TRN Number",
+            accessor: "trn_number",
         },
+      
         {
             Header: "Email",
             accessor: "email",
         },
         {
-            Header: "Contact Person",
-            accessor: "contact_person",
+            Header: "Address",
+            accessor: "address",
         },
+      
         {
             Header: "Country",
             accessor: "country",
@@ -180,10 +187,9 @@ const CustomerList = () => {
             Header: "Mobile Number",
             accessor: "mobile_number",
         },
-
         {
-            Header: "TRN Number",
-            accessor: "trn_number",
+            Header: "Contact Person",
+            accessor: "contact_person",
         },
 
     ];

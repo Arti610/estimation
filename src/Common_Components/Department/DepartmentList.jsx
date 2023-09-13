@@ -79,9 +79,17 @@ const DepartmentList = () => {
     }
   };
 
-  const deleteHandler = (id) => {
-    dispatch(deleteDepartmentData(id));
 
+  const deleteHandler = (id) => {
+    dispatch(deleteDepartmentData(id))
+      .then(() => {
+        // Once the delete action is completed successfully, dispatch the get action
+        dispatch(getDepartmentData(token));
+      })
+      .catch((error) => {
+        // Handle any errors from the delete operation
+        alert("wait")
+      });
   };
 
   useEffect(() => {

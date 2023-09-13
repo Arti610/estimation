@@ -48,7 +48,7 @@ const EmployerList = () => {
 
         switch (name) {
             case "name":
-                if (!/^[A-Za-z]+$/.test(value)) {
+                if (!/^[A-Za-z\s]+$/.test(value)) {
                     error = 'Name should only contain alphabetical characters';
                 }
                 setNameError(error);
@@ -56,7 +56,7 @@ const EmployerList = () => {
 
 
             case "country":
-                if (!/^[A-Za-z]+$/.test(value)) {
+                if (!/^[A-Za-z\s]+$/.test(value)) {
                     error = 'Country name should only contain alphabetical characters';
                 }
                 setCountryError(error);
@@ -121,10 +121,16 @@ const EmployerList = () => {
     };
 
     const deleteHandler = (id) => {
-        dispatch(deleteEmployerData(id));
-
-    };
-
+        dispatch(deleteEmployerData(id))
+          .then(() => {
+            // Once the delete action is completed successfully, dispatch the get action
+            dispatch(getEmployerData(token));
+          })
+          .catch((error) => {
+            // Handle any errors from the delete operation
+            alert("wait")
+          });
+      };
     useEffect(() => {
 
         dispatch(getEmployerData(token));

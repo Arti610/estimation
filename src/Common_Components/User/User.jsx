@@ -82,14 +82,14 @@ const User = () => {
 
       switch (name) {
         case "first_name":
-          if (!/^[A-Za-z]+$/.test(value)) {
+          if (!/^[A-Za-z\s]+$/.test(value)) {
             error = 'Name should only contain alphabetical characters';
           }
           setNameError(error);
           break;
 
         case "last_name":
-          if (!/^[A-Za-z]+$/.test(value)) {
+          if (!/^[A-Za-z\s]+$/.test(value)) {
             error = 'Last name should only contain alphabetical characters';
           }
           setLastNameError(error);
@@ -187,9 +187,10 @@ const User = () => {
       fData.append("department", formData.department);
       fData.append("user_type", formData.user_type);
       fData.append("account_status", formData.account_status);
-      if (formData.profile_image) {
-        fData.append("profile_image", formData.profile_image);
-      }
+      // if (formData.profile_image) {
+      //   fData.append("profile_image", formData.profile_image);
+      // }
+      fData.append("profile_image", formData.profile_image);
       dispatch(updateUserData({ fData, token, id: updatedUser.id }))
       alert("updated successfully")
       navigate("/settings/users")

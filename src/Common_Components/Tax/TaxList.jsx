@@ -108,11 +108,19 @@ const TaxList = () => {
             setModalOpen(true);
         }
     };
-    const deleteHandler = (id) => {
-        dispatch(deleteTaxData(id));
-        window.location.reload();
-    };
 
+    const deleteHandler = (id) => {
+        dispatch(deleteTaxData(id))
+          .then(() => {
+            // Once the delete action is completed successfully, dispatch the get action
+            dispatch(getTaxData(token));
+          })
+          .catch((error) => {
+            // Handle any errors from the delete operation
+            alert("wait")
+          });
+      };
+    
     useEffect(() => {
         dispatch(getTaxData(token));
         dispatch(getTaxAgencyData(token));
