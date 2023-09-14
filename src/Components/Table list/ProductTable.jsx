@@ -179,7 +179,7 @@ export const ProductTable = ({
                                                     return (                               
                                                      <>
                                                         <div id="td_column" {...cell.getCellProps()}  onClick={() => handleClick(cellId)}>                                  
-                                                            {cell.render("Cell")}
+                                                                {cell.render("Cell")}
                                                             {/* <span>{cellName}</span> */}
                                                         </div>
                                                      </>

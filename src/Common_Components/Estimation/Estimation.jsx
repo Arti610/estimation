@@ -12,7 +12,6 @@ import './Estimation.css'
 import { RxCross2 } from "react-icons/rx";
 import { getCatelogueData, getupdateCatelogueData } from '../../APIs/CatelogueSlice';
 import { ImgUrl } from '../../Config/Config';
-import axios from 'axios'; // Import Axios if you haven't already
 import api from '../../Config/Apis';
 const Estimation = () => {
   const style = {
@@ -91,6 +90,18 @@ const Estimation = () => {
   }
   const closeERModal = () => {
     setErModal({ erModalValue: false, i: null })
+    setFormData({
+      cate_id: [null],
+      item_name: [null],
+      unit: [null],
+      quantity: [null],
+      list_price: [null],
+      discount: [null],
+      vatType: [null],
+      vatPercent: [null],
+      estimation_rate: [null],
+      estimation_rate_total: null
+    })
   }
   const handleModalOpen = (itemId) => {
     openERModal()
@@ -760,15 +771,15 @@ const Estimation = () => {
                                         </div>
                                         <div className="main-product-container">
                                           {catelogueData && catelogueData ? catelogueData.map((item, index) => (
-                                            <div className="product-container" key={index} onClick={(e) => handleClick(e, myIOuter, item.id)}>
-                                              {console.warn("iiiiiiii", myIOuter)}
+                                            <div className="product-container-modal" key={index} onClick={(e) => handleClick(e, myIOuter, item.id)}>
+                                           
                                               <div className="product-image">
                                                 <img src={`${ImgUrl}${item.primary_image}`} alt="image" />
                                               </div>
                                               <div className="product-details">
-                                                <h3>{item.name}</h3>
-                                                <p><span>{item.model}</span></p>
-                                                {item.isactive ? "Active" : "Inactive"}
+                                                <h4>{item.name}</h4>
+                                                {/* <p><span>{item.model}</span></p>
+                                                {item.isactive ? "Active" : "Inactive"} */}
                                               </div>
                                             </div>
                                           )) : "Loading....."}

@@ -9,11 +9,11 @@ import SourceOfInquiryModal from '../../Components/Modal/SourceOfInquiryModal';
 const SourceOfInquiryList = () => {
   const dispatch = useDispatch();
   const SourceOfInquiryDataBlank = ["Data Not Found"]
-  // const SourceOfInquiryData = useSelector((state) => state.SourceOfInquiry.SourceOfInquiryData);
-  const SourceOfInquiryData =[{
-    name:"New",
-    description:"new"
-  }]
+  const SourceOfInquiryData = useSelector((state) => state.SourceOfInquiry.SourceOfInquiryData);
+  // const SourceOfInquiryData =[{
+  //   name:"New",
+  //   description:"new"
+  // }]
 
   const [modalOpen, setModalOpen] = useState(false);
   const [cookies, setCookies] = useCookies(["token"])

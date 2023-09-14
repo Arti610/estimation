@@ -86,7 +86,6 @@ const Inquiry = () => {
   };
 
   const handleDocEdit = (index) => {
-
     setIsUpdating(true);
     setEditingIndex(index);
   };
@@ -499,7 +498,7 @@ const Inquiry = () => {
                 return (
                   <div key={index} className='details-container'>
                     <div className="action-btn">
-                      
+
                       {/* {updatedInquiry &&
                         <p>
                           {isDisabled ?
@@ -508,29 +507,32 @@ const Inquiry = () => {
                             <button onClick={() => handleSaveDetails(index)} style={{ marginInline: "10px" }}>Save</button>
                           }
                         </p>} */}
-                        <div className="btn-width">
-                        {updatedInquiry && isDisabled ?
-                      <div onClick={() => handleDocEdit(index)} className='btn-style'>
-                         <BiSolidEditAlt  title="Edit"  style={{ color: "#7c5e1e" }} />
-                      </div> 
-                        :
-                      <div onClick={() => handleSaveDetails(index)} className='btn-style'>
-                          <button style={{ marginInline: "10px" }}>Save</button>
+                      <div className="btn-width">
+                        {updatedInquiry &&
+                          <div>
+                            {isDisabled ?
+                              <div onClick={() => handleDocEdit(index)} className='btn-style'>
+                                <BiSolidEditAlt title="Edit" style={{ color: "#7c5e1e" }} />
+                              </div>
+                              :
+                              <div onClick={() => handleSaveDetails(index)} className='btn-style'>
+                                <button style={{ marginInline: "10px" }}>Save</button>
+                              </div>}
+                          </div>
+                        }
+                        {updatedInquiry ?
+                          <div onClick={() => deleteDetailsHandler(index)} className='btn-style'>
+                            <AiFillDelete title='Delete' style={{ color: "red" }} />
+                          </div>
+                          :
+                          <div onClick={() => handleDocRemove(index)} className='btn-style'>
+                            <AiOutlineClose title='Delete' style={{ color: "red" }} />
+                          </div>
+                        }
                       </div>
-                      }
-                      {updatedInquiry ? 
-                      <div onClick={() => deleteDetailsHandler(index)} className='btn-style'>
-                        <AiFillDelete  title='Delete' style={{ color: "red" }} />
-                      </div> 
-                        :
-                      <div onClick={() => handleDocRemove(index)} className='btn-style'>
-                          <AiOutlineClose  title='Delete' style={{ color: "red" }} />
-                      </div>
-                      }
-                        </div>
                     </div>
 
-                    
+
                     <Grid container spacing={2} key={index} sx={{ mb: "10px" }}>
                       <Grid item xs={12} sm={6} md={2}>
                         <label>

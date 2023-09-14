@@ -106,7 +106,7 @@ const CategoryList = () => {
 
     // </div>
     <>
-      <button onClick={() => setBtnToggle(!btnToggle)}>{btnToggle ? "List View" : "Card View"}</button>
+      {/* <button onClick={() => setBtnToggle(!btnToggle)}>{btnToggle ? "List View" : "Card View"}</button> */}
       {catelogueData && btnToggle ? <ProductTable
         colHeader={header}
         rowData={catelogueData}
