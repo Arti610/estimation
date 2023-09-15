@@ -11,7 +11,6 @@ export const getCatelogueData = createAsyncThunk("getCatelogueData", async (toke
                 // Authorization: `arti`
             },
         })
-        console.log("response ", response);
         return response.data
     } catch (error) {
         throw error;
@@ -76,7 +75,7 @@ export const getupdateCatelogueData = createAsyncThunk("getupdateCatelogueData",
                 Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
             },
         });
-        console.log("response.data get id", response.data);
+
         return response.data;
     } catch (error) {
         console.log(error);
@@ -167,8 +166,7 @@ const CatelogueSlice = createSlice({
         })
         builder.addCase(getCatelogueData.fulfilled, (state, action) => {
             state.status.get = "succeeded"
-            state.CatelogueData = action.payload
-            console.log("action", action.payload);
+      
 
         })
         builder.addCase(getCatelogueData.rejected, (state) => {
