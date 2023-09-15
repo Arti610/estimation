@@ -108,8 +108,7 @@ const TaxSlice = createSlice({
         builder.addCase(getTaxData.fulfilled, (state, action) => {
             state.status = "succeeded"
             state.TaxData = action.payload   
-            console.log("action", action.payload);  
-            console.log(" state.TaxData",  state.TaxData);     
+         
         })
         builder.addCase(getTaxData.rejected, (state) => {
             state.status = "failed"
