@@ -54,3 +54,19 @@
     margin: 8px;
     float: right;
 }
+
+.modal-data-container-catelogue{
+    padding: 20px;
+
+}
+
+.table-estimation{
+    padding-block: 20px;
+}
+
+.top-product-container-estimation{
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}

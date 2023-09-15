@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import { Autocomplete, Box, Grid, Modal, TextField } from '@mui/material';
@@ -14,6 +14,15 @@ import { getCatelogueData } from '../../APIs/CatelogueSlice';
 import { ImgUrl } from '../../Config/Config';
 import api from '../../Config/Apis';
 import { getTaxData } from '../../APIs/TaxSlice';
+import { FaUserAlt } from 'react-icons/fa';
+import { useTable, useGlobalFilter, usePagination } from "react-table";
+import '../../Components/Table list/ProductTable.css'
+import { useDownloadExcel } from "react-export-table-to-excel";
+import { useReactToPrint } from "react-to-print";
+import { PiExportBold } from 'react-icons/pi'
+import { GlobalFilter } from '../../Components/Table list/GlobalFilter';
+
+
 const Estimation = () => {
   const style = {
     position: "absolute",
@@ -28,22 +37,25 @@ const Estimation = () => {
       width: "90%",
     },
   };
-  const CateStyle = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    width: "1100px",
-    transform: "translate(-50%, -50%)",
-    backgroundColor: "#fff",
-    // border: "1px solid #6e85b7",
-    borderRadius: "10px",
-    height: "fit-content",
-    overflow: "auto",
-    height: "550px",
-    "@media (max-width: 576px)": {
-      width: "90%",
+
+  const colHeader = [
+    {
+      Header: "Image",
+      accessor: "profile_image",
+      disableFilters: true,
+      Cell: props => (
+        <img
+          src={`${ImgUrl}${props.row.original.primary_image}`}
+          width={80}
+          height={80}
+          alt={<FaUserAlt />}
+        />)
     },
-  }
+    {
+      Header: "Name",
+      accessor: "name",
+    }
+  ];
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [cookies, setCookies] = useCookies(["token"])
@@ -60,7 +72,8 @@ const Estimation = () => {
   const updatedEstimation = useSelector((state) => state.Estimation.updateUserData)
   const CatelogueData = useSelector((state) => state.Catelogue.updateCatelogueData)
   const catelogueData = useSelector((state) => state.Catelogue.CatelogueData);
-  const taxData = useSelector((state)=>state.Tax.TaxData)
+  console.log("catelogueData", catelogueData);
+  const taxData = useSelector((state) => state.Tax.TaxData)
   const [formData, setFormData] = useState({
     inquiry_no: null,
     estimation_date: null,
@@ -178,7 +191,9 @@ const Estimation = () => {
       [name]: value,
     }));
   };
-
+  const catelogueModalClose = () => {
+    setCateModalOpen({ modalValue: false })
+  }
   const catelogModal = (e) => {
     const index = e.target.name.split("-")[1]
     setCateModalOpen({ modalValue: true, index: index })
@@ -236,10 +251,6 @@ const Estimation = () => {
 
   const calculateEstimatedRate = (index) => {
     const quantity = parseFloat(estiFormData.quantity[index]) || 0;
-    // const listPrice = parseFloat(CatelogueData && CatelogueData.catelouge.list_price[index]) || 0;
-    // console.log("listPrice", listPrice);
-    // const discount = parseFloat(CatelogueData && CatelogueData.catelouge.discount[index]) || 0;
-    // const vatPercent = parseFloat(CatelogueData && CatelogueData.catelouge.tax.rate[index]) || 0;
     const listPrice = parseFloat(estiFormData.list_price[index]) || 0;
     const discount = parseFloat(estiFormData.discount[index]) || 0;
     const vatPercent = parseFloat(estiFormData.vatPercent[index]) || 0;
@@ -317,7 +328,7 @@ const Estimation = () => {
       };
     });
   };
-  const handleEstimationDetailsAPI = (index)=>{
+  const handleEstimationDetailsAPI = (index) => {
     if (taxData) {
       const { id, name, rate } = taxData;
       setEstiFormData((prev) => {
@@ -326,20 +337,20 @@ const Estimation = () => {
         const UpdatedVatType = [...prev.vat_type];
         UpdatedId[index] = name;
         const UpdatedVatPercentage = [...prev.vat_percentage];
-        UpdatedName[index] = rate;
-        
+        UpdatedVatPercentage[index] = rate;
+
         return {
           ...prev,
           id: UpdatedId,
           vat_type: UpdatedVatType,
           vat_percentage: UpdatedVatPercentage,
-     
+
         };
       });
-    } 
+    }
 
-     } 
-  
+  }
+
   useEffect(() => {
     const newEstiFormData = { ...estiFormData };
     let totalEstimationRate = 0; // Initialize the total to 0
@@ -466,6 +477,117 @@ const Estimation = () => {
       });
     }
   }, [token, updatedEstimation]);
+
+
+  // Catelogue Modal Logic
+  const tableRef = useRef(null);
+  const [gg, setGg] = useState(true);
+  const columns = useMemo(() => colHeader, []);
+  const [rowData, setRowData] = useState([]);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const response = await api.get(`/catalogue`, {
+                headers: {
+                    Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
+                },
+            });
+            const { data } = response;
+
+            // Check if data.catelouge exists before updating rowData
+            if (data) {
+                // Update rowData with the API response
+                setRowData(data);
+            } else {
+                // Handle the case where the API response is missing the expected data
+                console.error('API response is missing expected data');
+            }
+        } catch (error) {
+            // Handle any errors that occur during the API call
+            console.error('Error fetching data from the API:', error);
+        }
+    };
+
+    fetchData(); // Call the fetchData function when the component mounts
+}, []); // Include any dependencies that should trigger the API call (e.g., id)
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    page,
+    nextPage,
+    previousPage,
+    prepareRow,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    state,
+    setGlobalFilter,
+
+  } = useTable(
+    {
+      data: rowData,
+      columns,
+    },
+    useGlobalFilter,
+    usePagination
+  );
+
+  const { pageIndex } = state;
+  const { globalFilter } = state;
+
+  const CateModalstyle = {
+    position: "absolute",
+    top: "40%",
+    left: "50%",
+    width: "90%",
+    transform: "translate(-50%, -50%)",
+    backgroundColor: "#fff",
+    borderRadius: "10px",
+    height: "fit-content",
+    overflow: "auto",
+    "@media (max-width: 576px)": {
+      width: "90%",
+    },
+  };
+  // const compPdf=useRef();
+  const generatePDF = useReactToPrint({
+    content: () => tableRef.current,
+    documentTitle: "dem",
+  });
+  const generatePdf = () => {
+    setGg(false);
+    setTimeout(() => {
+      generatePDF();
+    }, 500);
+    setTimeout(() => {
+      setGg(true);
+    }, 700);
+  };
+  const detailsRef = useRef(null);
+
+  useEffect(() => {
+    AOS.init();
+    const handleClickOutside = (event) => {
+      // Check if the clicked element is outside the details element
+      if (detailsRef.current && !detailsRef.current.contains(event.target)) {
+        // Close the details element if it's open
+        if (detailsRef.current.hasAttribute("open")) {
+          detailsRef.current.removeAttribute("open");
+        }
+      }
+    };
+
+    // Attach the event listener when the component mounts
+    document.addEventListener("click", handleClickOutside);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
   useEffect(() => {
     console.log("estimationDetails", estimationDetails);
   }, [estimationDetails])
@@ -707,7 +829,7 @@ const Estimation = () => {
                             <Autocomplete
                               name="inquiry_no"
                               value={
-                                taxData &&  formData.vat_type &&
+                                taxData && formData.vat_type &&
                                 taxData.find((item) => item.id === Number(formData.vat_type))
                               }
                               onChange={(event, value) => handleAutoComplete(value, "vat_type")}
@@ -898,7 +1020,7 @@ const Estimation = () => {
                                       />
                                     </div>
                                     {/* Catelogue Modal Start */}
-                                    <Modal
+                                    {/* <Modal
                                       open={cateModalOpen.modalValue}
                                       aria-labelledby="modal-modal-title"
                                       aria-describedby="modal-modal-description"
@@ -918,16 +1040,69 @@ const Estimation = () => {
                                               </div>
                                               <div className="product-details">
                                                 <h4>{item.name}</h4>
-                                                {/* <p><span>{item.model}</span></p>
-                                                {item.isactive ? "Active" : "Inactive"} */}
                                               </div>
                                             </div>
                                           )) : "Loading....."}
 
                                         </div>
                                       </Box>
-                                    </Modal>
+                                    </Modal> */}
+                                    {/* <CatelogueModal index = {myIOuter} handleClick = {handleClick} openCateModal = {cateModalOpen.modalValue} catelogueModalClose={catelogueModalClose} colHeader={header}   rowData={catelogueData}  pageHeading="Catelogue" /> */}
+
                                     {/* Catelogue Modal End */}
+                                    {/* Catelogue Modal Start New */}
+                                    <Modal open={cateModalOpen.modalValue}>
+                                      <Box style={CateModalstyle}>
+                                        <div className="modal-top-container">
+                                          <h4>Catelogue</h4>
+                                          <RxCross2 onClick={catelogueModalClose} className="modal-btn-cross" />
+
+                                        </div>
+                        
+                                        <div className="modal-data-container-catelogue">
+                                        <div className="Features-section">
+                                              <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} className="Global-filter" />
+                                              <button onClick={generatePdf} className="secondary-btn"><PiExportBold />Export</button>
+                                            </div>
+                                        
+                                        <div className="table-estimation">
+                                          <div ref={tableRef}>
+                                            <div {...getTableProps()}>
+                                              <div {...getTableBodyProps()} className="top-product-container-estimation">
+                                                {page.map((row) => {
+                                                  prepareRow(row, index);
+
+                                                  const cellId = row.original.id;
+                                                  return (
+                                                    <div {...row.getRowProps()} className="product-container-main" onClick={(e) => handleClick(e, myIOuter, cellId)}>
+
+                                                      <div className="product-container">
+                                                        <img src={`${ImgUrl}${row.original.primary_image}`} alt="Product Image" height='100px' />
+                                                        <div className="product-details-container">
+                                                          <h3>{row.original.name}</h3>
+                                                          <span>{row.original.category}</span>
+                                                        </div>
+                                                      </div>
+                                                      <div className="currency-container">
+                                                        <span>{row.original.currency}</span>
+                                                        <span>{row.original.list_price}</span>
+
+                                                      </div>
+                                                    </div>
+                                                  );
+                                                })}
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        </div>
+
+
+                                      </Box>
+                                    </Modal>
+                                    {/* Catelogue Modal End New */}
+
+
                                   </div>
 
                                 )

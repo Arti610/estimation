@@ -18,7 +18,6 @@ const CategoryList = () => {
 
 
   const header = [
-
     {
       Header: "Image",
       accessor: "profile_image",
@@ -36,42 +35,12 @@ const CategoryList = () => {
       accessor: "name",
     }
   ];
-  const headers = [
+ 
 
-    {
-      Header: "Image",
-      accessor: "profile_image",
-      disableFilters: true,
-      Cell: props => (
-        <img
-          src={`${ImgUrl}${props.row.original.primary_image}`}
-          width={80}
-          height={80}
-          alt={<FaUserAlt />}
-        />)
-    },
-    {
-      Header: "Name",
-      accessor: "name",
-    }
-  ];
-  // const handleClick = (id) => {
-  //   console.log("clicked");
-  //   dispatch(getupdateCatelogueData({ token, id }))
-  //   navigate("/sales/catelogue-details")
-  // }
   const createHandler = () => {
     navigate("/sales/catelogue-registration")
-
-    // dispatch(resetCatelogueData())
-    // window.location.reload()
   }
-  const editHandler = ()=>{
-
-  }
-  const deleteHandler = ()=>{
-    
-  }
+ 
   useEffect(() => {
     dispatch(getCatelogueData(token));
   }, []);

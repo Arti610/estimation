@@ -132,7 +132,7 @@ const CatelogueRegistration = () => {
 
     switch (name) {
       case "name":
-        if (!/^[A-Za-z]+$/.test(value)) {
+        if (!/^[A-Za-z\s]+$/.test(value)) {
           error = 'Name should only contain alphabetical characters';
         }
         setNameError(error);

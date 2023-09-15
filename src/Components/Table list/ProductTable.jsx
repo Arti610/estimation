@@ -1,16 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useTable, useGlobalFilter, usePagination } from "react-table";
 import './ProductTable.css'
-import { Checkbox } from "./Checkbox";
-import { BiDotsVerticalRounded } from 'react-icons/bi'
 import { GlobalFilter } from "./GlobalFilter"
 import { useDownloadExcel } from "react-export-table-to-excel";
 import { useReactToPrint } from "react-to-print";
-import { CSVLink } from "react-csv";
-import { FaEdit } from "react-icons/fa";
-import { GrNext } from "react-icons/gr";
-import { GrPrevious } from "react-icons/gr";
-import { MdDelete } from "react-icons/md";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { PiExportBold } from 'react-icons/pi'
@@ -18,37 +11,29 @@ import { MdOutlineAdd } from 'react-icons/md'
 import { useDispatch } from "react-redux";
 import { getupdateCatelogueData } from "../../APIs/CatelogueSlice";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
-// import { PropaneSharp } from "@mui/icons-material";
+import { ImgUrl } from "../../Config/Config";
+
 
 export const ProductTable = ({
     colHeader,
     rowData,
-    deleteHandler,
-    updateHandler,
     pageHeading,
-    tableHeading,
     createHandler,
     createBtn,
-    
+
 }) => {
     const tableRef = useRef(null);
-    const [densityState, setDensityState] = useState("hoverEffect");
     const [gg, setGg] = useState(true);
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [cookies, setCookies] = useState(['token'])
     const token = cookies.token;
     const columns = useMemo(() => colHeader, []);
-    // const data = useMemo(() => {rowData}, []);
-    // const columns = useMemo(() => COLUMNS, []);
-    // const data = useMemo(() => MOCK_DATA, []);
+
 
     const {
         getTableProps,
         getTableBodyProps,
-        headerGroups,
-        footerGroups,
         page,
         nextPage,
         previousPage,
@@ -58,8 +43,7 @@ export const ProductTable = ({
         pageOptions,
         state,
         setGlobalFilter,
-        allColumns,
-        getToggleHideAllColumnsProps,
+
     } = useTable(
         {
             data: rowData,
@@ -75,15 +59,7 @@ export const ProductTable = ({
         filename: "Users table",
         sheet: "Users",
     });
-    const download = () => {
-        setGg(false);
-        setTimeout(() => {
-            onDownload();
-        }, 500);
-        setTimeout(() => {
-            setGg(true);
-        }, 700);
-    };
+
     // const compPdf=useRef();
     const generatePDF = useReactToPrint({
         content: () => tableRef.current,
@@ -103,7 +79,7 @@ export const ProductTable = ({
         console.log("clicked");
         dispatch(getupdateCatelogueData({ token, id }))
         navigate("/sales/catelogue-details")
-      }
+    }
     useEffect(() => {
         AOS.init();
         const handleClickOutside = (event) => {
@@ -126,90 +102,53 @@ export const ProductTable = ({
     }, []);
     return (
         <>
-            <div
-                className="all_table_list"
-                data-aos="fade-left"
-                data-aos-duration="1000"
-
-            >
+            <div className="all_table_list" data-aos="fade-left" data-aos-duration="1000">
                 <div className="registration_top_header">
                     <p>
                         <h2>{pageHeading}</h2>
                         <div className="Features-section">
                             <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} className="Global-filter" />
-
                             <button onClick={generatePdf} className="secondary-btn"><PiExportBold />Export</button>
                             <button onClick={createHandler} >
                                 <MdOutlineAdd /> {createBtn} Add {pageHeading}
                             </button>
-
-
                         </div>
                     </p>
 
                 </div>
-
                 <div className="table">
+                    <div  ref={tableRef}>
+                        <div {...getTableProps()}>
+                            <div {...getTableBodyProps()} className="top-product-container">
+                                {page.map((row) => {
+                                    prepareRow(row);
 
-                  
-
-                        <div className="table-list" ref={tableRef}>
-                            <div {...getTableProps()}>
-                                {/* <thead>
-                  {headerGroups.map((headerGroup) => (
-                    <tr {...headerGroup.getHeaderGroupProps()}>
-                      {headerGroup.headers.map((column) => (
-                        <th {...column.getHeaderProps()}>
-                          {column.render("Header")}
-                        </th>
-                      ))}
-                    
-                    </tr>
-                  ))}
-                </thead> */}
-                                <div {...getTableBodyProps()} className="all-procuct-container">
-                                    {page.map((row, i) => {
-                                        prepareRow(row);
-
-                                        return (
-                                            <div {...row.getRowProps()}  className="product-container">
-                                                {row.cells.map((cell, i) => {
-                                                      const cellId = cell.row.original.id;
-                                                      const cellName = cell.row.original.name;
-                                                    return (                               
-                                                     <>
-                                                        <div id="td_column" {...cell.getCellProps()}  onClick={() => handleClick(cellId)}>                                  
-                                                                {cell.render("Cell")}
-                                                            {/* <span>{cellName}</span> */}
-                                                        </div>
-                                                     </>
-                                                    );
-                                                })}
+                                    const cellId = row.original.id;
+                                    return (
+                                        <div {...row.getRowProps()} className="product-container-main" onClick={() => handleClick(cellId)}>
+                                       
+                                            <div className="product-container">
+                                            <img src={`${ImgUrl}${row.original.primary_image}`} alt="Product Image" height='100px'/>
+                                            <div className="product-details-container">
+                                            <h3>{row.original.name}</h3>
+                                            <span>{row.original.category}</span>
                                             </div>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                        </div>
-                        <div className="Navigation">
-                            <div className="NavigationButton">
-                                <div>
-                                    <span>page<strong> {pageIndex + 1} of {pageOptions.length}</strong></span>
-                                </div>
-                                <div style={{ display: "flex", float: "right", gap: '10px' }}>
-                                    <button className="secondary-btn" onClick={() => previousPage()} disabled={!canPreviousPage}>
-                                        {/* <GrPrevious className="btn-hover-color" /> */}
-                                        Previous
-                                    </button>
-                                    <button className="secondary-btn" onClick={() => nextPage()} disabled={!canNextPage}>
-                                        {/* <GrNext className="btn-hover-color" /> */} Next
-                                    </button>
-                                </div>
+                                            </div>
+                                            <div className="currency-container">
+                                                <span>{row.original.currency}</span>
+                                                <span>{row.original.list_price}</span>
+                                                
+                                            </div>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </div>
                     </div>
                 </div>
-            
+
+            </div>
+
         </>
     );
 };
