@@ -544,7 +544,7 @@ const Estimation = () => {
     left: "50%",
     width: "90%",
     transform: "translate(-50%, -50%)",
-    backgroundColor: "#fff",
+    backgroundColor: "#f9fafb",
     borderRadius: "10px",
     height: "fit-content",
     overflow: "auto",
