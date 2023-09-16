@@ -282,7 +282,11 @@ const Estimation = () => {
       if (name === 'markup') {
         updatedMarkup[index] = value;
         updatedMarkupValue[index] = parseFloat(updatedMarkup[index] * estimationDetails.estimation_rate[index] / 100).toFixed(2)
-        updatedGrossPrice[index] = parseFloat(estimationDetails.estimation_rate[index] + updatedMarkupValue[index]).toFixed(2)
+        console.log('test ... esti rate ', estimationDetails.estimation_rate[index], 'test markupvalie..',
+          updatedMarkupValue[index], 'test add ...', Number(estimationDetails.estimation_rate[index]) + Number(updatedMarkupValue[index]));
+
+        updatedGrossPrice[index] = parseFloat(Number(estimationDetails.estimation_rate[index]) + Number(updatedMarkupValue[index])).toFixed(2)
+        // updatedGrossPrice[index] = parseFloat(estimationDetails.estimation_rate[index] + updatedMarkupValue[index]).toFixed(2)
         updatedTaxable[index] = parseFloat(quantities[index] * updatedGrossPrice[index]).toFixed(2)
       }
 
@@ -300,34 +304,31 @@ const Estimation = () => {
     });
   };
   const handleEstimationDetailsTax = (value, selectedIndex, index) => {
+    setEstimationDetails((prev) => {
+      const UpdatedId = [...prev.vat_id];
+      UpdatedId[index] = value.id;
+      const UpdatedVatType = [...prev.vat_type];
+      UpdatedVatType[index] = value.name;
+      const UpdatedVatPercentage = [...prev.vat_percentage];
+      UpdatedVatPercentage[index] = value.rate;
+      const UpdateVatAmt = [...prev.vat_amount];
+      UpdateVatAmt[index] = parseFloat(estimationDetails.taxable[index] * UpdatedVatPercentage[index] / 100).toFixed(2); // Round to 2 decimal places
+      const UpdateSalesPrice = [...prev.sales_price];
+      UpdateSalesPrice[index] = parseFloat(Number(estimationDetails.taxable[index]) + Number(UpdateVatAmt[index])).toFixed(2); // Round to 2 decimal places
 
-   
+      return {
+        ...prev,
+        vat_id: UpdatedId,
+        vat_type: UpdatedVatType,
+        vat_percentage: UpdatedVatPercentage,
+        vat_amount: UpdateVatAmt,
+        sales_price: UpdateSalesPrice,
+      };
+    });
+  };
 
-      setEstimationDetails((prev) => {
-        const UpdatedId = [...prev.vat_id];
-        UpdatedId[index] = value.id;
-        const UpdatedVatType = [...prev.vat_type];
-        UpdatedVatType[index] = value.name;
-        const UpdatedVatPercentage = [...prev.vat_percentage];
-        UpdatedVatPercentage[index] = value.rate;
-        const UpdateVatAmt = [...prev.vat_amount];
-        UpdateVatAmt[index] = parseFloat(estimationDetails.taxable[index] * UpdatedVatPercentage[index] / 100).toFixed(2); // Round to 2 decimal places
-        const UpdateSalesPrice = [...prev.sales_price];
-        UpdateSalesPrice[index] = parseFloat(estimationDetails.taxable[index] + UpdateVatAmt[index]).toFixed(2); // Round to 2 decimal places
-    
-        return {
-          ...prev,
-          vat_id: UpdatedId,
-          vat_type: UpdatedVatType,
-          vat_percentage: UpdatedVatPercentage,
-          vat_amount: UpdateVatAmt,
-          sales_price: UpdateSalesPrice,
-        };
-      });
-    };
-    
 
-  
+
 
   useEffect(() => {
     const newEstiFormData = { ...estiFormData };
@@ -422,14 +423,14 @@ const Estimation = () => {
       fData.append("inquiry_no", estimationDetails.inquiry_no);
       fData.append("estimation_date", estimationDetails.estimation_date);
       // fData.append("inquirydetail", (estimationDetails.inquirydetail));
-      console.log("  estimationDetails.inquirydetail",  estimationDetails.inquirydetail);
+      console.log("  estimationDetails.inquirydetail", estimationDetails.inquirydetail);
       estimationDetails.inquirydetail.forEach((file, index) => {
         fData.append(`inquirydetail`, file)
       })
       estimationDetails.vat_id.forEach((file, index) => {
         fData.append(`vat_tax`, file)
       })
-     
+
       estimationDetails.markup.forEach((file, index) => {
         fData.append(`markup`, file)
       })
@@ -804,6 +805,7 @@ const Estimation = () => {
                               onChange={(e) => handleEstimationDetails('markup', e.target.value, index)}
                               placeholder='Ex: 5%'
                               fullWidth
+                              value={estimationDetails.markup[index]}
                               required
                             />
                           </div>
