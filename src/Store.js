@@ -10,9 +10,11 @@ import CatelogueSlice from "./APIs/CatelogueSlice";
 import InquirySlice from "./APIs/InquirySlice";
 import EstimationSlice from "./APIs/EstimationSlice";
 import UserlogSlice from "./APIs/UserlogSlice";
+import LoginSlice from "./APIs/LoginSlice";
 
 const Store = configureStore({
   reducer: {
+    Login: LoginSlice,
     Customer: CustomerSlice,
     User: UserSlice,
     Tax: TaxSlice,

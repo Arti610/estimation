@@ -2,17 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCatelogueData, getupdateCatelogueData, resetCatelogueData } from '../../APIs/CatelogueSlice';
 import './Catelogue.css'
-import { useLocation, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { ImgUrl } from '../../Config/Config';
 import { ProductTable } from '../../Components/Table list/ProductTable';
 import { FaUserAlt } from 'react-icons/fa'
-import { BasicTable } from '../../Components/Table list/BasicTable';
+
 const CategoryList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
-  const location = useLocation()
+
   const [cookies, setCookies] = useState(['token'])
   const token = cookies.token;
+  console.log("cookie", cookies);
+  console.log("token cate", token);
   const [btnToggle, setBtnToggle] = useState(true)
   const catelogueData = useSelector((state) => state.Catelogue.CatelogueData);
 
@@ -38,7 +40,7 @@ const CategoryList = () => {
  
 
   const createHandler = () => {
-    navigate("/sales/catelogue-registration")
+    navigate("/dashboard/sales/catelogue-registration")
   }
  
   useEffect(() => {
@@ -86,8 +88,6 @@ const CategoryList = () => {
         // handleClick={handleClick}
         pageHeading="Catelogue" /> :
       "loading...."}
-
-
     </>
   );
 };

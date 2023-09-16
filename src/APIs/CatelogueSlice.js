@@ -3,14 +3,16 @@ import api from "../Config/Apis";
 
 
 export const getCatelogueData = createAsyncThunk("getCatelogueData", async (token) => {
+    console.log("tokennnnnn", token);
     try {
         const response = await api.get("/catalogue", {
             headers: {
-                // Authorization: `token ${token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
+                Authorization: `token ${token}`,
+                // Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
                 // Authorization: `arti`
             },
         })
+      
         return response.data
     } catch (error) {
         throw error;
@@ -165,9 +167,8 @@ const CatelogueSlice = createSlice({
             state.status.get = "loading"
         })
         builder.addCase(getCatelogueData.fulfilled, (state, action) => {
-            state.status.get = "succeeded"
-      
-
+            state.status.get = "succeeded"  
+            state.CatelogueData = action.payload
         })
         builder.addCase(getCatelogueData.rejected, (state) => {
             state.status.get = "failed"

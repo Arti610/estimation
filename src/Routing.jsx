@@ -19,29 +19,37 @@ import CategoryList from "./Common_Components/Catelogue/CategoryList";
 import CatelogueRegistration from "./Common_Components/Catelogue/CatelogueRegistration";
 import Inquiry from "./Common_Components/Inquiry/Inquiry";
 import Estimation from "./Common_Components/Estimation/Estimation";
+
 const Routing = () => {
   return (
     <BrowserRouter>
       <Routes>
-          <Route path="/login" element={<Login/>}/>
-        <Route path="/" element={<Sidebar />} >
+        <Route path="/" element={<Login />} />
+        <Route path="/dashboard" element={<Sidebar />}>
           <Route index element={<Dashboard />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/sales/catelogue" element={<CategoryList />} />
-          <Route path="/sales/catelogue-details" element={<Catelogue />} />
-          <Route path="/sales/catelogue-registration" element={<CatelogueRegistration />} />
-          <Route path="/sales/inquiry" element={<InquiryList />} />
-          <Route path="/sales/inquiry-registration" element={<Inquiry />} />
-          <Route path="/sales/estimation" element={<EstimationList />} />
-          <Route path="/sales/estimation-registration" element={<Estimation />} />
-          <Route path="/settings/customer" element={<CustomerList/>} />
-          <Route path="/settings/employer" element={<EmployerList/>} />
-          <Route path="/settings/department" element={<DepartmentList/>} />
-          <Route path="/settings/source-of-inquiry" element={<SourceOfInquiryList/>} />
-          <Route path="/settings/users" element={<UserList/>} />
-          <Route path="/settings/user-registration" element={<User/>} />
-          <Route path="/settings/tax" element={<TaxList/>} />
-          <Route path="/settings/tax-agencies" element={<TaxAgenciesList/>} />
+
+          {/* Nested "sales" routes */}
+          <Route path="sales">
+            <Route path="catelogue" element={<CategoryList />} />
+            <Route path="inquiry" element={<InquiryList />} />
+            <Route path="estimation" element={<EstimationList />} />
+            <Route path="catelogue-details" element={<Catelogue />} />
+            <Route path="catelogue-registration" element={<CatelogueRegistration />} />
+            <Route path="inquiry-registration" element={<Inquiry />} />
+            <Route path="estimation-registration" element={<Estimation />} />
+          </Route>
+
+          <Route path="settings">
+            <Route path="customer" element={<CustomerList />} />
+            <Route path="employer" element={<EmployerList />} />
+            <Route path="department" element={<DepartmentList />} />
+            <Route path="source-of-inquiry" element={<SourceOfInquiryList />} />
+            <Route path="users" element={<UserList />} />
+            <Route path="user-registration" element={<User />} />
+            <Route path="tax" element={<TaxList />} />
+            <Route path="tax-agencies" element={<TaxAgenciesList />} />
+          </Route>
+
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>

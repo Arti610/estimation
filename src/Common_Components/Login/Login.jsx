@@ -6,6 +6,8 @@ import { getTaxAgencyData } from "../../APIs/TaxAgencySlice";
 import { useCookies } from "react-cookie";
 import "../../Components/Modal/Modal.css"
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
+import { userLogin } from "../../APIs/LoginSlice";
+import { useNavigate } from "react-router-dom";
 const Login = (props) => {
   const style = {
     position: "absolute",
@@ -23,67 +25,39 @@ const Login = (props) => {
     },
   };
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const Agency = useSelector((state) => state.TaxAgency.TaxAgencyData)
-  const [formData, setFormData] = useState({
-    email: "",
-    password: ""
-  })
+
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  // const { loading, error } = useSelector((state) => state.login)
   const [cookies, setCookies] = useCookies(["token"])
   const token = cookies.token;
 
   const passwordHandler = () => {
     setShowPassword(!showPassword)
   }
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    
-    // Validation
-    let error = '';
-  
-    switch (name) {
-      case "password":
-        if (value.length > 8) {
-          error = 'Password must be at most 8 characters long';
-        } else if (!/[A-Z]/.test(value)) {
-          error = 'Password must contain at least one uppercase letter';
-        } else if (!/[a-z]/.test(value)) {
-          error = 'Password must contain at least one lowercase letter';
-        } else if (!/\d/.test(value)) {
-          error = 'Password must contain at least one digit';
-        } else if (!/[!@#$%^&*()_+{}\[\]:;<>,.?~\-]/.test(value)) {
-          error = 'Password must contain at least one symbol';
-        }
-        setPasswordError(error);
-        break;
-  
-      case "email":
-        const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-        if (!emailRegex.test(value)) {
-          error = 'Invalid email address';
-        }
-        setEmailError(error);
-        break;
-  
-      // Add more cases for other fields as needed
-  
-      default:
-        break;
-    }
-  
-    // Update password state up to 8 characters
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value.substring(0, 8), // Limit to 8 characters
-    }));
-  };
-  
-  useEffect(() => {
-    dispatch(getTaxAgencyData(token))
 
-  }, [])
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    let userCredential = { email, password };
+
+    dispatch(userLogin(userCredential)).then((result) => {
+      console.log("result", result);
+      if (result) {
+        setEmail('');
+        setPassword('');
+        navigate("/dashboard");
+      }
+    });
+  };
+
+
+
   return (
     <>
 
@@ -91,42 +65,40 @@ const Login = (props) => {
         <div className="modal-top-container">
           <h4>Login</h4>
         </div>
-        <form>
+        <form onSubmit={handleSubmit}>
 
 
           <Grid item xs={12} sm={6} md={4}>
             <label>
-              LOGIN <span style={{ color: "red" }}>*</span>
+              EMAIL <span style={{ color: "red" }}>*</span>
             </label>
             <TextField
               type="text"
               className="inputfield bg-color"
               name="email"
-              onChange={handleChange}
-              value={formData.email}
-              placeholder="Enter Name"
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              placeholder="example@gmail.com"
               fullWidth
               required
-              error={Boolean(emailError)}
-              helperText={emailError}
+
+
             />
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
             <label>
               PASSWORD <span style={{ color: "red" }}>*</span>
-
             </label>
             <TextField
               type={showPassword ? "text" : "password"}
               className="inputfield bg-color"
               name="password"
-              onChange={handleChange}
-              value={formData.password}
-              placeholder="Enter Rate"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              placeholder="Enter Password"
               fullWidth
               required
-              error={Boolean(passwordError)}
-              helperText={passwordError}
+
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -140,20 +112,22 @@ const Login = (props) => {
           </Grid>
 
 
-         <div style={{width:"100%", display:"flex", justifyContent:"center"}}>
-         <button
-            variant="outlined"
-            type="submit"
-            style={{
-              margin: "15px",
-              fontSize: "12px",
-            }}
-            onClick={props.createOrUpdateHandler}
-          >
-            {/* {props.modalData.id ? "UPDATE" : "CREATE"} */}
-            Login
-          </button>
-         </div>
+          <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+            <button
+              variant="outlined"
+              type="submit"
+              style={{
+                margin: "15px",
+                fontSize: "12px",
+              }}
+              onClick={props.createOrUpdateHandler}
+            >
+              {/* {loading ? "loading....." : "Login"} */}
+              login
+            </button>
+          </div>
+          {/* {error && <div className="error-message">{error}</div>} */}
+
         </form>
       </Box>
 

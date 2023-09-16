@@ -72,11 +72,11 @@ const InquiryList = () => {
   ];
 
   const createHandler = () => {
-    navigate("/sales/inquiry-registration")
+    navigate("/dashboard/sales/inquiry-registration")
   }
   const editHandler = (id) => {
     dispatch(getupdateInquiryData({ id, token }))
-    navigate("/sales/inquiry-registration")
+    navigate("/dashboard/sales/inquiry-registration")
   }
 
   const deleteHandler = (id) => {

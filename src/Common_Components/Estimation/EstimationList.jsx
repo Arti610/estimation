@@ -62,11 +62,11 @@ const EstimationList = () => {
   ];
 
   const createHandler = () => {
-    navigate("/sales/Estimation-registration")
+    navigate("/dashboard/sales/Estimation-registration")
   }
   const editHandler = (id) => {
     dispatch(getupdateEstimationData({ id, token }))
-    navigate("/sales/Estimation-registration")
+    navigate("/dashboard/sales/Estimation-registration")
   }
 
   const deleteHandler = (id) => {

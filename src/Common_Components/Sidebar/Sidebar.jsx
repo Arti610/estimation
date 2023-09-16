@@ -1,23 +1,22 @@
-import React, { useState } from 'react'
-import "./Sidebar.css"
-import { AiFillDashboard, AiOutlineMenu } from "react-icons/ai"
-import { AiFillSetting, AiOutlineUserSwitch, AiFillAccountBook, AiOutlineContacts, AiOutlineRobot, AiFillSignal, AiOutlineCustomerService } from 'react-icons/ai'
-import { FaAngleDown, FaAngleRight, FaUsers } from 'react-icons/fa'
-import { MdLocalFireDepartment, MdRealEstateAgent } from 'react-icons/md'
-import { HiReceiptTax } from 'react-icons/hi'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Outlet } from 'react-router-dom'
-import Topbar from '../Topbar/Topbar'
+import React from 'react';
+import "./Sidebar.css";
+import { AiFillDashboard, AiFillSetting, AiOutlineCustomerService, AiOutlineUserSwitch, AiFillAccountBook, AiOutlineContacts, AiOutlineRobot, AiFillSignal } from 'react-icons/ai';
+import { FaAngleDown, FaAngleRight, FaUsers } from 'react-icons/fa';
+import { MdLocalFireDepartment, MdRealEstateAgent } from 'react-icons/md';
+import { HiReceiptTax } from 'react-icons/hi';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
+import Topbar from '../Topbar/Topbar';
 
 const Sidebar = () => {
-
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const location = useLocation();
 
     // Function to determine if a link is active
     const isLinkActive = (path) => {
         return location.pathname === path;
     };
+
     return (
         <div className="main-container">
             <div className="topbar-container">
@@ -27,65 +26,64 @@ const Sidebar = () => {
             </div>
             <div className="content-container">
                 <div className="sidebar">
-                    <div className={`sidebar-element ${isLinkActive("/dashboard") ? 'active' : ''}`} onClick={() => navigate("/dashboard")}>
-                        <div className="sidebar-icons " ><AiFillDashboard /></div>
+                    <Link to="/dashboard" className={`sidebar-element ${isLinkActive("/dashboard") ? 'active' : ''}`}>
+                        <div className="sidebar-icons"><AiFillDashboard /></div>
                         <div className="sidebar-title">Dashboard</div>
-
-                    </div>
-                    <div className={`sidebar-element sidebar-element-sales ${isLinkActive("/sales/catelogue") || isLinkActive("/sales/inquiry") || isLinkActive("/sales/estimation") ? 'active' : ''}`} >
+                    </Link>
+                    <Link to="/dashboard/sales" className={`sidebar-element sidebar-element-sales ${isLinkActive("/dashboard/sales") ? 'active' : ''}`}>
                         <div className='sidebar-icons'><AiFillSignal /></div>
                         <div className="sidebar-title">Sales</div>
                         <div className="sidebar-submenus">
-                            <div className="submenu" onClick={() => navigate("/sales/catelogue")}>
+                            <Link to="/dashboard/sales/catelogue" className="submenu">
                                 <div className="submenu-icons"><AiOutlineRobot /></div>
                                 <div className="submenu-title">Catelogue</div>
-                            </div>
-                            <div className="submenu" onClick={() => navigate("/sales/inquiry")}>
+                            </Link>
+                            <Link to="/dashboard/sales/inquiry" className="submenu">
                                 <div className="submenu-icons"><AiOutlineRobot /></div>
                                 <div className="submenu-title">Inquiry</div>
-                            </div>
-                            <div className="submenu" onClick={() => navigate("/sales/estimation")}>
+                            </Link>
+                            <Link to="/dashboard/sales/estimation" className="submenu">
                                 <div className="submenu-icons"><AiFillAccountBook /></div>
                                 <div className="submenu-title">Estimation</div>
-                            </div>
+                            </Link>
                         </div>
-                    </div>
-                    <div className={`sidebar-element sidebar-element-sales ${isLinkActive("/settings/customer") || isLinkActive("/settings/employer") || isLinkActive("/settings/department") || isLinkActive("/settings/source-of-inquiry") || isLinkActive("/settings/users") || isLinkActive("/settings/tax") || isLinkActive("/settings/tax-agencies") ? 'active' : ''}`}>
+                    </Link>
+                    <Link to="/dashboard/settings" className={`sidebar-element sidebar-element-sales ${isLinkActive("/dashboard/settings") ? 'active' : ''}`}>
+                    {/* <div className={`sidebar-element sidebar-element-sales ${isLinkActive("/settings/customer") || isLinkActive("/settings/employer") || isLinkActive("/settings/department") || isLinkActive("/settings/source-of-inquiry") || isLinkActive("/settings/users") || isLinkActive("/settings/tax") || isLinkActive("/settings/tax-agencies") ? 'active' : ''}`}> */}
                         <div className="sidebar-icons"><AiFillSetting /></div>
                         <div className="sidebar-title">Settings</div>
                         <div className="sidebar-submenus">
-                            <div className="submenu" onClick={() => navigate("/settings/customer")}>
+                            <Link to="/dashboard/settings/customer" className="submenu">
                                 <div className="submenu-icons"><AiOutlineCustomerService /></div>
                                 <div className="submenu-title">Customer</div>
-                            </div>
-                            <div className="submenu" onClick={() => navigate("/settings/employer")}>
+                            </Link>
+                            <Link to="/dashboard/settings/employer" className="submenu">
                                 <div className="submenu-icons"><AiOutlineUserSwitch /></div>
                                 <div className="submenu-title">Employer</div>
-                            </div>
-                            <div className="submenu" onClick={() => navigate("/settings/department")}>
+                            </Link>
+                            <Link to="/dashboard/settings/department" className="submenu">
                                 <div className="submenu-icons"><MdLocalFireDepartment /></div>
                                 <div className="submenu-title">Department</div>
-                            </div>
-                            <div className="submenu" onClick={() => navigate("/settings/source-of-inquiry")}>
+                            </Link>
+                            <Link to="/dashboard/settings/source-of-inquiry" className="submenu">
                                 <div className="submenu-icons"><AiOutlineContacts /></div>
                                 <div className="submenu-title">Source of Inquiry</div>
-                            </div>
-                            <div className="submenu" onClick={() => navigate("/settings/users")}>
+                            </Link>
+                            <Link to="/dashboard/settings/users" className="submenu">
                                 <div className="submenu-icons"><FaUsers /></div>
                                 <div className="submenu-title">Users</div>
-                            </div>
-                            <div className="submenu" onClick={() => navigate("/settings/tax")}>
+                            </Link>
+                            <Link to="/dashboard/settings/tax" className="submenu">
                                 <div className="submenu-icons"><MdRealEstateAgent /></div>
                                 <div className="submenu-title">Tax</div>
-                            </div>
-                            <div className="submenu" onClick={() => navigate("/settings/tax-agencies")}>
+                            </Link>
+                            <Link to="/dashboard/settings/tax-agencies" className="submenu">
                                 <div className="submenu-icons"><HiReceiptTax /></div>
                                 <div className="submenu-title">Tax Agency</div>
-                            </div>
-
+                            </Link>
                         </div>
-                    </div>
-
+                    {/* </div> */}
+                    </Link>
                 </div>
                 <div className="contentbar"><Outlet /></div>
             </div>

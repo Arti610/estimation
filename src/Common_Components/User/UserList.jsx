@@ -22,12 +22,12 @@ const UserList = () => {
   //   }
   // };
   const createHandler = () =>{
-    navigate("/settings/user-registration")
-    window.location.reload();
+    navigate("/dashboard/settings/user-registration")
+    // window.location.reload();
   }
   const editHandler = (id) => {
     dispatch(getupdateUserData({ id, token }));
-    navigate(`/settings/user-registration`); // Make sure to pass the user ID in the URL
+    navigate(`/dashboard/settings/user-registration`); // Make sure to pass the user ID in the URL
   }
   
   
