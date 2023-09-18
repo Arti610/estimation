@@ -17,7 +17,7 @@ const CustomerList = () => {
     const [phoneNumberError, setPhoneNumberError] = useState('');
     const [countryError, setCountryError] = useState('');
     const token = localStorage.getItem('Token');
-    console.log("token customer", token);
+ 
     const openModal = () => {
         setModalData({
             name: "",

@@ -17,13 +17,12 @@ export const getDepartmentData = createAsyncThunk("getDepartmentData", async (to
 
 
 export const createDepartmentData = createAsyncThunk("createDepartmentData", async (payload) => {
+    console.log("payload", payload);
     try {
         const response = await api.post("/department", payload.modalData, {
             headers: {
                 "Content-Type": "multipart/form-data, application/json",
-                // Authorization: `token ${payload.token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                // Authorization: `arti`
+                Authorization: `token ${payload.token}`,
             }
         })
         return response.data
@@ -32,14 +31,13 @@ export const createDepartmentData = createAsyncThunk("createDepartmentData", asy
     }
 })
 
-export const deleteDepartmentData = createAsyncThunk("deleteDepartmentData", async (id, token) => {
+export const deleteDepartmentData = createAsyncThunk("deleteDepartmentData", async (payload) => {
     try {
-        const response = await api.delete(`/delete_department/${id}`,
+        const response = await api.delete(`/delete_department/${payload.id}`,
             {
                 headers: {
-                    // Authorization: `token ${token}`,
-                    Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                    // Authorization: `arti`
+                    Authorization: `token ${payload.token}`,
+
                 }
             }
         )
@@ -55,9 +53,7 @@ export const updateDepartmentData = createAsyncThunk("updateDepartmentData", asy
         const response = await api.put(`/department/${payload.id}`, payload.updatedData, {
             headers: {
                 "Content-Type": "multipart/form-data, application/json",
-                // Authorization: `token ${payload.token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                // Authorization: `arti`
+                Authorization: `token ${payload.token}`,
             },
         });
         return response.data;
@@ -70,9 +66,7 @@ export const getupdateDepartmentData = createAsyncThunk("getupdateDepartmentData
         const response = await api.get(`/department/${payload.id}`,
             {
                 headers: {
-                    // Authorization: `token ${payload.token}`,
-                    Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                    // Authorization: `arti`
+                    Authorization: `token ${payload.token}`,
                 },
             })
         return response.data

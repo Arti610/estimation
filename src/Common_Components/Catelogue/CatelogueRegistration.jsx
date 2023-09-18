@@ -20,8 +20,7 @@ const CatelogueRegistration = () => {
   const [priceError, setPriceError] = useState('');
   const [discountError, setDiscountError] = useState('');
   const [baseOfPricing, setBaseOfPricing] = useState('');
-  const [cookies, setCookies] = useCookies(["token"])
-  const token = cookies.token;
+  const token = localStorage.getItem('Token');
   const Tax = useSelector((state)=>state.Tax.TaxData)
   const CatelogueData = useSelector((state) => state.Catelogue.updateCatelogueData)
   const updatedCatelogue = useSelector((state) => state.Catelogue.updateCatelogueData)

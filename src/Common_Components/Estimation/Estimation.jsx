@@ -58,8 +58,7 @@ const Estimation = () => {
   ];
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [cookies, setCookies] = useCookies(["token"])
-  const token = cookies.token;
+    const token = localStorage.getItem('Token');
   const fData = new FormData();
 
   const [selectedItemId, setSelectedItemId] = useState(null);

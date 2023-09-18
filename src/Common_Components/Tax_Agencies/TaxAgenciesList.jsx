@@ -13,8 +13,7 @@ const TaxAgenciesList = () => {
   const TaxAgencyDataBlank = ["Data Not Found"]
   const TaxAgencyData = useSelector((state) => state.TaxAgency.TaxAgencyData);
   const [modalOpen, setModalOpen] = useState(false);
-  const [cookies, setCookies] = useCookies(["token"])
-  const token = cookies.token;
+    const token = localStorage.getItem('Token');
   const [modalData, setModalData] = useState({
     name: "",
   });

@@ -6,9 +6,7 @@ export const getInquiryData = createAsyncThunk("getInquiryData", async (token) =
     try {
         const response = await api.get("/inquiry", {
             headers: {
-                // Authorization: `token ${token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-
+                Authorization: `token ${token}`,
             },
         })
         return response.data
@@ -23,9 +21,7 @@ export const createInquiryData = createAsyncThunk("createInquiryData", async (pa
         const response = await api.post("/inquiry", payload.fData, {
             headers: {
                 'content-type': 'multipart/form-data',
-                // Authorization: `token ${payload.token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-
+                Authorization: `token ${payload.token}`,
             }
         })
         return response.data
@@ -38,8 +34,7 @@ export const deleteInquiryData = createAsyncThunk("deleteInquiryData", async (pa
     try {
         const response = await api.delete(`/delete_inquiry/${payload.id}`, {
             headers: {
-                // Authorization: `token ${payload.token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
+                Authorization: `token ${payload.token}`,
             }
         });
         return response.data;
@@ -55,9 +50,7 @@ export const updateInquiryData = createAsyncThunk("updateInquiryData", async (pa
         const response = await api.put(`/inquiry/${payload.id}`, payload.fData, {
             headers: {
                 "Content-Type": "multipart/form-data",
-                // Authorization: `token ${payload.token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-
+                Authorization: `token ${payload.token}`,
             },
         });
         return response.data;
@@ -71,9 +64,7 @@ export const getupdateInquiryData = createAsyncThunk("getupdateInquiryData", asy
         const response = await api.get(`/inquiry/${payload.id}`,
             {
                 headers: {
-                    // Authorization: `token ${payload.token}`,
-                    Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-
+                    Authorization: `token ${payload.token}`,
                 },
             })
                
@@ -88,9 +79,7 @@ export const updateInquiryDetails = createAsyncThunk("updateInquiryDetails", asy
         const response = await api.put(`/inquiry_details_update/${payload.id}`, payload.details, {
             headers: {
                 "Content-Type": "multipart/form-data",
-                // Authorization: `token ${payload.token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-
+                Authorization: `token ${payload.token}`,
             },
         });
         return response.data;
@@ -103,7 +92,7 @@ export const deleteInquiryDetailsData = createAsyncThunk("deleteInquiryDetailsDa
     try {
         const response = await api.delete(`/inquiry_details_delete/${payload.id}`, {
             headers: {
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
+                Authorization: `token ${payload.token}`,
             },
         });
 

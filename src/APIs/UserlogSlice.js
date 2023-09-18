@@ -5,9 +5,7 @@ export const getUserLog = createAsyncThunk("getUserLog", async (token)=>{
     try {
         const response = await api.get("/userlog",{
             headers: {
-                // Authorization: `token ${token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-
+                Authorization: `token ${token}`,
             },
         })
         return response.data

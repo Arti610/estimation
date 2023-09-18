@@ -9,8 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const InquiryList = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [cookies, setCookies] = useCookies(["token"])
-  const token = cookies.token;
+    const token = localStorage.getItem('Token');
   const InquiryDataBlank = ["Data Not Found"]
   const InquiryData = useSelector((state) => state.Inquiry.InquiryData)
   const header = [

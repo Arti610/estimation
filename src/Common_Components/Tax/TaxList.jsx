@@ -25,8 +25,7 @@ const TaxList = () => {
     const TaxData = useSelector((state) => state.Tax.TaxData)
     const updatedTaxData = useSelector((state) => state.Tax.updateTaxDatastore);
     const [modalOpen, setModalOpen] = useState(false);
-    const [cookies, setCookies] = useCookies(['token']);
-    const token = cookies.token;
+    const token = localStorage.getItem('Token');
     const [nameError, setNameError] = useState('');
     const [rateError, setRateError] = useState('');
     const Agency = useSelector((state) => state.TaxAgency.TaxAgencyData);

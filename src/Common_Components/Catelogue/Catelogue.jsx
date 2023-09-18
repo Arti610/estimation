@@ -10,8 +10,7 @@ const Catelogue = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const CatelogueData = useSelector((state) => state.Catelogue.updateCatelogueData)
-  const [cookies, setCookies] = useState(['token'])
-  const token = cookies.token
+  const token = localStorage.getItem('Token');
   const updateHandler = (id) => {
     dispatch(getupdateCatelogueData({ token, id }))
     navigate("/sales/catelogue-registration")

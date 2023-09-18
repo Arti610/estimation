@@ -6,9 +6,7 @@ export const getTaxAgencyData = createAsyncThunk("getTaxAgencyData", async (toke
     try {
         const response = await api.get("/tax_agency", {
             headers: {
-                // Authorization: `token ${token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                
+                Authorization: `token ${token}`,
             },
         })
         return response.data
@@ -23,9 +21,7 @@ export const createTaxAgencyData = createAsyncThunk("createTaxAgencyData", async
         const response = await api.post("/tax_agency", payload.modalData, {
             headers: {
                 "Content-Type": "multipart/form-data, application/json",
-                // Authorization: `token ${payload.token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-              
+                Authorization: `token ${payload.token}`,
             }
         })
         return response.data
@@ -39,9 +35,7 @@ export const deleteTaxAgencyData = createAsyncThunk("deleteTaxAgencyData", async
         const response = await api.delete(`/delete_taxagency/${id}`,
             {
                 headers: {
-                    // Authorization: `token ${token}`,
-                    Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                    
+                    Authorization: `token ${token}`,                    
                 }
             }
         )
@@ -57,9 +51,7 @@ export const updateTaxAgencyData = createAsyncThunk("updateTaxAgencyData", async
         const response = await api.put(`/tax_agency/${payload.id}`, payload.updatedData, {
             headers: {
                 "Content-Type": "multipart/form-data, application/json",
-                // Authorization: `token ${payload.token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                
+                Authorization: `token ${payload.token}`,              
             },
         });
         return response.data;
@@ -72,9 +64,7 @@ export const getupdateTaxAgencyData = createAsyncThunk("getupdateTaxAgencyData",
         const response = await api.get(`/tax_agency/${payload.id}`,
             {
                 headers: {
-                    // Authorization: `token ${payload.token}`,
-                    Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                   
+                    Authorization: `token ${payload.token}`                   
                 },
             })
         return response.data

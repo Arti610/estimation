@@ -11,8 +11,7 @@ const EmployerList = () => {
     const EmployerDataBlank = ["Data Not Found"]
     const EmployerData = useSelector((state) => state.Employer.EmployerData);
     const [modalOpen, setModalOpen] = useState(false);
-    const [cookies, setCookies] = useCookies(["token"])
-    const token = cookies.token;
+    const token = localStorage.getItem('Token');
     const [nameError, setNameError] = useState('');
     const [emailError, setEmailError] = useState('');
     const [phoneNumberError, setPhoneNumberError] = useState('');

@@ -6,8 +6,7 @@ export const getUserData = createAsyncThunk("getUserData", async (token) => {
     try {
         const response = await api.get("/userlist", {
             headers: {
-                // Authorization: `token ${token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
+                Authorization: `token ${token}`,
            
             },
         })
@@ -23,8 +22,7 @@ export const createUserData = createAsyncThunk("createUserData", async (payload)
         const response = await api.post("/createuser", payload.fData, {
             headers: {
                 'content-type': 'multipart/form-data',
-                // Authorization: `token ${payload.token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
+                Authorization: `token ${payload.token}`,
            
             }
         })
@@ -39,8 +37,7 @@ export const deleteUserData = createAsyncThunk("deleteUserData", async (id, toke
         const response = await api.delete(`/user/delete/${id}`,
             {
                 headers: {
-                    // Authorization: `token ${token}`,
-                    Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
+                    Authorization: `token ${token}`,
                    
                 }
             }
@@ -57,8 +54,7 @@ export const updateUserData = createAsyncThunk("updateUserData", async (payload)
         const response = await api.put(`/updateuser/${payload.id}`, payload.fData, {
             headers: {
                 "Content-Type": "application/json",
-                // Authorization: `token ${payload.token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
+                Authorization: `token ${payload.token}`,
              
             },
         });
@@ -73,8 +69,7 @@ export const getupdateUserData = createAsyncThunk("getupdateUserData", async (pa
         const response = await api.get(`/user/${payload.id}`,
             {
                 headers: {
-                    // Authorization: `token ${payload.token}`,
-                    Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
+                    Authorization: `token ${payload.token}`,
                   
                 },
             })

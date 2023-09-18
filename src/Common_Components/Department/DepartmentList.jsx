@@ -11,8 +11,7 @@ const DepartmentList = () => {
   const DepartmentDataBlank = ["Data Not Found"]
   const DepartmentData = useSelector((state) => state.Department.DepartmentData);
   const [modalOpen, setModalOpen] = useState(false);
-  const [cookies, setCookies] = useCookies(["token"])
-  const token = cookies.token;
+  const token = localStorage.getItem('Token');
   const [modalData, setModalData] = useState({
     name: "",
     description: "",

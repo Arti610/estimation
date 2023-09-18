@@ -16,8 +16,7 @@ const SourceOfInquiryList = () => {
   // }]
 
   const [modalOpen, setModalOpen] = useState(false);
-  const [cookies, setCookies] = useCookies(["token"])
-  const token = cookies.token;
+    const token = localStorage.getItem('Token');
   const [modalData, setModalData] = useState({
     name: "",
     description: "",

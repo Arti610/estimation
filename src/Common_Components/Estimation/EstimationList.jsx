@@ -9,8 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const EstimationList = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [cookies, setCookies] = useCookies(["token"])
-  const token = cookies.token;
+    const token = localStorage.getItem('Token');
   const EstimationDataBlank = ["Data Not Found"]
   const EstimationData = useSelector((state) => state.Estimation.EstimationData)
   const header = [

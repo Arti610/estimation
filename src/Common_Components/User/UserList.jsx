@@ -11,8 +11,7 @@ const UserList = () => {
   const navigate = useNavigate()
   const UserData = useSelector((state) => state.User.UserData);
   const UserDataBlank = ["Data Not Found"]
-  const [cookies, setCookies] = useCookies(["token"])
-  const token = cookies.token;
+    const token = localStorage.getItem('Token');
 
   // const editHandler = (id) => {
   //   const editData = UserData.find((data) => data.id === id);

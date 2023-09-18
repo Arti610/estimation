@@ -16,8 +16,7 @@ import inquirysvgfirst from '../../assets/inquiry_svg_01.svg'
 import inquirysvgsecond from '../../assets/inquiry_svg_02.svg'
 const Dashboard = () => {
   const dispatch = useDispatch()
-  const [cookies, setCookies] = useCookies(["token"])
-  const token = cookies.token;
+    const token = localStorage.getItem('Token');
   const InquiryData = useSelector((state) => state.Inquiry.InquiryData)
   const CustomerData = useSelector((state) => state.Customer.CustomerData)
   const EstimationData = useSelector((state) => state.Estimation.EstimationData)

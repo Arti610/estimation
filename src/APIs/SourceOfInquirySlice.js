@@ -6,9 +6,7 @@ export const getSourceOfInquiryData = createAsyncThunk("getSourceOfInquiryData",
     try {
         const response = await api.get("/sourceofinquiry", {
             headers: {
-                // Authorization: `token ${token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-               
+                Authorization: `token ${token}`,
             },
         })
         return response.data
@@ -23,9 +21,7 @@ export const createSourceOfInquiryData = createAsyncThunk("createSourceOfInquiry
         const response = await api.post("/sourceofinquiry", payload.modalData, {
             headers: {
                 "Content-Type": "multipart/form-data, application/json",
-                // Authorization: `token ${payload.token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-              
+                Authorization: `token ${payload.token}`,
             }
         })
         return response.data
@@ -39,9 +35,7 @@ export const deleteSourceOfInquiryData = createAsyncThunk("deleteSourceOfInquiry
         const response = await api.delete(`/delete_soi/${id}`,
             {
                 headers: {
-                    // Authorization: `token ${token}`,
-                    Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                  
+                    Authorization: `token ${token}`,
                 }
             }
         )
@@ -57,14 +51,12 @@ export const updateSourceOfInquiryData = createAsyncThunk("updateSourceOfInquiry
         const response = await api.put(`/sourceofinquiry/${payload.id}`, payload.updatedData, {
             headers: {
                 "Content-Type": "multipart/form-data, application/json",
-                // Authorization: `token ${payload.token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-               
+                Authorization: `token ${payload.token}`,
             },
         });
         return response.data;
     } catch (error) {
-               throw error;
+        throw error;
     }
 });
 export const getupdateSourceOfInquiryData = createAsyncThunk("getupdateSourceOfInquiryData", async (payload) => {
@@ -72,9 +64,7 @@ export const getupdateSourceOfInquiryData = createAsyncThunk("getupdateSourceOfI
         const response = await api.get(`/sourceofinquiry/${payload.id}`,
             {
                 headers: {
-                    // Authorization: `token ${payload.token}`,
-                    Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                   
+                    Authorization: `token ${payload.token}`,
                 },
             })
         return response.data
@@ -88,10 +78,10 @@ const SourceOfInquirySlice = createSlice({
     name: "SourceOfInquiry",
     initialState: {
         status: {
-            get : null,
-            create : null,
-            update : null,
-            updating : null,
+            get: null,
+            create: null,
+            update: null,
+            updating: null,
             delete: null
         },
         SourceOfInquiryData: null,
@@ -107,8 +97,8 @@ const SourceOfInquirySlice = createSlice({
         })
         builder.addCase(getSourceOfInquiryData.fulfilled, (state, action) => {
             state.status = "succeeded"
-            state.SourceOfInquiryData = action.payload   
-              
+            state.SourceOfInquiryData = action.payload
+
         })
         builder.addCase(getSourceOfInquiryData.rejected, (state) => {
             state.status = "failed"

@@ -4,8 +4,17 @@ import { FaUserAlt, FaKey } from 'react-icons/fa'
 import { BiUserCheck } from 'react-icons/bi'
 import './Topbar.css'
 import { useNavigate } from 'react-router-dom'
+
+import { useDispatch } from 'react-redux'
+import { userLogout } from '../../APIs/LoginSlice'
 const Topbar = () => {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const token = localStorage.getItem('Token');
+    const logout = ()=>{
+        dispatch(userLogout(token))
+        navigate("/")
+    }
     return (
         <>
             <div className="main-topbar">
@@ -28,7 +37,7 @@ const Topbar = () => {
                         </div> */}
                         <div className="topbar-user-element" style={{ borderTop: "1px solid #c8c8c8", paddingTop: "3px" }}>
                             <div className="element-icon"><AiOutlineLogout style={{ fontSize: "16px" }} /> </div>
-                            <div className="element-text"><p>Logout</p></div>
+                            <div className="element-text"><p onClick={logout}>Logout</p></div>
                         </div>
                     </div>
                 </div>

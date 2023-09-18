@@ -6,9 +6,7 @@ export const getEstimationData = createAsyncThunk("getEstimationData", async (to
     try {
         const response = await api.get("/estimation", {
             headers: {
-                // Authorization: `token ${token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                // Authorization: `arti`
+                Authorization: `token ${token}`,
             },
         })
         return response.data
@@ -23,9 +21,8 @@ export const createEstimationData = createAsyncThunk("createEstimationData", asy
         const response = await api.post("/estimation", payload.fData, {
             headers: {
                 'content-type': 'multipart/form-data',
-                // Authorization: `token ${payload.token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                // Authorization: `arti`
+                Authorization: `token ${payload.token}`,
+
             }
         })
         return response.data
@@ -34,14 +31,13 @@ export const createEstimationData = createAsyncThunk("createEstimationData", asy
     }
 })
 
-export const deleteEstimationData = createAsyncThunk("deleteEstimationData", async (id, token) => {
+export const deleteEstimationData = createAsyncThunk("deleteEstimationData", async (payload) => {
     try {
-        const response = await api.delete(`/delete_estimation/${id}`,
+        const response = await api.delete(`/delete_estimation/${payload.id}`,
             {
                 headers: {
-                    // Authorization: `token ${token}`,
-                    Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                    // Authorization: `arti`
+                    Authorization: `token ${payload.token}`,
+
                 }
             }
         )
@@ -57,9 +53,8 @@ export const updateEstimationData = createAsyncThunk("updateEstimationData", asy
         const response = await api.put(`/estimation/${payload.id}`, payload.fData, {
             headers: {
                 "Content-Type": "application/json",
-                // Authorization: `token ${payload.token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                // Authorization: `arti`
+                Authorization: `token ${payload.token}`,
+
             },
         });
         return response.data;
@@ -73,9 +68,8 @@ export const getupdateEstimationData = createAsyncThunk("getupdateEstimationData
         const response = await api.get(`/estimation/${payload.id}`,
             {
                 headers: {
-                    // Authorization: `token ${payload.token}`,
-                    Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                    // Authorization: `arti`
+                    Authorization: `token ${payload.token}`,
+
                 },
             })
             
@@ -90,9 +84,8 @@ export const createEstimationResourceData = createAsyncThunk("createEstimationRe
         const response = await api.post("/estimation_resource_details", payload.fData, {
             headers: {
                 'content-type': 'multipart/form-data',
-                // Authorization: `token ${payload.token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                // Authorization: `arti`
+                Authorization: `token ${payload.token}`,
+
             }
         })
         return response.data
