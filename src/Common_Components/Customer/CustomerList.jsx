@@ -10,14 +10,14 @@ const CustomerList = () => {
     const CustomerDataBlank = ["Data Not Found"]
     const CustomerData = useSelector((state) => state.Customer.CustomerData);
     const [modalOpen, setModalOpen] = useState(false);
-    const [cookies, setCookies] = useCookies(["token"])
-    const token = cookies.token;
+
     const [nameError, setNameError] = useState('');
     const [lastNameError, setLastNameError] = useState('');
     const [emailError, setEmailError] = useState('');
     const [phoneNumberError, setPhoneNumberError] = useState('');
     const [countryError, setCountryError] = useState('');
-
+    const token = localStorage.getItem('Token');
+    console.log("token customer", token);
     const openModal = () => {
         setModalData({
             name: "",

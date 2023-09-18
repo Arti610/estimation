@@ -11,9 +11,8 @@ const CategoryList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
-  const [cookies, setCookies] = useState(['token'])
-  const token = cookies.token;
-  console.log("cookie", cookies);
+  // const token = useSelector((state) => state.Login.token);
+  const token = localStorage.getItem('Token');
   console.log("token cate", token);
   const [btnToggle, setBtnToggle] = useState(true)
   const catelogueData = useSelector((state) => state.Catelogue.CatelogueData);

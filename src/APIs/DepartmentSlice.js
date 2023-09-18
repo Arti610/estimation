@@ -6,9 +6,7 @@ export const getDepartmentData = createAsyncThunk("getDepartmentData", async (to
     try {
         const response = await api.get("/department", {
             headers: {
-                // Authorization: `token ${token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                // Authorization: `arti`
+                Authorization: `token ${token}`,
             },
         })
         return response.data
