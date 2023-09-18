@@ -15,6 +15,10 @@ const InquiryList = () => {
   const header = [
 
     {
+      Header: "Inquiry No",
+      accessor: "id",
+    },
+    {
       Header: "Client Reference No",
       accessor: "client_reference_no",
     },

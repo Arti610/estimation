@@ -10,11 +10,14 @@ import { CSVLink } from "react-csv";
 import { FaEdit } from "react-icons/fa";
 import { GrNext } from "react-icons/gr";
 import { GrPrevious } from "react-icons/gr";
+import { MdVisibility } from 'react-icons/md'
 import { MdDelete } from "react-icons/md";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { PiExportBold } from 'react-icons/pi'
 import { MdOutlineAdd } from 'react-icons/md'
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 // import { PropaneSharp } from "@mui/icons-material";
 
 export const BasicTable = ({
@@ -25,8 +28,10 @@ export const BasicTable = ({
   pageHeading,
   tableHeading,
   createHandler,
-  createBtn
+  createBtn,
+  showEditIcon = true,
 }) => {
+  const navigate = useNavigate()
   const tableRef = useRef(null);
   const [densityState, setDensityState] = useState("hoverEffect");
   const [gg, setGg] = useState(true);
@@ -183,15 +188,15 @@ export const BasicTable = ({
         </div>
 
         <div className="table">
-          
+
           <div className="Main-div">
             <div className="table-heading">
               <h4>{tableHeading}</h4>
-                 <div className="export-btn" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+              <div className="export-btn" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                 <BiDotsVerticalRounded />
                 {isHovered && (
                   <div className="table-btn-left">
-            
+
                     <span onClick={download}>Export as Excel</span>
                     <CSVLink data={rowData.slice(0, 10)}>
                       <span className="Csv">Export as CSV</span>
@@ -238,19 +243,27 @@ export const BasicTable = ({
                         {gg && (
                           <td className={densityState} style={{ width: "15px", paddingInline: "15px" }}>
                             <div id="btn_action">
-                              <FaEdit
-                                color="#7c5e1e"
-                                // color="#6e85b7"
+                              {showEditIcon ? (
+                                <FaEdit
+                                  color="#7c5e1e"
+                                  fontSize="17px"
+                                  paddingInline="5px 15px"
+                                  cursor="pointer"
+                                  margin="5px"
+                                  title="Edit Details"
+                                  onClick={() => {
+                                    updateHandler(row.original.id);
+                                  }}
+                                />
+                              ) : <MdVisibility
+                                color="#004987"
                                 fontSize="17px"
                                 paddingInline="5px 15px"
                                 cursor="pointer"
                                 margin="5px"
-                                title="Edit Details"
-                                onClick={() => {
-                                  console.log(`${row.original.id} for Edit`);
-                                  updateHandler(row.original.id);
-                                }}
-                              />
+                                title="View"
+                                onClick={() => navigate("/dashboard/sales/estimation-registration-detail")}
+                              />}
                               {/* <button onClick={()=>updateHandler(row.original.id)}>Edit</button> */}
 
                               <MdDelete

@@ -162,6 +162,11 @@ const CustomerList = () => {
 
     const header = [
         {
+            Header: "Serial No",
+            accessor: (row, index) => index + 1,
+            id: "serialNumber", // A unique ID for this column
+          },
+        {
             Header: "Name",
             accessor: "name",
         },
