@@ -46,34 +46,7 @@ const CategoryList = () => {
   }, []);
 
   return (
-    // <div data-aos="fade-left" data-aos-duration="1000">
-    //   <div className="registration_top_header">
-    //     <p>
-    //       <span className='border-bottom-heading'>
-    //         Catelogue
-    //       </span>
-    //       <button onClick={createHandler}>Create +</button>
-    //     </p>
-    //   </div>
-
-    //   <div className="main-product-container ">
-    //     {catelogueData && catelogueData ? catelogueData.map((item, index) => (
-
-    //       <div className="product-container" key={index} onClick={() => handleClick(item.id)}>
-    //         <div className="product-image">
-    //           <img src={`${ImgUrl}${item.primary_image}`} alt="image" />
-    //         </div>
-    //         <div className="product-details">
-    //           <h3>{item.name}</h3>
-    //           <p><span>{item.model}</span><span>{ }</span></p>
-    //           {item.isactive ? "Active" : "Inactive"}
-    //         </div>
-    //       </div>
-
-    //     )) : "There is currently no catalog available."}
-    //   </div>
-
-    // </div>
+    
     <>
       {/* <button onClick={() => setBtnToggle(!btnToggle)}>{btnToggle ? "List View" : "Card View"}</button> */}
       {catelogueData && btnToggle ? <ProductTable

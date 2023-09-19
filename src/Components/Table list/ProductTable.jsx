@@ -26,8 +26,7 @@ export const ProductTable = ({
     const [gg, setGg] = useState(true);
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const [cookies, setCookies] = useState(['token'])
-    const token = cookies.token;
+    const token = localStorage.getItem('Token');
     const columns = useMemo(() => colHeader, []);
 
 
@@ -76,9 +75,8 @@ export const ProductTable = ({
     };
     const detailsRef = useRef(null);
     const handleClick = (id) => {
-        console.log("clicked");
         dispatch(getupdateCatelogueData({ token, id }))
-        navigate("/sales/catelogue-details")
+        navigate("/dashboard/sales/catelogue-details")
     }
     useEffect(() => {
         AOS.init();
