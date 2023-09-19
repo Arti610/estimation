@@ -9,60 +9,60 @@ import { useNavigate } from 'react-router-dom';
 const EstimationList = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-    const token = localStorage.getItem('Token');
+  const token = localStorage.getItem('Token');
   const EstimationDataBlank = ["Data Not Found"]
   const EstimationData = useSelector((state) => state.Estimation.EstimationData)
-    const header = [
-      {
-        Header: "Serial No",
-        accessor: (row, index) => index + 1,
-        id: "serialNumber", // A unique ID for this column
+  const header = [
+    {
+      Header: "Serial No",
+      accessor: (row, index) => index + 1,
+      id: "serialNumber", // A unique ID for this column
+    },
+    {
+      Header: "Estimation Date",
+      accessor: "estimation_date",
+      Cell: ({ value }) => {
+        if (value && !isNaN(new Date(value))) {
+          return format(new Date(value), "dd/MM/yyyy");
+        }
+        // Handle cases where the date is missing or invalid
       },
-      {
-        Header: "Estimation Date",
-        accessor: "estimation_date",
-        Cell: ({ value }) => {
-          if (value && !isNaN(new Date(value))) {
-            return format(new Date(value), "dd/MM/yyyy");
-          }
-          // Handle cases where the date is missing or invalid
-        },
-      },
+    },
 
-      {
-        Header: "Client Ref Number",
-        accessor: "inquiry_no.client_reference_no",
-      },
-      {
-        Header: "Customer",
-        accessor: "inquiry_no.customer.name",
-      },
-      {
-        Header: "Employer",
-        accessor: "inquiry_no.employer.name",
-      },
-      {
-        Header: "Source Of Inquiry",
-        accessor: "inquiry_no.source_of_inquiry.name",
-      },
-      {
-        Header: "Department",
-        accessor: "inquiry_no.department.name",
-      },
-      {
-        Header: "Estimator",
-        accessor: "inquiry_no.estimator.first_name",
-      },
-      {
-        Header: "Salesman",
-        accessor: "inquiry_no.salesman.first_name",
-      },
-      {
-        Header: "Scope Of Work",
-        accessor: "inquiry_no.scope_of_work",
-      },
+    {
+      Header: "Client Ref Number",
+      accessor: "inquiry_no.client_reference_no",
+    },
+    {
+      Header: "Customer",
+      accessor: "inquiry_no.customer.name",
+    },
+    {
+      Header: "Employer",
+      accessor: "inquiry_no.employer.name",
+    },
+    {
+      Header: "Source Of Inquiry",
+      accessor: "inquiry_no.source_of_inquiry.name",
+    },
+    {
+      Header: "Department",
+      accessor: "inquiry_no.department.name",
+    },
+    {
+      Header: "Estimator",
+      accessor: "inquiry_no.estimator.first_name",
+    },
+    {
+      Header: "Salesman",
+      accessor: "inquiry_no.salesman.first_name",
+    },
+    {
+      Header: "Scope Of Work",
+      accessor: "inquiry_no.scope_of_work",
+    },
 
-    ];
+  ];
 
   const createHandler = () => {
     navigate("/dashboard/sales/Estimation-registration")
@@ -126,7 +126,7 @@ export default EstimationList
 // const header = [
 
 //   {
-//     Header: "Estimation Data",  
+//     Header: "Estimation Data",
 //     accessor: "estimation_date",
 //     Cell: ({ value }) => {
 //       return format(new Date(value), "dd/MM/yyyy");

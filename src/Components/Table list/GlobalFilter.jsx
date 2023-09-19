@@ -23,7 +23,8 @@ export const GlobalFilter = ({ filter, setFilter }) => {
         onChange={(e) => {
           setValue(e.target.value);
           onChange(e.target.value);
-        }} />
+        }}
+        placeholder="Search Catalogue" />
       <SearchIcon className='header_searchIcon' />
     </div>
   );

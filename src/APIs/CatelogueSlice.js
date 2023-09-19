@@ -48,13 +48,13 @@ export const deleteCatelogueData = createAsyncThunk("deleteCatelogueData", async
     }
 })
 
-export const updateCatelogueData = createAsyncThunk("updateCatelogueData", async ({ id, fData, token }) => {
+export const updateCatelogueData = createAsyncThunk("updateCatelogueData", async (payload) => {
 
     try {
-        const response = await api.put(`/catalogue/${id}`, fData, {
+        const response = await api.put(`/catalogue/${payload.id}`, payload.fData, {
             headers: {
                 "Content-Type": "multipart/form-data",
-                Authorization: `token ${token}`,
+                Authorization: `token ${payload.token}`,
             },
         });
 

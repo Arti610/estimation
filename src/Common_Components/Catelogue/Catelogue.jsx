@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ImgUrl } from '../../Config/Config'
 import './Catelogue.css'
@@ -6,6 +6,7 @@ import { FaFilePdf } from 'react-icons/fa'
 import { getupdateCatelogueData } from '../../APIs/CatelogueSlice'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+
 const Catelogue = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -15,6 +16,22 @@ const Catelogue = () => {
     dispatch(getupdateCatelogueData({ token, id }))
     navigate("/sales/catelogue-registration")
   }
+  // Add this event listener to your React component, e.g., in a useEffect hook.
+useEffect(() => {
+  const handleBeforeUnload = (e) => {
+    // Display a confirmation dialog when the user tries to refresh the page.
+    e.preventDefault();
+    e.returnValue = ''; // For older browsers
+  };
+
+  window.addEventListener('beforeunload', handleBeforeUnload);
+
+  // Clean up the event listener when the component unmounts.
+  return () => {
+    window.removeEventListener('beforeunload', handleBeforeUnload);
+  };
+}, []);
+
   return (
     <>
       <div data-aos="fade-left" data-aos-duration="1000">

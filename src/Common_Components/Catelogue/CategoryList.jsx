@@ -33,7 +33,71 @@ const CategoryList = () => {
     {
       Header: "Name",
       accessor: "name",
-    }
+    },
+    {
+      Header: "Type",
+      accessor: "type",
+    },
+    {
+      Header: "Category",
+      accessor: "category",
+    },
+    {
+      Header: "Sub-Category",
+      accessor: "sub_category",
+    },
+    {
+      Header: "Type-Sub-Category",
+      accessor: "type_sub_category",
+    },
+    {
+      Header: "Origin",
+      accessor: "origin",
+    },
+    {
+      Header: "Finish",
+      accessor: "finish",
+    },
+    {
+      Header: "Brand",
+      accessor: "brand",
+    },
+    {
+      Header: "Series",
+      accessor: "series",
+    },
+    {
+      Header: "Model",
+      accessor: "model",
+    },
+    {
+      Header: "Size",
+      accessor: "size",
+    },
+    {
+      Header: "Specification",
+      accessor: "specification",
+    },
+    {
+      Header: "List Price",
+      accessor: "list_price",
+    },
+    {
+      Header: "Currency",
+      accessor: "currency",
+    },
+    {
+      Header: "Discount",
+      accessor: "discount",
+    },
+    {
+      Header: "Unit Of Measurement",
+      accessor: "unit_of_measurement",
+    },
+    {
+      Header: "Base of Pricing",
+      accessor: "base_of_pricing",
+    },
   ];
  
 

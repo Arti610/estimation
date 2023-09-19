@@ -115,7 +115,7 @@ export const ProductTable = ({
 
                 </div>
                 <div className="table">
-                    <div  ref={tableRef}>
+                    <div ref={tableRef}>
                         <div {...getTableProps()}>
                             <div {...getTableBodyProps()} className="top-product-container">
                                 {page.map((row) => {
@@ -123,21 +123,26 @@ export const ProductTable = ({
 
                                     const cellId = row.original.id;
                                     return (
-                                        <div {...row.getRowProps()} className="product-container-main" onClick={() => handleClick(cellId)}>
-                                       
+                                        <div {...row.getRowProps()} className="product-container-main">
+
                                             <div className="product-container">
-                                            <img src={`${ImgUrl}${row.original.primary_image}`} alt="Product Image" height='100px'/>
-                                            <div className="product-details-container">
-                                            <h3>{row.original.name}</h3>
-                                            <span>{row.original.category}</span>
+                                                <img src={`${ImgUrl}${row.original.primary_image}`} alt="Product Image" height='100px' />
+                                                <div className="product-details-container">
+                                                    <strong>{row.original.name}</strong>
+                                                    <div className="currency-container">
+                                                        <span>{row.original.currency}</span>&nbsp;<span>{row.original.list_price}</span>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            </div>
-                                            <div className="currency-container">
-                                                <span>{row.original.currency}</span>
-                                                <span>{row.original.list_price}</span>
-                                                
-                                            </div>
+                                            {/* <span className="product-container-span"><strong>Type: </strong>{row.original.type}</span> */}
+                                            <span className="product-container-span">Brand :  <span style={{ color: "#" }}>{row.original.brand}</span></span>
+                                            <span className="product-container-span">Model :  <span style={{ color: "#" }}>{row.original.model}</span></span>
+                                            <span className="product-container-span" style={{display:"flex", justifyContent:"space-between", alignContent:"center"}}><span style={{ color: "#" }}>Origin :  {row.original.origin}</span><span className="view-container" onClick={() => handleClick(cellId)}>
+                                                <button style={{ background: "white", color: "#0072d3", display:"inline-block" }} onClick={() => handleClick(cellId)}>View</button>
+                                            </span></span>
+
                                         </div>
+
                                     );
                                 })}
                             </div>
