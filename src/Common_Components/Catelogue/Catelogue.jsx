@@ -28,9 +28,8 @@ const Catelogue = () => {
           </p>
         </div>
         <div className="main-catelogue-container">
-          <button onClick={() => updateHandler(CatelogueData && CatelogueData.catelouge.id)}>Edit</button>
 
-          {/* <div className="primary-container">
+          <div className="primary-container">
 
             <div className="images-container">
               <img src={`${ImgUrl}${CatelogueData && CatelogueData.catelouge.primary_image}`} />
@@ -104,14 +103,21 @@ const Catelogue = () => {
                 </>
               )
             }) : "No Certificate Uploaded"}
-          </div> */}
-          <div className='main-catelogue-all-container'>
-            <div className='main-catelogue-images-container'>
-            <img src={`${ImgUrl}${CatelogueData && CatelogueData.catelouge.primary_image}`} />
-            </div>
-            <div className='main-catelogue-details-container'>details</div>
-            <div className='main-catelogue-action-container'>action</div>
           </div>
+          {/* <div className='main-catelogue-all-container'>
+            <div className='main-catelogue-images-container'>
+              <img src={`${ImgUrl}${CatelogueData && CatelogueData.catelouge.primary_image}`} />
+            </div>
+            <div className='main-catelogue-details-container'>
+              <div className='main-catelogue-details'>
+                <h2>{CatelogueData && CatelogueData.catelouge.name}</h2>
+              </div>
+            </div>
+            <div className='main-catelogue-action-container'>
+              <button onClick={() => updateHandler(CatelogueData && CatelogueData.catelouge.id)}>Edit</button>
+              <button onClick={() => updateHandler(CatelogueData && CatelogueData.catelouge.id)}>Delete</button>
+            </div>
+          </div> */}
         </div>
       </div>
     </>
