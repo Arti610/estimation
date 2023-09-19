@@ -30,7 +30,7 @@ const Topbar = () => {
       setLogoutStatus('success');
 
       // Redirect the user to the '/' route
-      navigate('/login');
+      navigate('/');
     } catch (error) {
       // If there's an error during logout, set the logout status to 'error'
       setLogoutStatus('error');

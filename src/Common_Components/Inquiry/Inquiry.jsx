@@ -21,8 +21,7 @@ const Inquiry = () => {
 
   const fData = new FormData();
   const stateStaus = useSelector((state) => state.Inquiry.status)
-  console.log("stateStaus", stateStaus);
-    const token = localStorage.getItem('Token');
+  const token = localStorage.getItem('Token');
   const Department = useSelector((state) => state.Department.DepartmentData)
   const Employer = useSelector((state) => state.Employer.EmployerData)
   const Customer = useSelector((state) => state.Customer.CustomerData)
