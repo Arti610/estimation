@@ -610,7 +610,25 @@ const CatelogueRegistration = () => {
                 )}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={2}>
+           
+             <Grid item xs={12} sm={6} md={4}>
+              <label>
+                UNIT <span style={{ color: "red" }}>*</span>
+              </label>
+              <TextField
+                type="text"
+                className="inputfield bg-color"
+                name="unit"
+                onChange={handleChange}
+                value={formData.unit}
+                placeholder="EX: pcs"
+                fullWidth
+                required
+                            />
+            </Grid>
+          </Grid>
+          <Grid container spacing={2}>
+             <Grid item xs={12} sm={6} md={4}>
               <label>UPLOAD PHOTO <span style={{ color: "red" }}>*</span></label>
               <div className="App">
                 <label htmlFor="upload-photo">
@@ -627,7 +645,7 @@ const CatelogueRegistration = () => {
                 </label>{" "}
               </div>
             </Grid>
-            <Grid item xs={12} sm={6} md={2}>
+            <Grid item xs={12} sm={6} md={4}>
               <div style={{ marginBlock: "5%", display: "flex", alignItems: "center" }}>
                 <ImageList
                   sx={{ width: 200, height: "auto" }}
@@ -656,8 +674,6 @@ const CatelogueRegistration = () => {
                 </ImageList>
               </div>
             </Grid>
-          </Grid>
-          <Grid container spacing={2}>
             {updatedCatelogue ? null : <Grid item xs={12} sm={6} md={4}>
               <label>
                 UPLOAD OTHER PHOTOS <span style={{ color: "red" }}>*</span>
@@ -675,6 +691,8 @@ const CatelogueRegistration = () => {
                 />
               </div>
             </Grid>}
+            </Grid>
+            <Grid container spacing={2}>
             {updatedCatelogue ? null : <Grid item xs={12} sm={6} md={4}>
               <label>UPLOAD DATASHEETS <span style={{ color: "red" }}>*</span></label>
               <div className="App">
@@ -709,7 +727,8 @@ const CatelogueRegistration = () => {
                 </label>{" "}
               </div>
             </Grid>}
-
+             
+            
           </Grid>
           <Grid container spacing={2}>
             {updatedCatelogue ?

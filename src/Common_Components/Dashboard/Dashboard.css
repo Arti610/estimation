@@ -28,7 +28,9 @@
 .userlog-heading {
   position: sticky;
   top: 0;
-  background-color: #fff;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 10px;
   /* You can change the background color as needed */
   z-index: 1;
 }
@@ -37,8 +39,14 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  padding: 10px;
+  gap: 10px;
   /* Add any desired styles for the log data */
   overflow-y: auto;
   /* Add scroll to the log data */
   max-height: 300px;
+}
+.userlog-data p {
+
+  border-bottom: 1px groove #e8e8e8;
 }

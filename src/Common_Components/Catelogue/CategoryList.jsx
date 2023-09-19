@@ -13,11 +13,11 @@ const CategoryList = () => {
 
   const [cookies, setCookies] = useState(['token'])
   const token = cookies.token;
-  console.log("cookie", cookies);
+  console.log("cookie", cookies); 
   console.log("token cate", token);
   const [btnToggle, setBtnToggle] = useState(true)
   const catelogueData = useSelector((state) => state.Catelogue.CatelogueData);
-
+  console.log(catelogueData, 'cc');
 
   const header = [
     {
