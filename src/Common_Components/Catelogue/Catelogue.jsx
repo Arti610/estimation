@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ImgUrl } from '../../Config/Config'
-import './Catelogue.css'
+// import './Catelogue.css'
+import './CatelogueDetails.css'
 import { FaFilePdf } from 'react-icons/fa'
 import { getupdateCatelogueData } from '../../APIs/CatelogueSlice'
 import { useNavigate } from 'react-router-dom'
-import { useState } from 'react'
 
 const Catelogue = () => {
   const dispatch = useDispatch()
@@ -16,36 +16,21 @@ const Catelogue = () => {
     dispatch(getupdateCatelogueData({ token, id }))
     navigate("/sales/catelogue-registration")
   }
-  // Add this event listener to your React component, e.g., in a useEffect hook.
-useEffect(() => {
-  const handleBeforeUnload = (e) => {
-    // Display a confirmation dialog when the user tries to refresh the page.
-    e.preventDefault();
-    e.returnValue = ''; // For older browsers
-  };
-
-  window.addEventListener('beforeunload', handleBeforeUnload);
-
-  // Clean up the event listener when the component unmounts.
-  return () => {
-    window.removeEventListener('beforeunload', handleBeforeUnload);
-  };
-}, []);
 
   return (
     <>
       <div data-aos="fade-left" data-aos-duration="1000">
         <div className="registration_top_header">
           <p>
-            <span className='border-bottom-heading'>
+            <h2 className='border-bottom-heading'>
               Catelogue Details
-            </span>
+            </h2>
           </p>
         </div>
         <div className="main-catelogue-container">
           <button onClick={() => updateHandler(CatelogueData && CatelogueData.catelouge.id)}>Edit</button>
 
-          <div className="primary-container">
+          {/* <div className="primary-container">
 
             <div className="images-container">
               <img src={`${ImgUrl}${CatelogueData && CatelogueData.catelouge.primary_image}`} />
@@ -83,7 +68,6 @@ useEffect(() => {
 
               </div>
             </div>
-
           </div>
           <label>OTHER IMAGES</label>
           <div className="other-images-container">
@@ -120,6 +104,13 @@ useEffect(() => {
                 </>
               )
             }) : "No Certificate Uploaded"}
+          </div> */}
+          <div className='main-catelogue-all-container'>
+            <div className='main-catelogue-images-container'>
+            <img src={`${ImgUrl}${CatelogueData && CatelogueData.catelouge.primary_image}`} />
+            </div>
+            <div className='main-catelogue-details-container'>details</div>
+            <div className='main-catelogue-action-container'>action</div>
           </div>
         </div>
       </div>
