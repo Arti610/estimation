@@ -21,7 +21,7 @@ const CatelogueRegistration = () => {
   const [discountError, setDiscountError] = useState('');
   const [baseOfPricing, setBaseOfPricing] = useState('');
   const token = localStorage.getItem('Token');
-  const Tax = useSelector((state)=>state.Tax.TaxData)
+  const Tax = useSelector((state) => state.Tax.TaxData)
   const CatelogueData = useSelector((state) => state.Catelogue.updateCatelogueData)
   const updatedCatelogue = useSelector((state) => state.Catelogue.updateCatelogueData)
 
@@ -44,6 +44,7 @@ const CatelogueRegistration = () => {
     base_of_pricing: null,
     is_active: null,
     tax: null,
+    unit: null,
     primary_image: '',
     imgFile: null,
     images: null,
@@ -168,6 +169,7 @@ const CatelogueRegistration = () => {
     e.preventDefault()
     if (updatedCatelogue) {
       fData.append("name", formData.name);
+      fData.append("unit", formData.unit);
       fData.append("type", formData.type);
       fData.append("category", formData.category);
       fData.append("sub_category", formData.sub_category);
@@ -213,6 +215,7 @@ const CatelogueRegistration = () => {
       setFormData({
         name: null,
         type: null,
+        unit: null,
         category: null,
         sub_category: null,
         type_sub_category: null,
@@ -235,6 +238,7 @@ const CatelogueRegistration = () => {
         certificate: null,
       })
       fData.append("name", formData.name);
+      fData.append("unit", formData.unit);
       fData.append("type", formData.type);
       fData.append("category", formData.category);
       fData.append("sub_category", formData.sub_category);
@@ -274,6 +278,7 @@ const CatelogueRegistration = () => {
       setFormData({
         // id:  updatedCatelogue.catelogue.id,
         name: updatedCatelogue.catelouge.name,
+        unit: updatedCatelogue.catelouge.unit,
         type: updatedCatelogue.catelouge.type,
         category: updatedCatelogue.catelouge.category,
         sub_category: updatedCatelogue.catelouge.sub_category,
@@ -295,10 +300,10 @@ const CatelogueRegistration = () => {
         imgFile: updatedCatelogue.catelouge.primary_image,
         // images: updatedCatelogue.images
       });
-     
+
     }
-    
-    
+
+
   }, [token, updatedCatelogue]);
 
   return (
@@ -495,18 +500,20 @@ const CatelogueRegistration = () => {
             </Grid>
 
             <Grid item xs={12} sm={6} md={4}>
-              <label>SPECIFICATION <span style={{ color: "red" }}>*</span></label>
+
+              <label>
+                UNIT <span style={{ color: "red" }}>*</span>
+              </label>
               <TextField
                 type="text"
                 className="inputfield bg-color"
-                name="specification"
+                name="unit"
                 onChange={handleChange}
-                value={formData.specification}
-                placeholder="Enter Specification"
+                value={formData.unit}
+                placeholder="EX: pcs"
                 fullWidth
                 required
               />
-
             </Grid>
           </Grid>
           <Grid container spacing={2}>
@@ -605,25 +612,9 @@ const CatelogueRegistration = () => {
                 )}
               />
             </Grid>
-           
-             <Grid item xs={12} sm={6} md={4}>
-              <label>
-                UNIT <span style={{ color: "red" }}>*</span>
-              </label>
-              <TextField
-                type="text"
-                className="inputfield bg-color"
-                name="unit"
-                onChange={handleChange}
-                value={formData.unit}
-                placeholder="EX: pcs"
-                fullWidth
-                required
-                            />
-            </Grid>
-          </Grid>
-          <Grid container spacing={2}>
-             <Grid item xs={12} sm={6} md={4}>
+
+            <Grid item xs={12} sm={6} md={4}>
+
               <label>UPLOAD PHOTO <span style={{ color: "red" }}>*</span></label>
               <div className="App">
                 <label htmlFor="upload-photo">
@@ -640,7 +631,10 @@ const CatelogueRegistration = () => {
                 </label>{" "}
               </div>
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+          </Grid>
+          <Grid container spacing={2}>
+
+            {/* <Grid item xs={12} sm={6} md={4}>
               <div style={{ marginBlock: "5%", display: "flex", alignItems: "center" }}>
                 <ImageList
                   sx={{ width: 200, height: "auto" }}
@@ -668,7 +662,7 @@ const CatelogueRegistration = () => {
                   </ImageListItem>
                 </ImageList>
               </div>
-            </Grid>
+            </Grid> */}
             {updatedCatelogue ? null : <Grid item xs={12} sm={6} md={4}>
               <label>
                 UPLOAD OTHER PHOTOS <span style={{ color: "red" }}>*</span>
@@ -686,8 +680,6 @@ const CatelogueRegistration = () => {
                 />
               </div>
             </Grid>}
-            </Grid>
-            <Grid container spacing={2}>
             {updatedCatelogue ? null : <Grid item xs={12} sm={6} md={4}>
               <label>UPLOAD DATASHEETS <span style={{ color: "red" }}>*</span></label>
               <div className="App">
@@ -721,12 +713,27 @@ const CatelogueRegistration = () => {
                   />
                 </label>{" "}
               </div>
-            </Grid>}            
+            </Grid>}
+          </Grid>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={12} md={12}>
+              <label>SPECIFICATION <span style={{ color: "red" }}>*</span></label>
+              <TextField
+                type="text"
+                className="inputfield bg-color"
+                name="specification"
+                onChange={handleChange}
+                value={formData.specification}
+                placeholder="Enter Specification"
+                fullWidth
+                required
+              />
+            </Grid>
           </Grid>
           <Grid container spacing={2}>
             {updatedCatelogue ?
               <Grid item xs={12} sm={6} md={12}>
-                 <label>
+                <label>
                   OTHER IMAGES
                 </label>
                 <div className="App">

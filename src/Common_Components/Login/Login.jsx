@@ -27,9 +27,6 @@ const Login = (props) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -46,11 +43,10 @@ const Login = (props) => {
     let userCredential = { email, password };
 
     dispatch(userLogin(userCredential)).then((result) => {
-      console.log("result", result);
-      if (result) {
+       if (result) {
         setEmail('');
         setPassword('');
-        navigate("/dashboard");
+        navigate("/");
       }
     });
   };
