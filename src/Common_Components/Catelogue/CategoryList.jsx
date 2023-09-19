@@ -11,10 +11,8 @@ const CategoryList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
-  const [cookies, setCookies] = useState(['token'])
-  const token = cookies.token;
-  console.log("cookie", cookies); 
-  console.log("token cate", token);
+  const token = localStorage.getItem('Token');
+
   const [btnToggle, setBtnToggle] = useState(true)
   const catelogueData = useSelector((state) => state.Catelogue.CatelogueData);
   console.log(catelogueData, 'cc');
@@ -35,7 +33,71 @@ const CategoryList = () => {
     {
       Header: "Name",
       accessor: "name",
-    }
+    },
+    {
+      Header: "Type",
+      accessor: "type",
+    },
+    {
+      Header: "Category",
+      accessor: "category",
+    },
+    {
+      Header: "Sub-Category",
+      accessor: "sub_category",
+    },
+    {
+      Header: "Type-Sub-Category",
+      accessor: "type_sub_category",
+    },
+    {
+      Header: "Origin",
+      accessor: "origin",
+    },
+    {
+      Header: "Finish",
+      accessor: "finish",
+    },
+    {
+      Header: "Brand",
+      accessor: "brand",
+    },
+    {
+      Header: "Series",
+      accessor: "series",
+    },
+    {
+      Header: "Model",
+      accessor: "model",
+    },
+    {
+      Header: "Size",
+      accessor: "size",
+    },
+    {
+      Header: "Specification",
+      accessor: "specification",
+    },
+    {
+      Header: "List Price",
+      accessor: "list_price",
+    },
+    {
+      Header: "Currency",
+      accessor: "currency",
+    },
+    {
+      Header: "Discount",
+      accessor: "discount",
+    },
+    {
+      Header: "Unit Of Measurement",
+      accessor: "unit_of_measurement",
+    },
+    {
+      Header: "Base of Pricing",
+      accessor: "base_of_pricing",
+    },
   ];
  
 
@@ -48,34 +110,7 @@ const CategoryList = () => {
   }, []);
 
   return (
-    // <div data-aos="fade-left" data-aos-duration="1000">
-    //   <div className="registration_top_header">
-    //     <p>
-    //       <span className='border-bottom-heading'>
-    //         Catelogue
-    //       </span>
-    //       <button onClick={createHandler}>Create +</button>
-    //     </p>
-    //   </div>
-
-    //   <div className="main-product-container ">
-    //     {catelogueData && catelogueData ? catelogueData.map((item, index) => (
-
-    //       <div className="product-container" key={index} onClick={() => handleClick(item.id)}>
-    //         <div className="product-image">
-    //           <img src={`${ImgUrl}${item.primary_image}`} alt="image" />
-    //         </div>
-    //         <div className="product-details">
-    //           <h3>{item.name}</h3>
-    //           <p><span>{item.model}</span><span>{ }</span></p>
-    //           {item.isactive ? "Active" : "Inactive"}
-    //         </div>
-    //       </div>
-
-    //     )) : "There is currently no catalog available."}
-    //   </div>
-
-    // </div>
+    
     <>
       {/* <button onClick={() => setBtnToggle(!btnToggle)}>{btnToggle ? "List View" : "Card View"}</button> */}
       {catelogueData && btnToggle ? <ProductTable

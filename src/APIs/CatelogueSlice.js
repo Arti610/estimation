@@ -3,16 +3,13 @@ import api from "../Config/Apis";
 
 
 export const getCatelogueData = createAsyncThunk("getCatelogueData", async (token) => {
-    console.log("tokennnnnn", token);
     try {
         const response = await api.get("/catalogue", {
             headers: {
                 Authorization: `token ${token}`,
-                // Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                // Authorization: `arti`
             },
         })
-      
+
         return response.data
     } catch (error) {
         throw error;
@@ -20,14 +17,14 @@ export const getCatelogueData = createAsyncThunk("getCatelogueData", async (toke
 })
 
 
-export const createCatelogueData = createAsyncThunk("createCatelogueData", async (payload) => {
+export const createCatelogueData = createAsyncThunk("createCatelogueData", async ({ fData, token }) => {
+
     try {
-        const response = await api.post("/catalogue", payload.fData, {
+        const response = await api.post("/catalogue", fData, {
             headers: {
                 'content-type': 'multipart/form-data',
-                // Authorization: `token ${payload.token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                // Authorization: `arti`
+                Authorization: `token ${token}`,
+
             }
         })
         return response.data
@@ -36,14 +33,12 @@ export const createCatelogueData = createAsyncThunk("createCatelogueData", async
     }
 })
 
-export const deleteCatelogueData = createAsyncThunk("deleteCatelogueData", async (id, token) => {
+export const deleteCatelogueData = createAsyncThunk("deleteCatelogueData", async ({ id, token }) => {
     try {
         const response = await api.delete(`/delete_catalogue/${id}`,
             {
                 headers: {
-                    // Authorization: `token ${token}`,
-                    Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                    // Authorization: `arti`
+                    Authorization: `token ${token}`,
                 }
             }
         )
@@ -59,22 +54,20 @@ export const updateCatelogueData = createAsyncThunk("updateCatelogueData", async
         const response = await api.put(`/catalogue/${payload.id}`, payload.fData, {
             headers: {
                 "Content-Type": "multipart/form-data",
-                // Authorization: `token ${payload.token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                // Authorization: `arti`
+                Authorization: `token ${payload.token}`,
             },
         });
-        console.log("response.data catelogue", response);
+
         return response.data;
     } catch (error) {
         throw error;
     }
 });
-export const getupdateCatelogueData = createAsyncThunk("getupdateCatelogueData", async (payload) => {
+export const getupdateCatelogueData = createAsyncThunk("getupdateCatelogueData", async ({ id, token }) => {
     try {
-        const response = await api.get(`/catalogue/${payload.id}`, {
+        const response = await api.get(`/catalogue/${id}`, {
             headers: {
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
+                Authorization: `token ${token}`,
             },
         });
 
@@ -86,18 +79,16 @@ export const getupdateCatelogueData = createAsyncThunk("getupdateCatelogueData",
 
 
 // Delete Images
-export const deleteCatelogueImages = createAsyncThunk("deleteCatelogueImages", async (payload) => {
+export const deleteCatelogueImages = createAsyncThunk("deleteCatelogueImages", async ({ token, id }) => {
     try {
-        const response = await api.delete(`/delete_catelogue_image/${payload.id}`,
+        const response = await api.delete(`/delete_catelogue_image/${id}`,
             {
                 headers: {
-                    // Authorization: `token ${payload.token}`,
-                    Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                    // Authorization: `arti`
+                    Authorization: `token ${token}`,
+
                 }
             }
         )
-
         return response.data
     } catch (error) {
         throw error;
@@ -105,14 +96,12 @@ export const deleteCatelogueImages = createAsyncThunk("deleteCatelogueImages", a
 })
 
 // Delete Datasheets
-export const deleteCatelogueDatasheets = createAsyncThunk("deleteCatelogueDatasheets", async (payload) => {
+export const deleteCatelogueDatasheets = createAsyncThunk("deleteCatelogueDatasheets", async ({ id, token }) => {
     try {
-        const response = await api.delete(`/delete_catelogue_datasheet/${payload.id}`,
+        const response = await api.delete(`/delete_catelogue_datasheet/${id}`,
             {
                 headers: {
-                    // Authorization: `token ${payload.token}`,
-                    Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                    // Authorization: `arti`
+                    Authorization: `token ${token}`,
                 }
             }
         )
@@ -123,14 +112,12 @@ export const deleteCatelogueDatasheets = createAsyncThunk("deleteCatelogueDatash
 })
 
 // Delete Certificates
-export const deleteCatelogueCertificates = createAsyncThunk("deleteCatelogueCertificates", async (payload) => {
+export const deleteCatelogueCertificates = createAsyncThunk("deleteCatelogueCertificates", async ({ id, token }) => {
     try {
-        const response = await api.delete(`/delete_catelogue_certificate/${payload.id}`,
+        const response = await api.delete(`/delete_catelogue_certificate/${id}`,
             {
                 headers: {
-                    // Authorization: `token ${payload.token}`,
-                    Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                    // Authorization: `arti`
+                    Authorization: `token ${token}`,
                 }
             }
         )
@@ -167,7 +154,7 @@ const CatelogueSlice = createSlice({
             state.status.get = "loading"
         })
         builder.addCase(getCatelogueData.fulfilled, (state, action) => {
-            state.status.get = "succeeded"  
+            state.status.get = "succeeded"
             state.CatelogueData = action.payload
         })
         builder.addCase(getCatelogueData.rejected, (state) => {

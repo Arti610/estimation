@@ -11,8 +11,7 @@ const EmployerList = () => {
     const EmployerDataBlank = ["Data Not Found"]
     const EmployerData = useSelector((state) => state.Employer.EmployerData);
     const [modalOpen, setModalOpen] = useState(false);
-    const [cookies, setCookies] = useCookies(["token"])
-    const token = cookies.token;
+    const token = localStorage.getItem('Token');
     const [nameError, setNameError] = useState('');
     const [emailError, setEmailError] = useState('');
     const [phoneNumberError, setPhoneNumberError] = useState('');
@@ -138,6 +137,11 @@ const EmployerList = () => {
     }, [dispatch, token, modalOpen]);
 
     const header = [
+        {
+            Header: "Serial No",
+            accessor: (row, index) => index + 1,
+            id: "serialNumber", // A unique ID for this column
+          },
         {
             Header: "Name",
             accessor: "name",

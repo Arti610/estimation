@@ -16,8 +16,7 @@ const SourceOfInquiryList = () => {
   // }]
 
   const [modalOpen, setModalOpen] = useState(false);
-  const [cookies, setCookies] = useCookies(["token"])
-  const token = cookies.token;
+    const token = localStorage.getItem('Token');
   const [modalData, setModalData] = useState({
     name: "",
     description: "",
@@ -104,6 +103,11 @@ const SourceOfInquiryList = () => {
   }, [dispatch, token, modalOpen]);
 
   const header = [
+    {
+      Header: "Serial No",
+      accessor: (row, index) => index + 1,
+      id: "serialNumber", // A unique ID for this column
+    },
     {
       Header: "Name",
       accessor: "name",

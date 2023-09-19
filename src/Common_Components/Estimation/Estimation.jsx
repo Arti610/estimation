@@ -5,6 +5,7 @@ import { Autocomplete, Box, Grid, Modal, TextField } from '@mui/material';
 import AOS from "aos";
 import "aos/dist/aos.css";
 import './Estimation.css'
+import '../../Components/Table list/ProductTable.css'
 import { useCookies } from 'react-cookie';
 import { createEstimationData, createEstimationResourceData, updateEstimationData } from '../../APIs/EstimationSlice'
 import { getInquiryData, getupdateInquiryData } from '../../APIs/InquirySlice';
@@ -38,7 +39,7 @@ const Estimation = () => {
     },
   };
 
-  const colHeader = [
+  const header = [
     {
       Header: "Image",
       accessor: "profile_image",
@@ -54,12 +55,75 @@ const Estimation = () => {
     {
       Header: "Name",
       accessor: "name",
-    }
+    },
+    {
+      Header: "Type",
+      accessor: "type",
+    },
+    {
+      Header: "Category",
+      accessor: "category",
+    },
+    {
+      Header: "Sub-Category",
+      accessor: "sub_category",
+    },
+    {
+      Header: "Type-Sub-Category",
+      accessor: "type_sub_category",
+    },
+    {
+      Header: "Origin",
+      accessor: "origin",
+    },
+    {
+      Header: "Finish",
+      accessor: "finish",
+    },
+    {
+      Header: "Brand",
+      accessor: "brand",
+    },
+    {
+      Header: "Series",
+      accessor: "series",
+    },
+    {
+      Header: "Model",
+      accessor: "model",
+    },
+    {
+      Header: "Size",
+      accessor: "size",
+    },
+    {
+      Header: "Specification",
+      accessor: "specification",
+    },
+    {
+      Header: "List Price",
+      accessor: "list_price",
+    },
+    {
+      Header: "Currency",
+      accessor: "currency",
+    },
+    {
+      Header: "Discount",
+      accessor: "discount",
+    },
+    {
+      Header: "Unit Of Measurement",
+      accessor: "unit_of_measurement",
+    },
+    {
+      Header: "Base of Pricing",
+      accessor: "base_of_pricing",
+    },
   ];
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [cookies, setCookies] = useCookies(["token"])
-  const token = cookies.token;
+  const token = localStorage.getItem('Token');
   const fData = new FormData();
 
   const [selectedItemId, setSelectedItemId] = useState(null);
@@ -158,7 +222,7 @@ const Estimation = () => {
         // estimation_rate: [...prevData.estimation_rate, null],
       }));
     } else {
-      alert("Please fill in all required fields in the current row before adding a new row.");
+      // alert("Please fill in all required fields in the current row before adding a new row.");
     }
   };
 
@@ -328,8 +392,6 @@ const Estimation = () => {
   };
 
 
-
-
   useEffect(() => {
     const newEstiFormData = { ...estiFormData };
     let totalEstimationRate = 0; // Initialize the total to 0
@@ -353,12 +415,39 @@ const Estimation = () => {
       // [estimation_rate[myInqIndex.index]]: estimation_rate_total
       const updatevalue = [...prev.estimation_rate]
       updatevalue[myInqIndex.index] = parseFloat(estiFormData.estimation_rate_total).toFixed(2)
-
+      //new calculation when estimation 
+      console.log('bbbbbbbbbb',estimationDetails.vat_percentage[myInqIndex.index]);
+      
+      // end 
       return {
         ...prev,
         estimation_rate: updatevalue,
       };
     });
+    if(estimationDetails.vat_percentage[myInqIndex.index]){
+      console.log('vvvvvvvvvvvvvvvvvvvv',myInqIndex.index);
+      setEstimationDetails((prev) => {
+        // const UpdatedId = [...prev.vat_id];
+        // UpdatedId[index] = value.id;
+        // const UpdatedVatType = [...prev.vat_type];
+        // UpdatedVatType[index] = value.name;
+        // const UpdatedVatPercentage = [...prev.vat_percentage];
+        // UpdatedVatPercentage[index] = value.rate;
+        const UpdateVatAmt = [...prev.vat_amount];
+        UpdateVatAmt[myInqIndex.index] = parseFloat(Number(estimationDetails.taxable[myInqIndex.index]) *Number(estimationDetails.vat_percentage[myInqIndex.index] / 100)).toFixed(2); // Round to 2 decimal places
+        const UpdateSalesPrice = [...prev.sales_price];
+        UpdateSalesPrice[myInqIndex.index] = parseFloat(Number(estimationDetails.taxable[myInqIndex.index]) + Number(UpdateVatAmt[myInqIndex.index])).toFixed(2); // Round to 2 decimal places
+  
+        return {
+          ...prev,
+          // vat_id: UpdatedId,
+          // vat_type: UpdatedVatType,
+          // vat_percentage: UpdatedVatPercentage,
+          vat_amount: UpdateVatAmt,
+          sales_price: UpdateSalesPrice,
+        };
+      });
+    }
 
 
     // Find the inquiryDetail with matching itemId
@@ -386,7 +475,7 @@ const Estimation = () => {
       fData.append(`estimation_rate`, file)
     })
     dispatch(createEstimationResourceData({ fData, token }));
-    alert("Estimation Resource Details save successfully")
+    // alert("Estimation Resource Details save successfully")
     setErModal({ erModalValue: false, i: itemId })
     setEstiFormData({
       cate_id: [null],
@@ -417,7 +506,7 @@ const Estimation = () => {
       fData.append("net_total", estimationDetails.net_total);
 
       dispatch(updateEstimationData({ fData, token, id: updatedEstimation.id }))
-      alert("updated successfully")
+      // alert("updated successfully")
       navigate("/settings/Estimation")
     } else {
       fData.append("inquiry_no", estimationDetails.inquiry_no);
@@ -459,7 +548,7 @@ const Estimation = () => {
       fData.append("net_total", estimationDetails.net_total);
 
       dispatch(createEstimationData({ fData, token }))
-      alert("created successfully")
+      // alert("created successfully")
       navigate("/sales/Estimation")
     }
   }
@@ -506,7 +595,7 @@ const Estimation = () => {
   // Catelogue Modal Logic
   const tableRef = useRef(null);
   const [gg, setGg] = useState(true);
-  const columns = useMemo(() => colHeader, []);
+  const columns = useMemo(() => header, []);
   const [rowData, setRowData] = useState([]);
 
 
@@ -564,13 +653,13 @@ const Estimation = () => {
 
   const CateModalstyle = {
     position: "absolute",
-    top: "40%",
+    top: "50%",
     left: "50%",
-    width: "90%",
+    width: "71.5%",
     transform: "translate(-50%, -50%)",
     backgroundColor: "#f9fafb",
     borderRadius: "10px",
-    height: "fit-content",
+    height: "600px",
     overflow: "auto",
     "@media (max-width: 576px)": {
       width: "90%",
@@ -1048,37 +1137,6 @@ const Estimation = () => {
                                         readOnly // Make it read-only to prevent user input
                                       />
                                     </div>
-                                    {/* Catelogue Modal Start */}
-                                    {/* <Modal
-                                      open={cateModalOpen.modalValue}
-                                      aria-labelledby="modal-modal-title"
-                                      aria-describedby="modal-modal-description"
-                                    >
-                                      <Box sx={CateStyle} className="scroll-bar">
-                                        <div className="modal-top-container">
-                                          <h4>CETELOGUE ITEMS</h4>
-                                          <RxCross2 onClick={() => setCateModalOpen(false)} className="modal-btn-cross" />
-
-                                        </div>
-                                        <div className="main-product-container">
-                                          {catelogueData && catelogueData ? catelogueData.map((item, index) => (
-                                            <div className="product-container-modal" key={index} onClick={(e) => handleClick(e, myIOuter, item.id)}>
-
-                                              <div className="product-image">
-                                                <img src={`${ImgUrl}${item.primary_image}`} alt="image" />
-                                              </div>
-                                              <div className="product-details">
-                                                <h4>{item.name}</h4>
-                                              </div>
-                                            </div>
-                                          )) : "Loading....."}
-
-                                        </div>
-                                      </Box>
-                                    </Modal> */}
-                                    {/* <CatelogueModal index = {myIOuter} handleClick = {handleClick} openCateModal = {cateModalOpen.modalValue} catelogueModalClose={catelogueModalClose} colHeader={header}   rowData={catelogueData}  pageHeading="Catelogue" /> */}
-
-                                    {/* Catelogue Modal End */}
                                     {/* Catelogue Modal Start New */}
                                     <Modal open={cateModalOpen.modalValue}>
                                       <Box style={CateModalstyle}>
@@ -1108,15 +1166,18 @@ const Estimation = () => {
                                                         <div className="product-container">
                                                           <img src={`${ImgUrl}${row.original.primary_image}`} alt="Product Image" height='100px' />
                                                           <div className="product-details-container">
-                                                            <h3>{row.original.name}</h3>
-                                                            <span>{row.original.category}</span>
+                                                            <strong>{row.original.name}</strong>
+                                                            <div className="currency-container">
+                                                              <span>{row.original.currency}</span>&nbsp;<span>{row.original.list_price}</span>
+                                                            </div>
                                                           </div>
                                                         </div>
-                                                        <div className="currency-container">
-                                                          <span>{row.original.currency}</span>
-                                                          <span>{row.original.list_price}</span>
-
-                                                        </div>
+                                                        {/* <span className="product-container-span"><strong>Type: </strong>{row.original.type}</span> */}
+                                                        <span className="product-container-span">Brand :  <span style={{ color: "#" }}>{row.original.brand}</span></span>
+                                                        <span className="product-container-span">Model :  <span style={{ color: "#" }}>{row.original.model}</span></span>
+                                                        <span className="product-container-span" style={{ display: "flex", justifyContent: "space-between", alignContent: "center" }}><span style={{ color: "#" }}>Origin :  {row.original.origin}</span><span className="view-container" onClick={() => handleClick(cellId)}>
+                                                          {/* <button style={{ background: "white", color: "#0072d3", display: "inline-block" }} onClick={() => handleClick(cellId)}>View</button> */}
+                                                        </span></span>
                                                       </div>
                                                     );
                                                   })}

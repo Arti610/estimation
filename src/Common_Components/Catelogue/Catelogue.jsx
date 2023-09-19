@@ -1,33 +1,33 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ImgUrl } from '../../Config/Config'
-import './Catelogue.css'
+// import './Catelogue.css'
+import './CatelogueDetails.css'
 import { FaFilePdf } from 'react-icons/fa'
 import { getupdateCatelogueData } from '../../APIs/CatelogueSlice'
 import { useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+
 const Catelogue = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const CatelogueData = useSelector((state) => state.Catelogue.updateCatelogueData)
-  const [cookies, setCookies] = useState(['token'])
-  const token = cookies.token
+  const token = localStorage.getItem('Token');
   const updateHandler = (id) => {
     dispatch(getupdateCatelogueData({ token, id }))
     navigate("/sales/catelogue-registration")
   }
+
   return (
     <>
       <div data-aos="fade-left" data-aos-duration="1000">
         <div className="registration_top_header">
           <p>
-            <span className='border-bottom-heading'>
+            <h2 className='border-bottom-heading'>
               Catelogue Details
-            </span>
+            </h2>
           </p>
         </div>
         <div className="main-catelogue-container">
-          <button onClick={() => updateHandler(CatelogueData && CatelogueData.catelouge.id)}>Edit</button>
 
           <div className="primary-container">
 
@@ -67,7 +67,6 @@ const Catelogue = () => {
 
               </div>
             </div>
-
           </div>
           <label>OTHER IMAGES</label>
           <div className="other-images-container">
@@ -105,6 +104,20 @@ const Catelogue = () => {
               )
             }) : "No Certificate Uploaded"}
           </div>
+          {/* <div className='main-catelogue-all-container'>
+            <div className='main-catelogue-images-container'>
+              <img src={`${ImgUrl}${CatelogueData && CatelogueData.catelouge.primary_image}`} />
+            </div>
+            <div className='main-catelogue-details-container'>
+              <div className='main-catelogue-details'>
+                <h2>{CatelogueData && CatelogueData.catelouge.name}</h2>
+              </div>
+            </div>
+            <div className='main-catelogue-action-container'>
+              <button onClick={() => updateHandler(CatelogueData && CatelogueData.catelouge.id)}>Edit</button>
+              <button onClick={() => updateHandler(CatelogueData && CatelogueData.catelouge.id)}>Delete</button>
+            </div>
+          </div> */}
         </div>
       </div>
     </>

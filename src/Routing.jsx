@@ -19,7 +19,7 @@ import CategoryList from "./Common_Components/Catelogue/CategoryList";
 import CatelogueRegistration from "./Common_Components/Catelogue/CatelogueRegistration";
 import Inquiry from "./Common_Components/Inquiry/Inquiry";
 import Estimation from "./Common_Components/Estimation/Estimation";
-
+import EstimationDetails from './Common_Components/Estimation/EstimationDetails'
 const Routing = () => {
   return (
     <BrowserRouter>
@@ -37,6 +37,7 @@ const Routing = () => {
             <Route path="catelogue-registration" element={<CatelogueRegistration />} />
             <Route path="inquiry-registration" element={<Inquiry />} />
             <Route path="estimation-registration" element={<Estimation />} />
+            <Route path="estimation-registration-detail" element={<EstimationDetails/>} />
           </Route>
 
           <Route path="settings">

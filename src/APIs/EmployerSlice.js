@@ -6,9 +6,7 @@ export const getEmployerData = createAsyncThunk("getEmployerData", async (token)
     try {
         const response = await api.get("/employer", {
             headers: {
-                // Authorization: `token ${token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                // Authorization: `arti`
+                Authorization: `token ${token}`,
             },
         })
         return response.data
@@ -23,9 +21,7 @@ export const createEmployerData = createAsyncThunk("createEmployerData", async (
         const response = await api.post("/employer", payload.modalData, {
             headers: {
                 "Content-Type": "multipart/form-data, application/json",
-                // Authorization: `token ${payload.token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                // Authorization: `arti`
+                Authorization: `token ${payload.token}`,
             }
         })
         return response.data
@@ -34,14 +30,12 @@ export const createEmployerData = createAsyncThunk("createEmployerData", async (
     }
 })
 
-export const deleteEmployerData = createAsyncThunk("deleteEmployerData", async (id, token) => {
+export const deleteEmployerData = createAsyncThunk("deleteEmployerData", async (payload) => {
     try {
-        const response = await api.delete(`/delete_employer/${id}`,
+        const response = await api.delete(`/delete_employer/${payload.id}`,
             {
                 headers: {
-                    // Authorization: `token ${token}`,
-                    Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                    // Authorization: `arti`
+                    Authorization: `token ${payload.token}`,
                 }
             }
         )
@@ -57,9 +51,8 @@ export const updateEmployerData = createAsyncThunk("updateEmployerData", async (
         const response = await api.put(`/employer/${payload.id}`, payload.updatedData, {
             headers: {
                 "Content-Type": "multipart/form-data, application/json",
-                // Authorization: `token ${payload.token}`,
-                Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                // Authorization: `arti`
+                Authorization: `token ${payload.token}`,
+        
             },
         });
         return response.data;
@@ -72,10 +65,8 @@ export const getupdateEmployerData = createAsyncThunk("getupdateEmployerData", a
         const response = await api.get(`/employer/${payload.id}`,
             {
                 headers: {
-                    // Authorization: `token ${payload.token}`,
-                    Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
-                    // Authorization: `arti`
-                },
+                    Authorization: `token ${payload.token}`,
+                 },
             })
         return response.data
 

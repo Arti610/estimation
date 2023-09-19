@@ -11,8 +11,7 @@ const DepartmentList = () => {
   const DepartmentDataBlank = ["Data Not Found"]
   const DepartmentData = useSelector((state) => state.Department.DepartmentData);
   const [modalOpen, setModalOpen] = useState(false);
-  const [cookies, setCookies] = useCookies(["token"])
-  const token = cookies.token;
+  const token = localStorage.getItem('Token');
   const [modalData, setModalData] = useState({
     name: "",
     description: "",
@@ -99,6 +98,11 @@ const DepartmentList = () => {
   }, [dispatch, token, modalOpen]);
 
   const header = [
+    {
+      Header: "Serial No",
+      accessor: (row, index) => index + 1,
+      id: "serialNumber", // A unique ID for this column
+    },
     {
       Header: "Name",
       accessor: "name",

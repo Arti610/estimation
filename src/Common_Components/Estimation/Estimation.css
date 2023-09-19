@@ -67,6 +67,6 @@
 .top-product-container-estimation{
     display: flex;
     gap: 10px;
-    justify-content: space-between;
+    justify-content: flex-start;
     flex-wrap: wrap;
 }

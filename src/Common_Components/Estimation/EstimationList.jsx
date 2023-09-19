@@ -9,12 +9,15 @@ import { useNavigate } from 'react-router-dom';
 const EstimationList = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [cookies, setCookies] = useCookies(["token"])
-  const token = cookies.token;
+  const token = localStorage.getItem('Token');
   const EstimationDataBlank = ["Data Not Found"]
   const EstimationData = useSelector((state) => state.Estimation.EstimationData)
   const header = [
-
+    {
+      Header: "Serial No",
+      accessor: (row, index) => index + 1,
+      id: "serialNumber", // A unique ID for this column
+    },
     {
       Header: "Estimation Date",
       accessor: "estimation_date",
@@ -94,6 +97,7 @@ const EstimationList = () => {
           createHandler={createHandler}
           tableHeading="All Estimations"
           pageHeading='Estimation'
+          showEditIcon={false}
         />
       ) : (<BasicTable
         colHeader={header}
@@ -122,7 +126,7 @@ export default EstimationList
 // const header = [
 
 //   {
-//     Header: "Estimation Data",  
+//     Header: "Estimation Data",
 //     accessor: "estimation_date",
 //     Cell: ({ value }) => {
 //       return format(new Date(value), "dd/MM/yyyy");

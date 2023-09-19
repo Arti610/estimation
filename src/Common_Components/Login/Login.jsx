@@ -35,8 +35,7 @@ const Login = (props) => {
   const [password, setPassword] = useState('')
 
   // const { loading, error } = useSelector((state) => state.login)
-  const [cookies, setCookies] = useCookies(["token"])
-  const token = cookies.token;
+
 
   const passwordHandler = () => {
     setShowPassword(!showPassword)

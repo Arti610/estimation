@@ -10,14 +10,14 @@ const CustomerList = () => {
     const CustomerDataBlank = ["Data Not Found"]
     const CustomerData = useSelector((state) => state.Customer.CustomerData);
     const [modalOpen, setModalOpen] = useState(false);
-    const [cookies, setCookies] = useCookies(["token"])
-    const token = cookies.token;
+
     const [nameError, setNameError] = useState('');
     const [lastNameError, setLastNameError] = useState('');
     const [emailError, setEmailError] = useState('');
     const [phoneNumberError, setPhoneNumberError] = useState('');
     const [countryError, setCountryError] = useState('');
-
+    const token = localStorage.getItem('Token');
+ 
     const openModal = () => {
         setModalData({
             name: "",
@@ -161,6 +161,11 @@ const CustomerList = () => {
     }, [dispatch, token, modalOpen]);
 
     const header = [
+        {
+            Header: "Serial No",
+            accessor: (row, index) => index + 1,
+            id: "serialNumber", // A unique ID for this column
+          },
         {
             Header: "Name",
             accessor: "name",

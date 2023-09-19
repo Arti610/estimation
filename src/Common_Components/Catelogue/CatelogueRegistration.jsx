@@ -20,8 +20,7 @@ const CatelogueRegistration = () => {
   const [priceError, setPriceError] = useState('');
   const [discountError, setDiscountError] = useState('');
   const [baseOfPricing, setBaseOfPricing] = useState('');
-  const [cookies, setCookies] = useCookies(["token"])
-  const token = cookies.token;
+  const token = localStorage.getItem('Token');
   const Tax = useSelector((state)=>state.Tax.TaxData)
   const CatelogueData = useSelector((state) => state.Catelogue.updateCatelogueData)
   const updatedCatelogue = useSelector((state) => state.Catelogue.updateCatelogueData)
@@ -209,8 +208,7 @@ const CatelogueRegistration = () => {
       }
 
       dispatch(updateCatelogueData({ fData, token, id: updatedCatelogue.catelouge.id }))
-      alert("updated successfully")
-      navigate("/sales/catelogue")
+      navigate("/dashboard/sales/catelogue")
     } else {
       setFormData({
         name: null,
@@ -265,16 +263,13 @@ const CatelogueRegistration = () => {
         fData.append(`certificate`, file);
       });
       dispatch(createCatelogueData({ fData, token }))
-      alert("created successfully")
-      navigate("/sales/catelogue")
+      navigate("/dashboard/sales/catelogue")
 
     }
   }
   useEffect(() => {
     AOS.init();
     dispatch(getTaxData(token))
-    dispatch(updateDepartmentData(token))
-    dispatch(updateCatelogueData(token))
     if (updatedCatelogue) {
       setFormData({
         // id:  updatedCatelogue.catelogue.id,
@@ -293,7 +288,7 @@ const CatelogueRegistration = () => {
         list_price: updatedCatelogue.catelouge.list_price,
         currency: updatedCatelogue.catelouge.currency,
         discount: updatedCatelogue.catelouge.discount,
-        tax: String(updatedCatelogue.catelouge.tax),
+        tax: String(updatedCatelogue.catelouge.tax.id),
         base_of_pricing: updatedCatelogue.catelouge.base_of_pricing,
         is_active: updatedCatelogue.catelouge.is_active,
         // primary_image: updatedCatelogue.catelouge.primary_image

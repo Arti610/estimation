@@ -25,8 +25,7 @@ const TaxList = () => {
     const TaxData = useSelector((state) => state.Tax.TaxData)
     const updatedTaxData = useSelector((state) => state.Tax.updateTaxDatastore);
     const [modalOpen, setModalOpen] = useState(false);
-    const [cookies, setCookies] = useCookies(['token']);
-    const token = cookies.token;
+    const token = localStorage.getItem('Token');
     const [nameError, setNameError] = useState('');
     const [rateError, setRateError] = useState('');
     const Agency = useSelector((state) => state.TaxAgency.TaxAgencyData);
@@ -111,16 +110,16 @@ const TaxList = () => {
 
     const deleteHandler = (id) => {
         dispatch(deleteTaxData(id))
-          .then(() => {
-            // Once the delete action is completed successfully, dispatch the get action
-            dispatch(getTaxData(token));
-          })
-          .catch((error) => {
-            // Handle any errors from the delete operation
-            alert("wait")
-          });
-      };
-    
+            .then(() => {
+                // Once the delete action is completed successfully, dispatch the get action
+                dispatch(getTaxData(token));
+            })
+            .catch((error) => {
+                // Handle any errors from the delete operation
+                alert("wait")
+            });
+    };
+
     useEffect(() => {
         dispatch(getTaxData(token));
         dispatch(getTaxAgencyData(token));
@@ -135,6 +134,11 @@ const TaxList = () => {
     }, [dispatch, token, modalOpen, updatedTaxData]);
 
     const header = [
+        {
+            Header: "Serial No",
+            accessor: (row, index) => index + 1,
+            id: "serialNumber", // A unique ID for this column
+        },
         {
             Header: 'Name',
             accessor: 'name',
