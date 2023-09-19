@@ -726,9 +726,7 @@ const CatelogueRegistration = () => {
                   />
                 </label>{" "}
               </div>
-            </Grid>}
-             
-            
+            </Grid>}            
           </Grid>
           <Grid container spacing={2}>
             {updatedCatelogue ?
