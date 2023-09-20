@@ -255,15 +255,18 @@ export const BasicTable = ({
                                     updateHandler(row.original.id);
                                   }}
                                 />
-                              ) : <MdVisibility
-                                color="#004987"
-                                fontSize="17px"
-                                paddingInline="5px 15px"
-                                cursor="pointer"
-                                margin="5px"
-                                title="View"
-                                onClick={() => navigate("/dashboard/sales/estimation-registration-detail")}
-                              />}
+                              ) : 
+                              // <MdVisibility
+                              //   color="#004987"
+                              //   fontSize="17px"
+                              //   paddingInline="5px 15px"
+                              //   cursor="pointer"
+                              //   margin="5px"
+                              //   title="View"
+                              //   onClick={() => navigate("/dashboard/sales/estimation-registration-detail")}
+                              // />
+                              null
+                              }
                               {/* <button onClick={()=>updateHandler(row.original.id)}>Edit</button> */}
 
                               <MdDelete

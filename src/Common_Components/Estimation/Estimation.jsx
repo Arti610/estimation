@@ -28,6 +28,7 @@ const Estimation = () => {
   const style = {
     position: "absolute",
     top: "30%",
+    paddingBottom:"10px",
     left: "50%",
     transform: "translate(-50%, -50%)",
     backgroundColor: "#fff",
@@ -346,9 +347,6 @@ const Estimation = () => {
       if (name === 'markup') {
         updatedMarkup[index] = value;
         updatedMarkupValue[index] = parseFloat(updatedMarkup[index] * estimationDetails.estimation_rate[index] / 100).toFixed(2)
-        console.log('test ... esti rate ', estimationDetails.estimation_rate[index], 'test markupvalie..',
-          updatedMarkupValue[index], 'test add ...', Number(estimationDetails.estimation_rate[index]) + Number(updatedMarkupValue[index]));
-
         updatedGrossPrice[index] = parseFloat(Number(estimationDetails.estimation_rate[index]) + Number(updatedMarkupValue[index])).toFixed(2)
         // updatedGrossPrice[index] = parseFloat(estimationDetails.estimation_rate[index] + updatedMarkupValue[index]).toFixed(2)
         updatedTaxable[index] = parseFloat(quantities[index] * updatedGrossPrice[index]).toFixed(2)
@@ -417,32 +415,25 @@ const Estimation = () => {
       updatevalue[myInqIndex.index] = parseFloat(estiFormData.estimation_rate_total).toFixed(2)
 
       //new calculation when estimation 
-      console.log('bbbbbbbbbb',estimationDetails.vat_percentage[myInqIndex.index]);
+     
       if(estimationDetails.vat_percentage[myInqIndex.index]){
-        console.log('vvvvvvvvvvvvvvvvvvvv',myInqIndex.index);
+       
           const updatedMarkupValue=[...prev.markup_value]
           updatedMarkupValue[myInqIndex.index] = parseFloat(Number(estimationDetails.markup[myInqIndex.index]) * Number(updatevalue[myInqIndex.index] / 100)).toFixed(2)
-          console.log('test ... esti rate ', updatevalue[myInqIndex.index], 'test markupvalie..',
-          updatedMarkupValue[myInqIndex.index], 'test add ...', Number(updatevalue[myInqIndex.index]) + Number(updatedMarkupValue[myInqIndex.index]));
-  
-          const updatedGrossPrice=[...prev.gross_price]
+                  const updatedGrossPrice=[...prev.gross_price]
           updatedGrossPrice[myInqIndex.index] = parseFloat(Number(updatevalue[myInqIndex.index]) + Number(updatedMarkupValue[myInqIndex.index])).toFixed(2)
-          console.log('updataed gross',updatedGrossPrice[myInqIndex.index]);
-          console.log('updataed gross',updatedGrossPrice);
+         
+        
           // updatedGrossPrice[myInqIndex.index] = parseFloat(estimationDetails.estimation_rate[myInqIndex.index] + updatedMarkupValue[myInqIndex.index]).toFixed(2)
           const updatedTaxable=[...prev.taxable]
           updatedTaxable[myInqIndex.index] = parseFloat(Number(quantities[myInqIndex.index]) * Number(updatedGrossPrice[myInqIndex.index])).toFixed(2)
-          console.log('updatedTaxable[myInqIndex.index]',updatedTaxable[myInqIndex.index]);
-          console.log('updatedTaxable[myInqIndex.index]',updatedTaxable);
+        
           const UpdateVatAmt = [...prev.vat_amount];
           UpdateVatAmt[myInqIndex.index] = parseFloat(Number(updatedTaxable[myInqIndex.index]) *Number(estimationDetails.vat_percentage[myInqIndex.index] / 100)).toFixed(2); // Round to 2 decimal places
-          console.log('UpdateVatAmt[myInqIndex.index]',UpdateVatAmt[myInqIndex.index]);
-          console.log('UpdateVatAmt[myInqIndex.index]',UpdateVatAmt);
+        
           const UpdateSalesPrice = [...prev.sales_price];
           UpdateSalesPrice[myInqIndex.index] = parseFloat(Number(updatedTaxable[myInqIndex.index]) + Number(UpdateVatAmt[myInqIndex.index])).toFixed(2); // Round to 2 decimal places
-          console.log('UpdateSalesPrice[myInqIndex.index]',UpdateSalesPrice[myInqIndex.index]);
-          console.log('UpdateSalesPrice[myInqIndex.index]',UpdateSalesPrice);
-    
+        
           return {
             ...prev,
             markup_value:updatedMarkupValue,
@@ -460,7 +451,7 @@ const Estimation = () => {
         estimation_rate: updatevalue,
       };
     });
-    console.log('myindex...',myInqIndex.index);
+   
     
     // Find the inquiryDetail with matching itemId
     const matchingDetail = InquiryData.detail.find((detail) => detail.id === itemId);
@@ -519,12 +510,12 @@ const Estimation = () => {
 
       dispatch(updateEstimationData({ fData, token, id: updatedEstimation.id }))
       // alert("updated successfully")
-      navigate("/settings/Estimation")
+      navigate("/dashboard/sales/estimation")
     } else {
       fData.append("inquiry_no", estimationDetails.inquiry_no);
       fData.append("estimation_date", estimationDetails.estimation_date);
       // fData.append("inquirydetail", (estimationDetails.inquirydetail));
-      console.log("  estimationDetails.inquirydetail", estimationDetails.inquirydetail);
+ 
       estimationDetails.inquirydetail.forEach((file, index) => {
         fData.append(`inquirydetail`, file)
       })
@@ -561,7 +552,7 @@ const Estimation = () => {
 
       dispatch(createEstimationData({ fData, token }))
       // alert("created successfully")
-      navigate("/sales/Estimation")
+      navigate("/dashboard/sales/estimation")
     }
   }
 
@@ -587,7 +578,7 @@ const Estimation = () => {
     AOS.init();
     dispatch(getInquiryData(token))
     dispatch(getCatelogueData(token))
-    dispatch(updateEstimationData(token))
+    // dispatch(updateEstimationData(token))
     dispatch(getTaxData(token))
     if (updatedEstimation) {
       setEstimationDetails({
@@ -714,8 +705,7 @@ const Estimation = () => {
     };
   }, []);
   useEffect(() => {
-    console.log("estimationDetails", estimationDetails);
-    console.log("estiFormData", estiFormData);
+
   }, [estimationDetails, estiFormData])
   return (
     <>
@@ -1059,6 +1049,7 @@ const Estimation = () => {
                                         value={estiFormData && estiFormData.unit[myI]}
                                         // placeholder="Select Catelogue"
                                         fullWidth
+                                        disabled
                                         required
                                       // error={Boolean(props.nameError)}
                                       // helperText={props.nameError}
@@ -1081,6 +1072,7 @@ const Estimation = () => {
                                       <label>RATE</label>
                                       <TextField
                                         type="text"
+                                        disabled
                                         className="inputfield bg-color"
                                         name={`list_price${myI}`}
                                         // onChange={handleRateInputChange}
@@ -1093,6 +1085,7 @@ const Estimation = () => {
                                       <label>DISCOUNT</label>
                                       <TextField
                                         type="text"
+                                        disabled
                                         className="inputfield bg-color"
                                         name={`discount${myI}`}
                                         // onChange={handleModalInputChange}
@@ -1110,7 +1103,7 @@ const Estimation = () => {
                                       <TextField
                                         type="text"
                                         className="inputfield bg-color"
-
+                                        disabled
                                         name={`vat_type${myI}`}
                                         // onChange={handleModalInputChange}
                                         value={estiFormData && estiFormData.vatType[myI]}
@@ -1130,6 +1123,7 @@ const Estimation = () => {
                                         // onChange={handleModalInputChange}
                                         // value={CatelogueData && CatelogueData.catelouge.tax.rate}
                                         value={estiFormData && estiFormData.vatPercent[myI]}
+                                        disabled
                                         // placeholder="Select Catelogue"
                                         fullWidth
                                         required
@@ -1145,6 +1139,7 @@ const Estimation = () => {
                                         name={`estimation_rate${myI}`}
                                         value={estiFormData.estimation_rate[myI]}
                                         fullWidth
+                                        disabled
                                         required
                                         readOnly // Make it read-only to prevent user input
                                       />
@@ -1218,13 +1213,22 @@ const Estimation = () => {
                                 />
                               </div>
                               <div style={{ padding: "10px" }}> <button onClick={handleAddMore}>Add More</button></div>
-                              <button
+                             <div className="saveBtn">
+                             <button
                                 variant="outlined"
                                 type="submit"
                                 onClick={(e) => estiHandleSubmit(e, index, selectedItemId)} // Use selectedItemId
                               >
                                 Save
                               </button>
+                             <button
+                                variant="outlined"
+                                type="submit"
+                                onClick={closeERModal} // Use selectedItemId
+                              >
+                                Close
+                              </button>
+                             </div>
                             </form>
                           </Box>
                         </Modal>

@@ -237,7 +237,6 @@ const User = () => {
   return (
     <>
       <div
-
         data-aos="fade-left"
         data-aos-duration="1000"
       >

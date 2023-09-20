@@ -73,7 +73,8 @@ const EstimationList = () => {
   }
 
   const deleteHandler = (id) => {
-    dispatch(deleteEstimationData(id))
+    console.log("id delete", id);
+    dispatch(deleteEstimationData({token, id}))
       .then(() => {
         // Once the delete action is completed successfully, dispatch the get action
         dispatch(getEstimationData(token));

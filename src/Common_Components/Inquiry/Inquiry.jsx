@@ -494,7 +494,7 @@ const Inquiry = () => {
                 const isDisabled = !isUpdating || editingIndex !== index;
 
                 return (
-                  <div key={index} className='details-container'>
+                  <div key={index} className='inquiry-details-container'>
                     <div className="action-btn">
 
                       {/* {updatedInquiry &&

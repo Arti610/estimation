@@ -43,7 +43,7 @@ export const deleteEstimationData = createAsyncThunk("deleteEstimationData", asy
         )
         return response.data
     } catch (error) {
-        throw error;
+        throw error.msg;
     }
 })
 
