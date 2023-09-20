@@ -16,17 +16,19 @@ import inquirysvgfirst from '../../assets/inquiry_svg_01.svg'
 import inquirysvgsecond from '../../assets/inquiry_svg_02.svg'
 const Dashboard = () => {
   const dispatch = useDispatch()
-    const token = localStorage.getItem('Token');
+  const token = localStorage.getItem('Token');
   const InquiryData = useSelector((state) => state.Inquiry.InquiryData)
   const CustomerData = useSelector((state) => state.Customer.CustomerData)
   const EstimationData = useSelector((state) => state.Estimation.EstimationData)
   const UserLog = useSelector((state) => state.UserLog.UserlogData)
-
+  console.log("UserLog", UserLog);
   useEffect(() => {
     dispatch(getInquiryData(token))
     dispatch(getEstimationData(token))
     dispatch(getCustomerData(token))
-    dispatch(getUserLog(token))
+    if (UserLog) {
+      dispatch(getUserLog(token))
+    }
   }, [])
   return (
     <>
@@ -37,19 +39,19 @@ const Dashboard = () => {
       </div>
 
       <div className="log-container">
-      <div className="userlog">
-            <div className='userlog-heading'>  <h4>USER LOG</h4></div>
-             <div className="userlog-data">
-             {UserLog ?UserLog.slice().reverse().map((item, i)=>{
-              
-              return(
-              <div key={i} >
-                 <p>{item.transactions_reference} by {item.user.email}</p>
-              </div>
+        <div className="userlog">
+          <div className='userlog-heading'>  <h4>USER LOG</h4></div>
+          <div className="userlog-data">
+            {UserLog && UserLog ? UserLog.slice().reverse().map((item, i) => {
+
+              return (
+                <div key={i} >
+                  <p>{item.transactions_reference} by {item.user.email}</p>
+                </div>
               )
-            }):"No Logs Available"}
-             </div>
-            </div>
+            }) : "No Logs Available"}
+          </div>
+        </div>
       </div>
     </>
   )

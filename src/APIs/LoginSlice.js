@@ -6,8 +6,6 @@ export const userLogin = createAsyncThunk("userLogin", async (userCredential) =>
   const response = request.data.data;
   const token = request.data.token;
 
-  // Set the token in local storage
-  // localStorage.setItem('Login', response);
   localStorage.setItem('Token', token);
 
   return response; // You might want to return some data here if needed
@@ -64,7 +62,6 @@ const loginSlice = createSlice({
     builder.addCase(userLogin.fulfilled, (state, action) => {
       state.loading = false;
       state.login = action.payload;
-      console.log("action.payload", action.payload);
       // state.token = action.payload.token
       state.error = null;
     });

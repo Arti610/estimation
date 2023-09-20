@@ -44,7 +44,7 @@ const CatelogueRegistration = () => {
     base_of_pricing: null,
     is_active: null,
     tax: null,
-    unit: null,
+    unit_of_measurement: null,
     primary_image: '',
     imgFile: null,
     images: null,
@@ -169,7 +169,7 @@ const CatelogueRegistration = () => {
     e.preventDefault()
     if (updatedCatelogue) {
       fData.append("name", formData.name);
-      fData.append("unit", formData.unit);
+      fData.append("unit_of_measurement", formData.unit_of_measurement);
       fData.append("type", formData.type);
       fData.append("category", formData.category);
       fData.append("sub_category", formData.sub_category);
@@ -215,7 +215,7 @@ const CatelogueRegistration = () => {
       setFormData({
         name: null,
         type: null,
-        unit: null,
+        unit_of_measurement: null,
         category: null,
         sub_category: null,
         type_sub_category: null,
@@ -238,7 +238,7 @@ const CatelogueRegistration = () => {
         certificate: null,
       })
       fData.append("name", formData.name);
-      fData.append("unit", formData.unit);
+      fData.append("unit_of_measurement", formData.unit_of_measurement);
       fData.append("type", formData.type);
       fData.append("category", formData.category);
       fData.append("sub_category", formData.sub_category);
@@ -274,11 +274,12 @@ const CatelogueRegistration = () => {
   useEffect(() => {
     AOS.init();
     dispatch(getTaxData(token))
+    console.log("updatedCatelogue",updatedCatelogue);
     if (updatedCatelogue) {
       setFormData({
         // id:  updatedCatelogue.catelogue.id,
         name: updatedCatelogue.catelouge.name,
-        unit: updatedCatelogue.catelouge.unit,
+        unit_of_measurement: updatedCatelogue.catelouge.unit_of_measurement,
         type: updatedCatelogue.catelouge.type,
         category: updatedCatelogue.catelouge.category,
         sub_category: updatedCatelogue.catelouge.sub_category,
@@ -502,14 +503,14 @@ const CatelogueRegistration = () => {
             <Grid item xs={12} sm={6} md={4}>
 
               <label>
-                UNIT <span style={{ color: "red" }}>*</span>
+                UNIT OF MEASUREMENT <span style={{ color: "red" }}>*</span>
               </label>
               <TextField
                 type="text"
                 className="inputfield bg-color"
-                name="unit"
+                name="unit_of_measurement"
                 onChange={handleChange}
-                value={formData.unit}
+                value={formData.unit_of_measurement}
                 placeholder="EX: pcs"
                 fullWidth
                 required
