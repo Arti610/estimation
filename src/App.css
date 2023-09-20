@@ -120,12 +120,12 @@ label {
   border-radius: 8px !important;
 
 }
-.css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
-  padding: 8px 14px !important;
-}
 /* .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
-  padding: 11px 14px !important;
+  padding: 8px 14px !important;
 } */
+.css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
+  padding: 10px 14px !important;
+}
 .border-bottom-heading{
   border-bottom: 2px solid var(--primary-color);
 }

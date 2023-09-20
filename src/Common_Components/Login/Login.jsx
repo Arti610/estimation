@@ -48,11 +48,8 @@ const Login = (props) => {
     });
   };
 
-
-
   return (
     <>
-
       <Box sx={style} className="scroll-bar">
         <div className="modal-top-container">
           <h4>Login</h4>
