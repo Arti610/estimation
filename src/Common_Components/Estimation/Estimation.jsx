@@ -391,7 +391,7 @@ const Estimation = () => {
     });
   };
 
-
+  // const 
   useEffect(() => {
     const newEstiFormData = { ...estiFormData };
     let totalEstimationRate = 0; // Initialize the total to 0
@@ -407,7 +407,7 @@ const Estimation = () => {
     setEstiFormData(newEstiFormData);
   }, [estiFormData.quantity, CatelogueData]);
 
-  const estiHandleSubmit = (e, index, itemId) => {
+  const estiHandleSubmit = async (e, index, itemId) => {
     e.preventDefault();
 
     setEstimationDetails((prev) => {
@@ -415,41 +415,53 @@ const Estimation = () => {
       // [estimation_rate[myInqIndex.index]]: estimation_rate_total
       const updatevalue = [...prev.estimation_rate]
       updatevalue[myInqIndex.index] = parseFloat(estiFormData.estimation_rate_total).toFixed(2)
+
       //new calculation when estimation 
       console.log('bbbbbbbbbb',estimationDetails.vat_percentage[myInqIndex.index]);
-      
+      if(estimationDetails.vat_percentage[myInqIndex.index]){
+        console.log('vvvvvvvvvvvvvvvvvvvv',myInqIndex.index);
+          const updatedMarkupValue=[...prev.markup_value]
+          updatedMarkupValue[myInqIndex.index] = parseFloat(Number(estimationDetails.markup[myInqIndex.index]) * Number(updatevalue[myInqIndex.index] / 100)).toFixed(2)
+          console.log('test ... esti rate ', updatevalue[myInqIndex.index], 'test markupvalie..',
+          updatedMarkupValue[myInqIndex.index], 'test add ...', Number(updatevalue[myInqIndex.index]) + Number(updatedMarkupValue[myInqIndex.index]));
+  
+          const updatedGrossPrice=[...prev.gross_price]
+          updatedGrossPrice[myInqIndex.index] = parseFloat(Number(updatevalue[myInqIndex.index]) + Number(updatedMarkupValue[myInqIndex.index])).toFixed(2)
+          console.log('updataed gross',updatedGrossPrice[myInqIndex.index]);
+          console.log('updataed gross',updatedGrossPrice);
+          // updatedGrossPrice[myInqIndex.index] = parseFloat(estimationDetails.estimation_rate[myInqIndex.index] + updatedMarkupValue[myInqIndex.index]).toFixed(2)
+          const updatedTaxable=[...prev.taxable]
+          updatedTaxable[myInqIndex.index] = parseFloat(Number(quantities[myInqIndex.index]) * Number(updatedGrossPrice[myInqIndex.index])).toFixed(2)
+          console.log('updatedTaxable[myInqIndex.index]',updatedTaxable[myInqIndex.index]);
+          console.log('updatedTaxable[myInqIndex.index]',updatedTaxable);
+          const UpdateVatAmt = [...prev.vat_amount];
+          UpdateVatAmt[myInqIndex.index] = parseFloat(Number(updatedTaxable[myInqIndex.index]) *Number(estimationDetails.vat_percentage[myInqIndex.index] / 100)).toFixed(2); // Round to 2 decimal places
+          console.log('UpdateVatAmt[myInqIndex.index]',UpdateVatAmt[myInqIndex.index]);
+          console.log('UpdateVatAmt[myInqIndex.index]',UpdateVatAmt);
+          const UpdateSalesPrice = [...prev.sales_price];
+          UpdateSalesPrice[myInqIndex.index] = parseFloat(Number(updatedTaxable[myInqIndex.index]) + Number(UpdateVatAmt[myInqIndex.index])).toFixed(2); // Round to 2 decimal places
+          console.log('UpdateSalesPrice[myInqIndex.index]',UpdateSalesPrice[myInqIndex.index]);
+          console.log('UpdateSalesPrice[myInqIndex.index]',UpdateSalesPrice);
+    
+          return {
+            ...prev,
+            markup_value:updatedMarkupValue,
+            gross_price:updatedGrossPrice,
+            taxable:updatedTaxable,
+            vat_amount:UpdateVatAmt,
+            sales_price: UpdateSalesPrice,
+            estimation_rate:updatevalue
+  
+          };
+      }
       // end 
       return {
         ...prev,
         estimation_rate: updatevalue,
       };
     });
-    if(estimationDetails.vat_percentage[myInqIndex.index]){
-      console.log('vvvvvvvvvvvvvvvvvvvv',myInqIndex.index);
-      setEstimationDetails((prev) => {
-        // const UpdatedId = [...prev.vat_id];
-        // UpdatedId[index] = value.id;
-        // const UpdatedVatType = [...prev.vat_type];
-        // UpdatedVatType[index] = value.name;
-        // const UpdatedVatPercentage = [...prev.vat_percentage];
-        // UpdatedVatPercentage[index] = value.rate;
-        const UpdateVatAmt = [...prev.vat_amount];
-        UpdateVatAmt[myInqIndex.index] = parseFloat(Number(estimationDetails.taxable[myInqIndex.index]) *Number(estimationDetails.vat_percentage[myInqIndex.index] / 100)).toFixed(2); // Round to 2 decimal places
-        const UpdateSalesPrice = [...prev.sales_price];
-        UpdateSalesPrice[myInqIndex.index] = parseFloat(Number(estimationDetails.taxable[myInqIndex.index]) + Number(UpdateVatAmt[myInqIndex.index])).toFixed(2); // Round to 2 decimal places
-  
-        return {
-          ...prev,
-          // vat_id: UpdatedId,
-          // vat_type: UpdatedVatType,
-          // vat_percentage: UpdatedVatPercentage,
-          vat_amount: UpdateVatAmt,
-          sales_price: UpdateSalesPrice,
-        };
-      });
-    }
-
-
+    console.log('myindex...',myInqIndex.index);
+    
     // Find the inquiryDetail with matching itemId
     const matchingDetail = InquiryData.detail.find((detail) => detail.id === itemId);
 
