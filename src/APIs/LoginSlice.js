@@ -6,8 +6,6 @@ export const userLogin = createAsyncThunk("userLogin", async (userCredential) =>
   const response = request.data.data;
   const token = request.data.token;
 
-  // Set the token in local storage
-  // localStorage.setItem('Login', response);
   localStorage.setItem('Token', token);
 
   return response; // You might want to return some data here if needed
@@ -30,16 +28,16 @@ export const userLogout = createAsyncThunk("userLogout", async (token, { rejectW
     if (response.status === 200) {
       // Successful logout, you can perform additional actions if needed.
       localStorage.removeItem('Token');
-      console.log("Logout successful", response.data);
+  
       return response.data; // This will be the data returned by the API on successful logout.
     } else {
       // Handle the case where the logout was not successful.
-      console.log("Logout failed", response.data);
+
       return rejectWithValue(response.data);
     }
   } catch (error) {
     // Handle any other errors that occurred during the API call.
-    console.error("An error occurred while logging out", error);
+ 
     return rejectWithValue(error.response.data);
   }
 });
@@ -64,7 +62,6 @@ const loginSlice = createSlice({
     builder.addCase(userLogin.fulfilled, (state, action) => {
       state.loading = false;
       state.login = action.payload;
-      console.log("action.payload", action.payload);
       // state.token = action.payload.token
       state.error = null;
     });

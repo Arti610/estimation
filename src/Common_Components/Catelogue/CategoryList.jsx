@@ -15,7 +15,7 @@ const CategoryList = () => {
 
   const [btnToggle, setBtnToggle] = useState(true)
   const catelogueData = useSelector((state) => state.Catelogue.CatelogueData);
-
+  const catelogueDataStatic = ["No Catalogue Available"]
 
   const header = [
     {
@@ -122,7 +122,7 @@ const CategoryList = () => {
         tableHeading="All Catelogues"
         // handleClick={handleClick}
         pageHeading="Catelogue" /> :
-      "loading...."}
+     "No Catalogue Available"}
     </>
   );
 };

@@ -42,41 +42,47 @@
     /* background-color: var(--primary-color); */
     color: var(--primary-font-color);
     /* color: black; */
-    
+
 }
 
 
 /* Catelogue Single Data  */
 
+.catelogue-currency-container {
+    margin: 8px;
+}
+.catelogue-currency-container span{
+    font-size: 18px;
+    color: green;
+    
+}
 .primary-container {
     width: 100%;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    height: fit-content;
+    justify-content: flex-start;
+    align-items: flex-start;
     background-color: var(-secondary-color);
 
 }
 
 .other-images-container {
-    /* width: 10%; */
-
     align-items: center;
     display: flex;
-    /* flex-direction: column; */
     justify-content: flex-start;
     flex-wrap: wrap;
     width: 100%;
-    /* background-color: var(--secondary-color); */
     padding: 10px;
+    gap: 30px;
 }
 
 .other-images img {
-    width: 150px;
+    width: 100px;
     padding: 10px;
 }
 
 .images-container {
-    width: 40%;
+    width: 25%;
     padding: 10px;
     display: flex;
     justify-content: center;
@@ -90,18 +96,27 @@
 }
 
 .details-container {
-    width: 70%;
+    /* background-color: var(--secondary-color); */
+    width: 50%;
+    padding: 15px;
+    margin-block: 10px;
 }
 
-.details-container h2 {
-    /* margin-block: 25px; */
-    border-bottom: 1px groove #c8c8c8;
-}
 
 .detail-container {
     display: flex;
     margin-block: 30px;
     justify-content: flex-start;
+}
+.detail-types-container{
+    border: 2px solid #e8e8e8;
+    border-radius: 8px;
+    padding: 20px;
+    height: 300px;
+    margin: 0px 20px;
+    overflow: auto;
+    width: 250px;
+    background-color: #e8e8e8;
 }
 
 .left-detail-container {
@@ -125,25 +140,29 @@
     padding: 5px 0px;
     font-size: 15px;
 }
-
+.specification-detail{
+    padding: 18px 0px;
+}
 .datasheet-container {
     width: 100%;
-    background-color: var(--secondary-color);
+    /* background-color: var(--secondary-color); */
     padding: 10px;
     height: max-content;
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
+    gap: 30px;
 }
 
 .certificate-container {
     width: 100%;
-    background-color: var(--secondary-color);
+    /* background-color: var(--secondary-color); */
     padding: 10px;
     height: max-content;
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
+    gap: 30px;
 }
 
 .registration-flex {
@@ -166,11 +185,8 @@
 }
 
 .pdf-container {
-    padding: 5px;
-    /* border: 1px groove var(--primary-color); */
     margin-block: 10px;
     display: flex;
-    /* align-items: center; */
     justify-content: flex-start;
     width: max-content;
     cursor: pointer;
@@ -186,3 +202,68 @@
     word-wrap: break-word;
 
 }
+
+
+/* New Details container Design */
+.details-container-heading {
+    height: fit-content;
+    width: 100%;
+    padding: 20px;
+}
+
+.heading-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+    border-bottom: 3px solid #e8e8e8;
+}
+
+.heading-container h5 {
+    cursor: pointer;
+    padding:5px;
+}
+
+.active-heading {
+    border-bottom: 3px solid var(--primary-color); 
+    /* background-color: var(--primary-color); */
+    cursor: pointer;
+    /* Add a pointer cursor to indicate it's clickable */
+    /* color: var(--primary-font-color); */
+}
+
+.toggle-data-container {
+    /* border: 2px groove #e8e8e8; */
+    height: fit-content;
+    /* border-radius: 10px; */
+    overflow: auto;
+}
+
+/* Add this CSS to control text truncation */
+.specification-detail-container {
+    position: relative;
+    text-align: justify;
+  }
+  
+  .specification-detail.collapsed {
+    max-height: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .specification-detail.expanded {
+    max-height: none;
+    overflow: visible;
+  }
+  
+  .show-more-button {
+    background: none;
+    border: none;
+    color: var(--primary-color); /* Set the desired color */
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .show-more-button:focus {
+    outline: none;
+  }
+  
