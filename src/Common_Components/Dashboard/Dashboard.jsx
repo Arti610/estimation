@@ -14,6 +14,9 @@ import estimationsvgfirst from '../../assets/estimation_svg_01.svg'
 import estimationsvgsecond from '../../assets/estimation_svg_02.svg'
 import inquirysvgfirst from '../../assets/inquiry_svg_01.svg'
 import inquirysvgsecond from '../../assets/inquiry_svg_02.svg'
+import { FaUsers } from 'react-icons/fa'
+import { TbReportSearch } from 'react-icons/tb'
+import { HiMiniCalculator } from 'react-icons/hi2'
 const Dashboard = () => {
   const dispatch = useDispatch()
   const token = localStorage.getItem('Token');
@@ -27,29 +30,72 @@ const Dashboard = () => {
     dispatch(getCustomerData(token))
     dispatch(getUserLog(token))
   }, [])
+  const Customerstyle = {
+    fontSize: '40px',
+    borderRadius: '50%',
+    color: "#0378e9",
+    padding: '12px',
+    backgroundColor: '#e4f5ff'
+  }
+  const inquiryStyle = {
+    fontSize: '40px',
+    borderRadius: '50%',
+    color: "#8763f8",
+    padding: '12px',
+    backgroundColor: '#f5f0ff'
+  }
+  const estimationStyle = {
+    fontSize: '40px',
+    borderRadius: '50%',
+    color: "#f2c32b",
+    padding: '12px',
+    backgroundColor: '#fff7e8'
+  }
   return (
     <>
-      <div className="card-container">
-        <Card title="Total Customer" count={CustomerData ? CustomerData.length : 0} svg1={customersvgfirst} svg2={customersvgsecond} pic="https://th.bing.com/th/id/OIP.jDXaAhD9ijyiFihWNqFAYQHaGg?pid=ImgDet&rs=1" path='/dashboard/settings/customer' />
-        <Card title="Total Inquiry" count={InquiryData ? InquiryData.length : 0} svg1={inquirysvgfirst} svg2={inquirysvgsecond} pic="https://th.bing.com/th/id/OIP.w6TN1JaDuyED5jdvtFZC_wHaHa?pid=ImgDet&rs=1" path='/dashboard/sales/inquiry' />
-        <Card title="Total Estimation" count={EstimationData ? EstimationData.length : 0} svg1={estimationsvgfirst} svg2={estimationsvgsecond} pic='https://cdn1.iconfinder.com/data/icons/engineering-aesthetics-vol-1/256/Estimate-512.png' path='/dashboard/sales/estimation' />
-      </div>
-      <div className="log-container">
-        <div className="userlog">
-          <div className='userlog-heading'>  <h4>USER LOG</h4></div>
-          <div className="userlog-data">
-            {UserLog && UserLog.length > 0 ? (
-              UserLog.slice().reverse().map((item, i) => {
-                return (
-                  <div key={i}>
-                    <p>{item.transactions_reference} by {item.user ? item.user.email : ''}  </p>
-                  </div>
-                );
-              })
-            ) : (
-              "No Logs Available"
-            )}
+      <div className="dashboard-data-container">
+        <div className="card-container">
+          <Card
+            title="Total Customer"
+            count={CustomerData ? CustomerData.length : 0}
+            path='/dashboard/settings/customer'
+            icon={<FaUsers style={Customerstyle} />
+            }
+          />
 
+          <Card title="Total Inquiry"
+            count={InquiryData ? InquiryData.length : 0}
+            path='/dashboard/sales/inquiry'
+            icon={<TbReportSearch style={inquiryStyle} />}
+          />
+          <Card title="Total Estimation"
+            count={EstimationData ? EstimationData.length : 0}
+            path='/dashboard/sales/estimation'
+            icon={<HiMiniCalculator style={estimationStyle} />}
+          />
+        </div>
+        <div className='userlog-heading'><h4>Most Recent <span style={{ color: "#2e8de1", borderBottom: "2px solid #2e8de1" }}>User Log</span></h4></div>
+        <div className="log-container">
+          <div className="userlog">
+            <div className="userlog-data">
+              {UserLog && UserLog.length > 0 ? (
+                UserLog.slice().reverse().map((item, i) => {
+                  // Determine which CSS class to apply based on whether the index is even or odd
+                  const rowClass = i % 2 === 0 ? 'red-bg' : 'no-bg';
+
+                  return (
+                    <div key={i} className={rowClass}>
+                      <p>{item.transactions_reference} by {item.user ? item.user.email : ''}</p>
+                    </div>
+                  );
+                })
+              ) : (
+                // Handle the case when UserLog is empty or undefined
+                <div>No data available</div>
+              )}
+
+
+            </div>
           </div>
         </div>
       </div>

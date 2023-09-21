@@ -8,10 +8,10 @@ export const getUserLog = createAsyncThunk("getUserLog", async (token)=>{
                 Authorization: `token ${token}`,
             },
         })
-        console.log("response.data log",response.data);
+
         return response.data
     } catch (error) {
-        console.log(error);
+      throw error
     }
 })
 
@@ -33,7 +33,6 @@ const UserlogSlice = createSlice({
         builder.addCase(getUserLog.fulfilled, (state,action) => {
             state.status.get = "succeeded"
             state.UserlogData = action.payload
-            console.log("action.payload", action.payload);
         })
         builder.addCase(getUserLog.rejected, (state) => {
             state.status.get = "failed"

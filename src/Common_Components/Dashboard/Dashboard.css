@@ -1,19 +1,31 @@
-.card-container {
+.dashboard-data-container{
+  width: 100%;
   display: flex;
   justify-content: flex-start;
+  align-items: flex-start;
+  gap: 10px;
+  flex-direction: column;
+}
+.card-container {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
   align-items: center;
+  gap: 20px;
 
 }
 
 .log-container {
   position: relative;
   width: 100%;
-  margin: 1rem auto;
+  box-shadow: 0px 0px 10px rgba(169, 169, 169, 0.5);
+  /* margin: 1rem auto; */
   font-family: "Poppins", sans-serif;
   border: 1px groove #e8e8e8;
   border-radius: 10px;
   background-color: white;
-  margin: 10px;
+  /* margin: 10px; */
   /* padding: 10px; */
 
 }
@@ -26,8 +38,6 @@
 .userlog-heading {
   position: sticky;
   top: 0;
-  /* background-color: var(--primary-color); */
-  /* color: white; */
   color: black;
   padding: 10px;
   z-index: 1;
@@ -38,11 +48,16 @@
   flex-direction: column;
   justify-content: flex-start;
   padding: 10px;
-  gap: 13px;
+  gap: 8px;
   overflow-y: auto;
   max-height: 60vh;
 }
-.userlog-data p {
+.red-bg {
+  background-color: #e8e8e8;
+  border-radius: 5px;
+  padding: 5px;
+}
 
-  /* border-bottom: 1px groove #e8e8e8; */
+.no-bg {
+  background-color: transparent;
 }

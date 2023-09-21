@@ -17,7 +17,7 @@ const Login = (props) => {
     transform: "translate(-50%, -50%)",
     backgroundColor: "#fff",
     // border: "1px solid #6e85b7",
-    width: "25%",
+    width: "400px",
     flexDirection: "column",
     borderRadius: "10px",
     display: "flex",

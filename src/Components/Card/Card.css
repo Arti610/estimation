@@ -1,5 +1,4 @@
-
-/* Card.css */
+/* 
 .card-data-container {
     border-radius: 8px;
     overflow: hidden;
@@ -34,17 +33,43 @@
     padding: 8px;
 }
   .card-title {
-    /* margin-top: 12px; */
-    /* font-size: 18px; */
     font-weight: bold;
   }
   
   .card-count {
-    /* background-color: var(--primary-color); */
     color: black;
-    /* text-align: center; */
     padding: 8px 25px;
     font-weight: bold;
   }
   
- 
+  */
+
+  .card-content {
+    /* border: 1px solid black; */
+    box-shadow: 0px 0px 10px rgba(169, 169, 169, 0.5);
+    border-radius: 8px;
+    height: 180px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+.card-count span{
+  font-weight: bolder;
+  font-size: 25px;
+  color: black;
+}
+.card-icon{
+  font-size: 40px;
+  border-radius: 50%;
+  padding: 12px;
+  background-color: #e8e8e8;
+}
+.card-title{
+  font-size: 13px;
+  font-weight: bold;
+  color: #7b7d7e;
+}
