@@ -52,10 +52,15 @@
 }
 
 .estimation-resouce-list{
-    width: 130px;
+    width: 200px;
+    /* background-color: red; */
     margin: 8px;
     float: right;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
+
 
 .modal-data-container-catelogue{
     padding: 20px;

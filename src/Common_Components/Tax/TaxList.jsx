@@ -113,6 +113,7 @@ const TaxList = () => {
     };
 
     const deleteHandler = (id) => {
+        console.log("idddd",id);
         dispatch(deleteTaxData({ id, token }))
             .then(() => {
                 // Once the delete action is completed successfully, dispatch the get action

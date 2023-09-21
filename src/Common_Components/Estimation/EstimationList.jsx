@@ -12,6 +12,7 @@ const EstimationList = () => {
   const token = localStorage.getItem('Token');
   const EstimationDataBlank = ["Data Not Found"]
   const EstimationData = useSelector((state) => state.Estimation.EstimationData)
+
   const header = [
     {
       Header: "Serial No",
@@ -37,30 +38,34 @@ const EstimationList = () => {
       Header: "Customer",
       accessor: "inquiry_no.customer.name",
     },
-    {
-      Header: "Employer",
-      accessor: "inquiry_no.employer.name",
-    },
-    {
-      Header: "Source Of Inquiry",
-      accessor: "inquiry_no.source_of_inquiry.name",
-    },
+    // {
+    //   Header: "Employer",
+    //   accessor: "inquiry_no.employer.name",
+    // },
+    // {
+    //   Header: "Source Of Inquiry",
+    //   accessor: "inquiry_no.source_of_inquiry.name",
+    // },
     {
       Header: "Department",
       accessor: "inquiry_no.department.name",
     },
-    {
-      Header: "Estimator",
-      accessor: "inquiry_no.estimator.first_name",
-    },
+    // {
+    //   Header: "Estimator",
+    //   accessor: "inquiry_no.estimator.first_name",
+    // },
     {
       Header: "Salesman",
       accessor: "inquiry_no.salesman.first_name",
     },
     {
-      Header: "Scope Of Work",
-      accessor: "inquiry_no.scope_of_work",
+      Header: "Net Amount",
+      accessor: "net_total",
     },
+    // {
+    //   Header: "Scope Of Work",
+    //   accessor: "inquiry_no.scope_of_work",
+    // },
 
   ];
 
@@ -73,7 +78,7 @@ const EstimationList = () => {
   }
 
   const deleteHandler = (id) => {
-    console.log("id delete", id);
+
     dispatch(deleteEstimationData({token, id}))
       .then(() => {
         // Once the delete action is completed successfully, dispatch the get action

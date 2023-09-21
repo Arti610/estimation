@@ -139,7 +139,7 @@ const Estimation = () => {
   const details_id = InquiryData ? InquiryData.detail.map(item => item.id) : null;
 
   const taxData = useSelector((state) => state.Tax.TaxData)
-
+  const [markupError, setMarkupError] = useState('');
   const [estimationDetails, setEstimationDetails] = useState({
     inquiry_no: null,
     estimation_date: null,
@@ -363,6 +363,17 @@ const Estimation = () => {
         // sales_price: updatedSalesPrice
       };
     });
+    let error = '';
+    switch (name) {
+      case "markup":
+        if (!/^[0-9\s]+$/.test(value)) {
+          error = 'Numeric';
+        }
+        setMarkupError(error);
+        break;
+      default:
+        break;
+    }
   };
   const handleEstimationDetailsTax = (value, selectedIndex, index) => {
     setEstimationDetails((prev) => {
@@ -759,16 +770,16 @@ const Estimation = () => {
                   <tr >
                     <th>BOQ NUMBER</th>
                     <th>BOQ DESCRIPTION</th>
-                    <th>UNIT</th>
+                    <th style={{ width: "70px" }}>UNIT</th>
                     <th>QUANTITY</th>
-                    <th>RATE</th>
+                    <th style={{ width: "80px" }}>RATE</th>
                     <th>TOTAL AMOUNT</th>
-                    <th>ESTIMATION RATE</th>
+                    <th style={{ width: "150px" }}>ESTIMATION RATE</th>
                     <th>MARKUP</th>
                     <th>TAXABLE</th>
-                    <th>VAT TYPE</th>
+                    <th style={{ width: "150px" }}>VAT TYPE</th>
                     <th>VAT PERCENTAGE</th>
-                    <th>SALES PRICE</th>
+                    <th style={{ width: "150px" }}>SALES PRICE</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -882,10 +893,12 @@ const Estimation = () => {
                             <TextField
                               name={`item.markup${index}`}
                               onChange={(e) => handleEstimationDetails('markup', e.target.value, index)}
-                              placeholder='Ex: 5%'
+                              // placeholder='5'
                               fullWidth
                               value={estimationDetails.markup[index]}
                               required
+                              error={Boolean(markupError)}
+                              helperText={markupError}
                             />
                           </div>
                         </td>
@@ -1182,14 +1195,13 @@ const Estimation = () => {
                           </Box>
                         </Modal>
                         {/* Estimation Rate Modal End  */}
-
                       </tr>
                     )
                   })}
-                </tbody>
-                <tfoot>
-                  <div className="estimation-resouce-list">
-                    <label>ESTIMATION RATE FINAL</label>
+                </tbody>     
+              </table>
+              <div className="estimation-resouce-list">
+                    <label style={{fontSize:"15px", fontWeight:"bold"}}>NET TOTAL</label>
                     <TextField
                       type="text"
                       className="inputfield bg-color"
@@ -1199,9 +1211,6 @@ const Estimation = () => {
                       readOnly
                     />
                   </div>
-                </tfoot>
-              </table>
-
             </Grid>
           </Grid>
           <div style={{ width: "100%", paddingBlock: "20px", display: 'flex', justifyContent: "center", alignItems: "center" }}>
@@ -1219,7 +1228,6 @@ const Estimation = () => {
             )}
           </div>
         </form>
-
       </div>
     </>
   )
