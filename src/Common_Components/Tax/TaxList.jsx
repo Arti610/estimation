@@ -251,7 +251,7 @@ const TaxList = () => {
                                 onChange={(event, value) => handleAutoComplete(value, 'agency')}
                                 disablePortal
                                 id="combo-box-demo"
-                                options={Agency}
+                                options={Agency ? Agency : []}
                                 getOptionLabel={(option) => option.name}
                                 required
                                 renderInput={(params) => (

@@ -299,7 +299,7 @@ const Inquiry = () => {
 
                 disablePortal
                 id="combo-box-demo"
-                options={Customer}
+                options={Customer ? Customer : []}
                 getOptionLabel={(option) => option.name}
                 required
                 renderInput={(params) => (
@@ -326,7 +326,7 @@ const Inquiry = () => {
                 onChange={(event, value) => handleAutoComplete(value, "employer")}
                 disablePortal
                 id="combo-box-demo"
-                options={Employer}
+                options={Employer ? Employer : []}
                 getOptionLabel={(option) => option.name}
                 required
                 renderInput={(params) => (
@@ -353,7 +353,7 @@ const Inquiry = () => {
 
                 disablePortal
                 id="combo-box-demo"
-                options={SourceOfInquiry}
+                options={SourceOfInquiry ? SourceOfInquiry : []}
                 getOptionLabel={(option) => option.name}
                 required
                 renderInput={(params) => (
@@ -382,7 +382,7 @@ const Inquiry = () => {
                 onChange={(event, value) => handleAutoComplete(value, "department")}
                 disablePortal
                 id="combo-box-demo"
-                options={Department}
+                options={Department ? Department : []}
                 getOptionLabel={(option) => option.name}
                 required
                 renderInput={(params) => (
@@ -411,7 +411,7 @@ const Inquiry = () => {
 
                 disablePortal
                 id="combo-box-demo"
-                options={Estimator_salesman}
+                options={Estimator_salesman ? Estimator_salesman : []}
                 getOptionLabel={(option) => option.first_name}
                 required
                 renderInput={(params) => (
@@ -439,7 +439,7 @@ const Inquiry = () => {
 
                 disablePortal
                 id="combo-box-demo"
-                options={Estimator_salesman}
+                options={Estimator_salesman ? Estimator_salesman : []}
                 getOptionLabel={(option) => option.first_name}
                 required
                 renderInput={(params) => (

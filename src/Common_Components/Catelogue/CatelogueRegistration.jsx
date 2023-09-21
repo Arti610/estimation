@@ -601,7 +601,7 @@ const CatelogueRegistration = () => {
 
                 disablePortal
                 id="combo-box-demo"
-                options={Tax}
+                options={Tax ? Tax : []}
                 getOptionLabel={(option) => option.name}
                 required
                 renderInput={(params) => (

@@ -22,12 +22,10 @@ const User = () => {
   const [phoneNumberError, setPhoneNumberError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
-  const [cookies, setCookies] = useCookies(["token"])
   const [confirmPassword, setConfirmPassword] = useState("");
-  const token = cookies.token;
   const Department = useSelector((state) => state.Department.DepartmentData)
   const updatedUser = useSelector((state) => state.User.updateUserData)
-
+  const token = localStorage.getItem('Token');
   const accountType = ['Active', 'Closed', 'Suspended']
   const userType = ['Admin', 'Operator', 'Customer']
   const [formData, setFormData] = useState({
@@ -36,7 +34,7 @@ const User = () => {
     email: null,
     phone_number: null,
     address: null,
-    profile_image: '',
+    profile_image: null,
     imgFile: null,
     password: null,
     user_type: null,
@@ -46,7 +44,7 @@ const User = () => {
   const passwordHandler = () => {
     setShowPass(!showpass)
   }
-  const confirmPassHandler = () =>{
+  const confirmPassHandler = () => {
     setShowConfirmPass(!showConfirmPass)
   }
   const handleAutoComplete = (newValue, fieldName) => {
@@ -134,6 +132,16 @@ const User = () => {
 
   };
 
+  // const handleImageChange = (e) => {
+  //   const { files } = e.target;
+  //   if (files) {
+  //     formData.imgFile = null;
+  //   }
+  //   setFormData((previous) => ({
+  //     ...previous,
+  //     profile_image: files[0],
+  //   }));
+  // };
   const handleImageChange = (e) => {
     const { files } = e.target;
     if (files) {
@@ -190,10 +198,12 @@ const User = () => {
       // if (formData.profile_image) {
       //   fData.append("profile_image", formData.profile_image);
       // }
-      fData.append("profile_image", formData.profile_image);
+      if (formData.profile_image) {
+        fData.append("profile_image", formData.profile_image);
+      }
+      // fData.append("profile_image", formData.profile_image);
       dispatch(updateUserData({ fData, token, id: updatedUser.id }))
-      alert("updated successfully")
-      navigate("/settings/users")
+      navigate("/dashboard/settings/users")
     } else {
       fData.append("first_name", formData.first_name);
       fData.append("last_name", formData.last_name);
@@ -207,16 +217,13 @@ const User = () => {
       fData.append("account_status", formData.account_status);
 
       dispatch(createUserData({ fData, token }))
-      alert("created successfully")
-      navigate("/settings/users")
+      navigate("/dashboard/settings/users")
 
     }
   }
   useEffect(() => {
     AOS.init();
-    dispatch(getDepartmentData(token));
-    dispatch(updateUserData(token))
-
+    dispatch(getDepartmentData(token))
     if (updatedUser) {
       setFormData({
         first_name: updatedUser.first_name,
@@ -368,7 +375,7 @@ const User = () => {
 
                 disablePortal
                 id="combo-box-demo"
-                options={Department}
+                options={Department ? Department : []}
                 getOptionLabel={(option) => option.name}
                 required
                 renderInput={(params) => (
@@ -451,7 +458,7 @@ const User = () => {
                   CONFIRM PASSWORD <span style={{ color: "red" }}>*</span>
                 </label>
                 <TextField
-                  type={showConfirmPass ? "text":"password"}
+                  type={showConfirmPass ? "text" : "password"}
                   className="inputfield bg-color"
                   name="confirm_password"
                   onChange={handleChange}
