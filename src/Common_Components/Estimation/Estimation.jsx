@@ -720,6 +720,7 @@ const Estimation = () => {
                 onChange={(event, value) => handleAutoComplete(value, "inquiry_no")}
                 // disabled = {null}
                 disablePortal
+                disableClearable
                 id="combo-box-demo"
                 options={Inquiry ? Inquiry : []}
                 getOptionLabel={(option) => option.id}
@@ -914,6 +915,7 @@ const Estimation = () => {
                                 handleEstimationDetailsTax(value, selectedIndex, index);
                               }}
                               disablePortal
+                              disableClearable
                               id="combo-box-demo"
                               options={taxData ? taxData : []}
                               getOptionLabel={(option) => option.name}

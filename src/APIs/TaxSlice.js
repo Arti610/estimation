@@ -54,7 +54,7 @@ export const updateTaxData = createAsyncThunk("updateTaxData", async (payload) =
                 Authorization: `token ${payload.token}`,                
             },
         });
-        console.log("response.data tax data update",response.data);
+      
         return response.data;
     } catch (error) {
                throw error;

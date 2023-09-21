@@ -28,6 +28,7 @@ const TaxList = () => {
     const token = localStorage.getItem('Token');
     const [nameError, setNameError] = useState('');
     const [rateError, setRateError] = useState('');
+    const [taxDataHandler, setTaxDataHandler]= useState(false)
     const Agency = useSelector((state) => state.TaxAgency.TaxAgencyData);
     const [modalData, setModalData] = useState({
         name: null,
@@ -41,7 +42,7 @@ const TaxList = () => {
 
     const closeModal = () => {
         setModalOpen(false);
-      
+        setTaxDataHandler(true)
     };
 
     const handleModalInputChange = (e) => {
@@ -92,6 +93,7 @@ const TaxList = () => {
             updatedData: updatedFields,
             token,
           }));
+          setTaxDataHandler(true)
         } else {
           dispatch(createTaxData({ modalData, token }));
         }
@@ -105,6 +107,7 @@ const TaxList = () => {
         // if (editData) {
         //     setModalData(editData);
         // }
+        setTaxDataHandler(false)
         dispatch(getupdateTaxData({ id, token }));
         setModalOpen(true);
     };
@@ -124,12 +127,18 @@ const TaxList = () => {
     useEffect(() => {
         dispatch(getTaxData(token));
         dispatch(getTaxAgencyData(token));
-        console.log("updatedTaxData ddddddddddd", updatedTaxData);
         if (updatedTaxData) {
             setModalData({
                 name: updatedTaxData.name,
                 rate: updatedTaxData.rate,
                 agency: String(updatedTaxData.agency.id),  // Set the whole agency object
+            });
+        } 
+        if(taxDataHandler){
+            setModalData({
+                name: null,
+                rate: null,
+                agency: null  // Set the whole agency object
             });
         }
     }, [dispatch, token, modalOpen, updatedTaxData]);
