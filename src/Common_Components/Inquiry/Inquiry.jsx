@@ -203,7 +203,6 @@ const Inquiry = () => {
     dispatch(getCustomerData(token))
     dispatch(getSourceOfInquiryData(token))
     dispatch(getUserData(token))
-    dispatch(updateInquiryData(token))
 
     if (updatedInquiry) {
       setFormData({
@@ -556,7 +555,7 @@ const Inquiry = () => {
                           // onChange={handleChange}
                           value={item.boq_description}
                           onChange={(e) => handleChangePrice(index, 'boq_description', e.target.value)}
-                          placeholder="Ex: "
+                          // placeholder="Ex: "
                           fullWidth
                           required
                           disabled={updatedInquiry && isDisabled}

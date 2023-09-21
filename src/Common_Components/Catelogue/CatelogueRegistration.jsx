@@ -274,7 +274,6 @@ const CatelogueRegistration = () => {
   useEffect(() => {
     AOS.init();
     dispatch(getTaxData(token))
-    console.log("updatedCatelogue",updatedCatelogue);
     if (updatedCatelogue) {
       setFormData({
         // id:  updatedCatelogue.catelogue.id,
