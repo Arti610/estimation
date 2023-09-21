@@ -1,0 +1,15 @@
+.login_top_contianer {
+    padding: 0px 20px;
+}
+
+.login-powered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* font-weight: 20px; */
+}
+
+.login_top_contianer p{
+    padding: 10px 0px;
+    color: #424040;
+}
