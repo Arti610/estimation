@@ -80,7 +80,7 @@ const DepartmentList = () => {
 
 
   const deleteHandler = (id) => {
-    dispatch(deleteDepartmentData(id))
+    dispatch(deleteDepartmentData({id, token}))
       .then(() => {
         // Once the delete action is completed successfully, dispatch the get action
         dispatch(getDepartmentData(token));

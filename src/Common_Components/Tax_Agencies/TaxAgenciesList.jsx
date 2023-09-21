@@ -80,7 +80,7 @@ const TaxAgenciesList = () => {
   };
 
   const deleteHandler = (id) => {
-    dispatch(deleteTaxAgencyData(id))
+    dispatch(deleteTaxAgencyData({id, token}))
       .then(() => {
         // Once the delete action is completed successfully, dispatch the get action
         dispatch(getTaxAgencyData(token));

@@ -21,35 +21,35 @@ const Dashboard = () => {
   const CustomerData = useSelector((state) => state.Customer.CustomerData)
   const EstimationData = useSelector((state) => state.Estimation.EstimationData)
   const UserLog = useSelector((state) => state.UserLog.UserlogData)
-  console.log("UserLog", UserLog);
   useEffect(() => {
     dispatch(getInquiryData(token))
     dispatch(getEstimationData(token))
     dispatch(getCustomerData(token))
-    if (UserLog) {
-      dispatch(getUserLog(token))
-    }
+    dispatch(getUserLog(token))
   }, [])
   return (
     <>
       <div className="card-container">
-        <Card title="Total Customer" count={CustomerData ? CustomerData.length : 0} svg1={customersvgfirst} svg2={customersvgsecond} pic="https://th.bing.com/th/id/OIP.jDXaAhD9ijyiFihWNqFAYQHaGg?pid=ImgDet&rs=1" path='/settings/customer' />
-        <Card title="Total Inquiry" count={InquiryData ? InquiryData.length : 0} svg1={inquirysvgfirst} svg2={inquirysvgsecond} pic="https://th.bing.com/th/id/OIP.w6TN1JaDuyED5jdvtFZC_wHaHa?pid=ImgDet&rs=1" path='/sales/inquiry' />
-        <Card title="Total Estimation" count={EstimationData ? EstimationData.length : 0} svg1={estimationsvgfirst} svg2={estimationsvgsecond} pic='https://cdn1.iconfinder.com/data/icons/engineering-aesthetics-vol-1/256/Estimate-512.png' path='/sales/estimation' />
+        <Card title="Total Customer" count={CustomerData ? CustomerData.length : 0} svg1={customersvgfirst} svg2={customersvgsecond} pic="https://th.bing.com/th/id/OIP.jDXaAhD9ijyiFihWNqFAYQHaGg?pid=ImgDet&rs=1" path='/dashboard/settings/customer' />
+        <Card title="Total Inquiry" count={InquiryData ? InquiryData.length : 0} svg1={inquirysvgfirst} svg2={inquirysvgsecond} pic="https://th.bing.com/th/id/OIP.w6TN1JaDuyED5jdvtFZC_wHaHa?pid=ImgDet&rs=1" path='/dashboard/sales/inquiry' />
+        <Card title="Total Estimation" count={EstimationData ? EstimationData.length : 0} svg1={estimationsvgfirst} svg2={estimationsvgsecond} pic='https://cdn1.iconfinder.com/data/icons/engineering-aesthetics-vol-1/256/Estimate-512.png' path='/dashboard/sales/estimation' />
       </div>
-
       <div className="log-container">
         <div className="userlog">
           <div className='userlog-heading'>  <h4>USER LOG</h4></div>
           <div className="userlog-data">
-            {UserLog && UserLog ? UserLog.slice().reverse().map((item, i) => {
+            {UserLog && UserLog.length > 0 ? (
+              UserLog.slice().reverse().map((item, i) => {
+                return (
+                  <div key={i}>
+                    <p>{item.transactions_reference} by {item.user ? item.user.email : ''}  </p>
+                  </div>
+                );
+              })
+            ) : (
+              "No Logs Available"
+            )}
 
-              return (
-                <div key={i} >
-                  <p>{item.transactions_reference} by {item.user.email}</p>
-                </div>
-              )
-            }) : "No Logs Available"}
           </div>
         </div>
       </div>

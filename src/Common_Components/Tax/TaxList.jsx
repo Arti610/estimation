@@ -23,7 +23,7 @@ const TaxList = () => {
     const dispatch = useDispatch();
     const TaxDataBlank = ["Data Not Found"]
     const TaxData = useSelector((state) => state.Tax.TaxData)
-    const updatedTaxData = useSelector((state) => state.Tax.updateTaxDatastore);
+    const updatedTaxData = useSelector((state) => state.Tax.updateTaxData);
     const [modalOpen, setModalOpen] = useState(false);
     const token = localStorage.getItem('Token');
     const [nameError, setNameError] = useState('');
@@ -35,14 +35,13 @@ const TaxList = () => {
         agency: null,
     });
 
-
     const openModal = () => {
-
         setModalOpen(true);
     };
 
     const closeModal = () => {
         setModalOpen(false);
+      
     };
 
     const handleModalInputChange = (e) => {
@@ -56,7 +55,7 @@ const TaxList = () => {
 
         switch (name) {
             case 'name':
-                if (!/^[A-Za-z]+$/.test(value)) {
+                if (!/^[A-Za-z\s]+$/.test(value)) {
                     error = 'Name should only contain alphabetical characters';
                 }
                 setNameError(error);
@@ -81,35 +80,37 @@ const TaxList = () => {
     };
 
     const createOrUpdateHandler = () => {
-        if (modalData.id) {
-
-            dispatch(updateTaxData({
-                id: modalData.id,
-                updatedData: {
-                    name: modalData.name,
-                    rate: modalData.rate,
-                    agency: String(modalData.agency.id),
-                },
-                token,
-            }));
-            // dispatch(getupdateTaxData({ id: response.id, token }));
+        if (updatedTaxData) {
+          const updatedFields = {
+            name: modalData.name,
+            rate: modalData.rate,
+            agency: modalData.agency,
+          };
+      
+          dispatch(updateTaxData({
+            id: updatedTaxData.id,
+            updatedData: updatedFields,
+            token,
+          }));
         } else {
-            dispatch(createTaxData({ modalData, token }));
+          dispatch(createTaxData({ modalData, token }));
         }
         closeModal();
         dispatch(getTaxData(token));
-    };
+      };
+      
 
     const editHandler = (id) => {
-        const editData = TaxData.find((data) => data.id === id);
-        if (editData) {
-            setModalData(editData);
-            setModalOpen(true);
-        }
+        // const editData = TaxData.find((data) => data.id === id);
+        // if (editData) {
+        //     setModalData(editData);
+        // }
+        dispatch(getupdateTaxData({ id, token }));
+        setModalOpen(true);
     };
 
     const deleteHandler = (id) => {
-        dispatch(deleteTaxData(id))
+        dispatch(deleteTaxData({ id, token }))
             .then(() => {
                 // Once the delete action is completed successfully, dispatch the get action
                 dispatch(getTaxData(token));
@@ -123,12 +124,12 @@ const TaxList = () => {
     useEffect(() => {
         dispatch(getTaxData(token));
         dispatch(getTaxAgencyData(token));
-
+        console.log("updatedTaxData ddddddddddd", updatedTaxData);
         if (updatedTaxData) {
             setModalData({
                 name: updatedTaxData.name,
                 rate: updatedTaxData.rate,
-                agency: updatedTaxData.agency,  // Set the whole agency object
+                agency: String(updatedTaxData.agency.id),  // Set the whole agency object
             });
         }
     }, [dispatch, token, modalOpen, updatedTaxData]);
@@ -200,7 +201,7 @@ const TaxList = () => {
                 <Box sx={style} className="scroll-bar">
                     <div className="modal-top-container">
                         <h4>
-                            {modalData.id
+                            {updatedTaxData
                                 ? `Update Tax`
                                 : `Tax`}
                         </h4>
@@ -247,7 +248,12 @@ const TaxList = () => {
                             </label>
                             <Autocomplete
                                 name="agency"
-                                value={modalData.agency}
+                                // value={modalData.agency}
+                                value={
+                                    Agency &&
+                                    modalData.agency &&
+                                    Agency.find((item) => item.id === Number(modalData.agency))
+                                }
                                 onChange={(event, value) => handleAutoComplete(value, 'agency')}
                                 disablePortal
                                 id="combo-box-demo"
@@ -269,7 +275,7 @@ const TaxList = () => {
                             }}
                             onClick={createOrUpdateHandler}
                         >
-                            {modalData.id ? 'UPDATE' : 'CREATE'}
+                            {updatedTaxData ? 'UPDATE' : 'CREATE'}
                         </button>
                     </form>
                 </Box>

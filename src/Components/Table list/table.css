@@ -14,7 +14,7 @@
 }
 
 .table-list {
- /* Adjust the height as needed */
+  /* Adjust the height as needed */
   overflow-y: auto;
   overflow-x: auto;
 }
@@ -68,22 +68,25 @@ tfoot td {
   /* background: linear-gradient(to bottom, #9f8754 0, #72520e 100%); */
   background-color: #f2f2f2;
   border-radius: 5px;
-  width: 130px;
+  width: 200px;
   padding: 13px;
 }
 
 .Header-column>Checkbox {
   padding: 20px;
 }
-.table-heading{
+
+.table-heading {
   padding: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.table-heading h4{
+
+.table-heading h4 {
   display: inline-flex;
 }
+
 .density1 {
   padding-block: 15px;
   text-align: center;
@@ -138,10 +141,12 @@ tfoot td {
   padding-inline: 10px;
   /* background-color: #f2f2f2; */
 }
-.Global-filter{
+
+.Global-filter {
   width: 100%;
 }
-.export-btn{
+
+.export-btn {
   width: 30px;
   height: 30px;
   padding: 5px;
@@ -155,49 +160,56 @@ tfoot td {
   font-size: 20px;
 }
 
-.export-btn:hover{
+.export-btn:hover {
   background-color: var(--primary-color);
   color: var(--primary-font-color);
 }
 
-.table-btn-left{
-display: flex;
-gap: 5px;
-flex-direction: column;
-width: fit-content;
-top: 6.5%;
-background-color: var(--secondary-color);
-padding: 10px;
-right: 0;
-position: absolute;
-z-index: 5000;
-border: 1px groove var(--secondary-color);
-border-radius: 10px;
+.table-btn-left {
+  display: flex;
+  gap: 5px;
+  flex-direction: column;
+  width: fit-content;
+  top: 6.5%;
+  background-color: var(--secondary-color);
+  padding: 10px;
+  right: 0;
+  position: absolute;
+  z-index: 5000;
+  border: 1px groove var(--secondary-color);
+  border-radius: 10px;
 }
-.table-btn-left span{
+
+.table-btn-left span {
   width: 100px;
   font-size: 12.5px;
   font-weight: bold;
   color: black !important;
 
 }
-.table-btn-left span:hover{
+
+.table-btn-left span:hover {
   color: var(--primary-color) !important;
 }
-.toggle-list-all{
+
+.toggle-list-all {
   font-size: 17px;
   border-bottom: 1px solid var(--ternary-color);
   margin-block: 5px;
   padding-block: 2px;
 }
-.Toggle-list label{
+.Toggle-list{
+  padding: 3px;
+}
+.Toggle-list label {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   gap: 7px;
-font-size: 14px;
+  font-size: 14px;
 
 }
+
 .Toggle-list label input {
   height: 20px;
   /* width: ; */
@@ -208,8 +220,8 @@ font-size: 14px;
   /* display: flex; */
   /* justify-content: space-between; */
   /* border-top: 1px groove var(--border-color); */
-padding: 10px;
-  
+  padding: 10px;
+
 }
 
 /* .Navigation button {
@@ -281,5 +293,3 @@ padding: 10px;
   border-bottom: 3px solid var(--primary-color);
   padding: 5px 0px;
 }
-
-

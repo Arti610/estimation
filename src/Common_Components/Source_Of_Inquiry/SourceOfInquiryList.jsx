@@ -84,7 +84,7 @@ const SourceOfInquiryList = () => {
   };
 
   const deleteHandler = (id) => {
-    dispatch(deleteSourceOfInquiryData(id))
+    dispatch(deleteSourceOfInquiryData({id, token}))
       .then(() => {
         // Once the delete action is completed successfully, dispatch the get action
         dispatch(getSourceOfInquiryData(token));

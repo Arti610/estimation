@@ -2,8 +2,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  /* margin: 10px;
-    padding: 10px; */
+
 }
 
 .log-container {
@@ -20,7 +19,6 @@
 }
 
 .userlog {
-  /* padding: 10px; */
   display: flex;
   flex-direction: column;
 }
@@ -28,10 +26,10 @@
 .userlog-heading {
   position: sticky;
   top: 0;
-  background-color: var(--primary-color);
-  color: white;
+  /* background-color: var(--primary-color); */
+  /* color: white; */
+  color: black;
   padding: 10px;
-  /* You can change the background color as needed */
   z-index: 1;
 }
 
@@ -40,13 +38,11 @@
   flex-direction: column;
   justify-content: flex-start;
   padding: 10px;
-  gap: 10px;
-  /* Add any desired styles for the log data */
+  gap: 13px;
   overflow-y: auto;
-  /* Add scroll to the log data */
-  max-height: 300px;
+  max-height: 60vh;
 }
 .userlog-data p {
 
-  border-bottom: 1px groove #e8e8e8;
+  /* border-bottom: 1px groove #e8e8e8; */
 }

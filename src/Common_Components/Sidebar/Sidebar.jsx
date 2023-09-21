@@ -37,7 +37,7 @@ const Sidebar = () => {
                         <div className="sidebar-icons"><AiFillDashboard /></div>
                         <div className="sidebar-title">Dashboard</div>
                     </Link>
-                    <Link to="/dashboard/sales" className={`sidebar-element sidebar-element-sales ${isLinkActive("/dashboard/sales") ? 'active' : ''}`}>
+                    <div  className={`sidebar-element sidebar-element-sales ${isLinkActive("/dashboard/sales") ? 'active' : ''}`}>
                         {/* <div className='sidebar-icons'><MdGraphicEq /></div> */}
                         <div className='sidebar-icons'><CiDiscount1 /></div>
                         <div className="sidebar-title">Sales</div>
@@ -58,14 +58,14 @@ const Sidebar = () => {
                                 <div className="submenu-title">Estimation</div>
                             </Link>
                         </div>
-                    </Link>
-                    <Link to="/dashboard/settings" className={`sidebar-element sidebar-element-sales ${isLinkActive("/dashboard/settings") ? 'active' : ''}`}>
+                    </div>
+                    <div className={`sidebar-element sidebar-element-sales ${isLinkActive("/dashboard/settings") ? 'active' : ''}`}>
                     {/* <div className={`sidebar-element sidebar-element-sales ${isLinkActive("/settings/customer") || isLinkActive("/settings/employer") || isLinkActive("/settings/department") || isLinkActive("/settings/source-of-inquiry") || isLinkActive("/settings/users") || isLinkActive("/settings/tax") || isLinkActive("/settings/tax-agencies") ? 'active' : ''}`}> */}
                         <div className="sidebar-icons"><AiFillSetting /></div>
                         <div className="sidebar-title">Settings</div>
                         <div className="sidebar-submenus">
                             <Link to="/dashboard/settings/customer" className="submenu">
-                                <div className="submenu-icons"><BsFillPersonCheckFill /></div>
+                                <div className="submenu-icons"><FaUsers /></div>
                                 <div className="submenu-title">Customer</div>
                             </Link>
                             <Link to="/dashboard/settings/employer" className="submenu">
@@ -82,8 +82,8 @@ const Sidebar = () => {
                                 <div className="submenu-title">Source of Inquiry</div>
                             </Link>
                             <Link to="/dashboard/settings/users" className="submenu">
-                                <div className="submenu-icons"><FaUsers /></div>
-                                <div className="submenu-title">Users</div>
+                                <div className="submenu-icons"><BsFillPersonCheckFill/></div>
+                                <div className="submenu-title">User</div>
                             </Link>
                             <Link to="/dashboard/settings/tax" className="submenu">
                                 <div className="submenu-icons"><MdRealEstateAgent /></div>
@@ -96,7 +96,7 @@ const Sidebar = () => {
                             </Link>
                         </div>
                     {/* </div> */}
-                    </Link>
+                    </div>
                 </div>
                 <div className="contentbar"><Outlet /></div>
             </div>

@@ -120,7 +120,7 @@ const EmployerList = () => {
     };
 
     const deleteHandler = (id) => {
-        dispatch(deleteEmployerData(id))
+        dispatch(deleteEmployerData({id, token}))
           .then(() => {
             // Once the delete action is completed successfully, dispatch the get action
             dispatch(getEmployerData(token));

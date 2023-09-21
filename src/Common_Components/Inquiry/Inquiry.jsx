@@ -165,7 +165,7 @@ const Inquiry = () => {
       }
       dispatch(updateInquiryData({ fData, token, id: updatedInquiry.inquiry.id }))
       alert("updated successfully")
-      navigate("/sales/inquiry")
+      navigate("/dashboard/sales/inquiry")
     } else {
       fData.append("client_reference_no", formData.client_reference_no);
       fData.append("inquirydate", formData.inquirydate);
@@ -190,7 +190,7 @@ const Inquiry = () => {
       });
       dispatch(createInquiryData({ fData, token }))
       alert("created successfully")
-      navigate("/sales/inquiry")
+      navigate("/dashboard/sales/inquiry")
 
     }
   }

@@ -31,7 +31,7 @@ const UserList = () => {
   
   
   const deleteHandler = (id) => {
-    dispatch(deleteUserData(id))
+    dispatch(deleteUserData({id, token}))
       .then(() => {
         // Once the delete action is completed successfully, dispatch the get action
         dispatch(getUserData(token));

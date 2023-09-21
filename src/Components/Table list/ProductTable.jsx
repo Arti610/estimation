@@ -78,6 +78,7 @@ export const ProductTable = ({
         dispatch(getupdateCatelogueData({ token, id }))
         navigate("/dashboard/sales/catelogue-details")
     }
+  
     useEffect(() => {
         AOS.init();
         const handleClickOutside = (event) => {

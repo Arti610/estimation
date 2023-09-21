@@ -161,7 +161,7 @@ const CustomerList = () => {
 
   // Function to handle deleting data
   const deleteHandler = (id) => {
-    dispatch(deleteCustomerData(id))
+    dispatch(deleteCustomerData({id, token}))
       .then(() => {
         // Once the delete action is completed successfully, dispatch the get action
         dispatch(getCustomerData(token));
