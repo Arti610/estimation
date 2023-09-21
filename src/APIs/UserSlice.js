@@ -32,7 +32,7 @@ export const createUserData = createAsyncThunk("createUserData", async (payload)
     }
 })
 
-export const deleteUserData = createAsyncThunk("deleteUserData", async (id, token) => {
+export const deleteUserData = createAsyncThunk("deleteUserData", async ({id, token}) => {
     try {
         const response = await api.delete(`/user/delete/${id}`,
             {

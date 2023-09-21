@@ -21,7 +21,7 @@ const Login = (props) => {
     flexDirection: "column",
     borderRadius: "10px",
     display: "flex",
-    height: "55%",
+    height: "80%",
     overflow: "auto",
     "@media (max-width: 576px)": {
       width: "90%",

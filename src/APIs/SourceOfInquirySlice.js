@@ -30,7 +30,7 @@ export const createSourceOfInquiryData = createAsyncThunk("createSourceOfInquiry
     }
 })
 
-export const deleteSourceOfInquiryData = createAsyncThunk("deleteSourceOfInquiryData", async (id, token) => {
+export const deleteSourceOfInquiryData = createAsyncThunk("deleteSourceOfInquiryData", async ({id, token}) => {
     try {
         const response = await api.delete(`/delete_soi/${id}`,
             {

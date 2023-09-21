@@ -67,10 +67,10 @@ const InquiryList = () => {
       Header: "Salesman",
       accessor: "salesman.first_name",
     },
-    {
-      Header: "Scope Of Work",
-      accessor: "scope_of_work",
-    },
+    // {
+    //   Header: "Scope Of Work",
+    //   accessor: "scope_of_work",
+    // },
 
   ];
 
@@ -83,7 +83,7 @@ const InquiryList = () => {
   }
 
   const deleteHandler = (id) => {
-    dispatch(deleteInquiryData(id))
+    dispatch(deleteInquiryData({id,token}))
       .then(() => {
         // Once the delete action is completed successfully, dispatch the get action
         dispatch(getInquiryData(token));

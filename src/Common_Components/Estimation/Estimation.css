@@ -52,7 +52,7 @@
 }
 
 .estimation-resouce-list{
-    width: 200px;
+    width: 130px;
     /* background-color: red; */
     margin: 8px;
     float: right;
@@ -61,6 +61,15 @@
     gap: 5px;
 }
 
+.estimation-resouce-list-net-total{
+    width: 200px;
+    /* background-color: red; */
+    margin: 8px;
+    float: right;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
 
 .modal-data-container-catelogue{
     padding: 20px;

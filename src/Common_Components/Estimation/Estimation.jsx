@@ -1200,7 +1200,7 @@ const Estimation = () => {
                   })}
                 </tbody>     
               </table>
-              <div className="estimation-resouce-list">
+              <div className="estimation-resouce-list-net-total">
                     <label style={{fontSize:"15px", fontWeight:"bold"}}>NET TOTAL</label>
                     <TextField
                       type="text"

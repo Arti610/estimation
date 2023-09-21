@@ -30,7 +30,7 @@ export const createTaxAgencyData = createAsyncThunk("createTaxAgencyData", async
     }
 })
 
-export const deleteTaxAgencyData = createAsyncThunk("deleteTaxAgencyData", async (id, token) => {
+export const deleteTaxAgencyData = createAsyncThunk("deleteTaxAgencyData", async ({id, token}) => {
     try {
         const response = await api.delete(`/delete_taxagency/${id}`,
             {
