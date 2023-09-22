@@ -77,28 +77,28 @@ const CustomerList = () => {
     switch (name) {
       case "name":
         if (!/^[A-Za-z\s]+$/.test(value)) {
-          error = 'Name should only contain alphabetical characters and spaces';
+          error = 'Name should only contain alphabetic and spaces';
         }
         setNameError(error);
         break;
 
       case "contact_person":
         if (!/^[A-Za-z\s]+$/.test(value)) {
-          error = 'Person name should only contain alphabetical characters';
+          error = 'Person name should only contain alphabetic';
         }
         setLastNameError(error);
         break;
 
       case "country":
         if (!/^[A-Za-z\s]+$/.test(value)) {
-          error = 'Country name should only contain alphabetical characters';
+          error = 'Country name should only contain alphabetic';
         }
         setCountryError(error);
         break;
 
       case "mobile_number":
         if (!/^[0-9]+$/.test(value)) {
-          error = 'Phone number should only contain numerical digits';
+          error = 'Phone number should only contain numeric';
         }
         setPhoneNumberError(error);
         break;

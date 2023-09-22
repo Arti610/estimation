@@ -6,8 +6,7 @@ import { Autocomplete, Grid, IconButton, ImageList, ImageListItem, InputAdornmen
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { getDepartmentData } from '../../APIs/DepartmentSlice';
-import { useCookies } from 'react-cookie';
-import './User.css'
+import './User.css';
 import { ImgUrl } from '../../Config/Config';
 import { MdVisibilityOff, MdVisibility } from 'react-icons/md'
 const User = () => {
@@ -81,14 +80,14 @@ const User = () => {
       switch (name) {
         case "first_name":
           if (!/^[A-Za-z\s]+$/.test(value)) {
-            error = 'Name should only contain alphabetical characters';
+            error = 'Name should only contain alphabetic';
           }
           setNameError(error);
           break;
 
         case "last_name":
           if (!/^[A-Za-z\s]+$/.test(value)) {
-            error = 'Last name should only contain alphabetical characters';
+            error = 'Last name should only contain alphabetic';
           }
           setLastNameError(error);
           break;
@@ -110,7 +109,7 @@ const User = () => {
 
         case "phone_number":
           if (!/^[0-9]+$/.test(value)) {
-            error = 'Phone number should only contain numerical digits';
+            error = 'Phone number should only contain numeric';
           }
           setPhoneNumberError(error);
           break;

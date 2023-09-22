@@ -71,6 +71,7 @@ const EstimationList = () => {
 
   const createHandler = () => {
     navigate("/dashboard/sales/Estimation-registration")
+    window.location.reload();
   }
   const editHandler = (id) => {
     dispatch(getupdateEstimationData({ id, token }))

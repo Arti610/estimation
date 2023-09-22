@@ -115,7 +115,6 @@ const Inquiry = () => {
       ...prevFormData,
       [name]: value,
     }));
-    console.log(formData, 'formDaata');
   };
   const handleChangePrice = (index, name, value) => {
     const newDetails = [...formData.details];
@@ -164,7 +163,6 @@ const Inquiry = () => {
         fData.append("attachments", formData.attachments);
       }
       dispatch(updateInquiryData({ fData, token, id: updatedInquiry.inquiry.id }))
-      alert("updated successfully")
       navigate("/dashboard/sales/inquiry")
     } else {
       fData.append("client_reference_no", formData.client_reference_no);
@@ -189,7 +187,7 @@ const Inquiry = () => {
         fData.append(`total_price`, file.total_price);
       });
       dispatch(createInquiryData({ fData, token }))
-      alert("created successfully")
+
       navigate("/dashboard/sales/inquiry")
 
     }
@@ -304,7 +302,7 @@ const Inquiry = () => {
                 renderInput={(params) => (
                   <TextField
                     className="bg-color"
-                    placeholder="Select Department"
+                    placeholder="Select Customer"
                     {...params}
                   />
                 )}

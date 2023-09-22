@@ -6,18 +6,36 @@ import './CatelogueDetails.css'
 import { FaFilePdf } from 'react-icons/fa'
 import { deleteCatelogueData, getupdateCatelogueData } from '../../APIs/CatelogueSlice'
 import { useNavigate } from 'react-router-dom'
-
-const Catelogue = () => {
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+const Catelogue = (props) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [imagesToggle, setImagesToggle] = useState(false)
+  const [imagesToggle, setImagesToggle] = useState(true)
   const [certificatesToggle, setCertificatesToggle] = useState(false)
   const [datasheetsToggle, setDatasheetsToggle] = useState(false)
-  const [specificationToggle, setSpecificationToggle] = useState(true)
+  const [specificationToggle, setSpecificationToggle] = useState(false)
   const CatelogueData = useSelector((state) => state.Catelogue.updateCatelogueData)
   const token = localStorage.getItem('Token');
   const [showMore, setShowMore] = useState(false);
-
+  const responsive = {
+    superLargeDesktop: {
+      breakpoint: { max: 4000, min: 3000 },
+      items: 5, // Minimum of 5 images
+    },
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 5,
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 3,
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 2,
+    },
+  };
   const toggleShowMore = () => {
     setShowMore(!showMore);
   };
@@ -28,7 +46,6 @@ const Catelogue = () => {
     return text.substring(0, maxLength) + "...";
   };
 
-
   const updateHandler = (id) => {
     dispatch(getupdateCatelogueData({ token, id }))
     navigate("/dashboard/sales/catelogue-registration")
@@ -37,8 +54,6 @@ const Catelogue = () => {
     dispatch(deleteCatelogueData({ token, id }))
     navigate("/dashboard/sales/catelogue")
   }
-
-
   const imagesHandler = () => {
     setImagesToggle(true)
     setDatasheetsToggle(false)
@@ -71,12 +86,12 @@ const Catelogue = () => {
             <h2 className='border-bottom-heading'>
               Catelogue Details
             </h2>
-         <div style={{display:"flex", gap:"5px"}}>
-            <button onClick={()=>updateHandler(CatelogueData && CatelogueData.catelouge.id)}>Edit</button>
-         <button onClick={()=>deleteHandle(CatelogueData && CatelogueData.catelouge.id)}>Delete</button>
-         </div>
+            <div style={{ display: "flex", gap: "5px" }}>
+              <button onClick={() => updateHandler(CatelogueData && CatelogueData.catelouge.id)}>Edit</button>
+              <button onClick={() => deleteHandle(CatelogueData && CatelogueData.catelouge.id)}>Delete</button>
+            </div>
           </p>
-         
+
         </div>
         <div className="main-catelogue-container">
 
@@ -84,6 +99,7 @@ const Catelogue = () => {
             <div className="images-container">
               <img src={`${ImgUrl}${CatelogueData && CatelogueData.catelouge.primary_image}`} />
             </div>
+
             <div className="details-container">
               {/* <h2>{CatelogueData && CatelogueData.catelouge.name}</h2> */}
               <div className="catelogue-details-container">
@@ -107,60 +123,50 @@ const Catelogue = () => {
                 </div>
               </div>
             </div>
-
           </div>
-          {/* <label>SPECIFICATION</label>
-            <div className="specification-container">
-              <p className='detail-label'><label style={{ fontSize: "15px" }}></label>{CatelogueData && CatelogueData.catelouge.specification}</p>
-            </div>
-            <label>OTHER IMAGES</label>
-            <div className="other-images-container">
-              {CatelogueData ? CatelogueData.images.map((item, i) => {
-                return (
-                  <>
-                    <div className='other-images' key={i}>
-                      <img src={`${ImgUrl}${item.files}`} />
-                    </div>
-                  </>
-                )
-              }) : (<p>No Images Found</p>)}
-            </div>
-            <label>DATASHEETS</label>
-            <div className="datasheet-container">
-              {CatelogueData ? CatelogueData.datasheet.map((item, i) => {
-                return (
-                  <>
-                    <div className='pdfs' key={i}>
-                      <span className="pdf-container"> <FaFilePdf className='pdf-icon' /> <a href={`${ImgUrl}${item.datasheet}`} target="_blank" download>{item.datasheet.replace('/media/catalogueSheet/', '')}</a></span>
-                    </div>
-                  </>
-                )
-              }) : <p>No Datasheet Uploaded</p>}
-            </div>
-            <label>CERTIFICATES</label>
-            <div className="certificate-container">
-              {CatelogueData ? CatelogueData.certificates.map((item, i) => {
-                return (
-                  <>
-                    <div className='pdfs' key={i}>
-                      <span className="pdf-container">  <FaFilePdf className='pdf-icon' /><a href={`${ImgUrl}${item.files}`} target="_blank" download>{item.files.replace('/media/Catalouge_certificate/', '')}</a></span>
-                    </div>
-                  </>
-                )
-              }) : "No Certificate Uploaded"}
-            </div> */}
+          {/* <Carousel
+            responsive={responsive}
+            swipeable={false}
+            draggable={false}
+            showDots={true}
+            ssr={true}
+            infinite={true}
+            autoPlay={props.deviceType !== "mobile" ? true : false}
+            autoPlaySpeed={1000}
+            keyBoardControl={true}
+            customTransition="all .5"
+            transitionDuration={1000}
+            containerClass="carousel-container"
+            removeArrowOnDeviceType={["tablet", "mobile"]}
+            deviceType={props.deviceType}
+            dotListClass="custom-dot-list-style"
+            itemClass="carousel-item-padding-40-px"
+          >
+            {CatelogueData ? CatelogueData.images.map((item, i) => {
+              return (
+                <>
+                  <div className='other-images' key={i}>
+                    <img src={`${ImgUrl}${item.files}`} />
+                  </div>
+                </>
+              )
+            }) : (<p>No Images Found</p>)}
+          </Carousel> */}
           <div className="details-container-heading">
             <div className={`heading-container ${imagesToggle ? 'active-container' : ''}`}>
-              {/* <div className="heading-container"> */}
+            <h5
+                onClick={imagesHandler}
+                className={imagesToggle ? 'active-heading' : ''}
+              >
+                ALL IMAGES
+              </h5>
               <h5
                 onClick={specificationHandler}
                 className={specificationToggle ? 'active-heading' : ''}
               >
                 SPECIFICATION
               </h5>
-
-              <h5
-                onClick={certificateHandler}
+              <h5 onClick={certificateHandler}
                 className={certificatesToggle ? 'active-heading' : ''}
               >
                 CERTIFICATES
@@ -171,14 +177,20 @@ const Catelogue = () => {
               >
                 DATASHEETS
               </h5>
-              <h5
-                onClick={imagesHandler}
-                className={imagesToggle ? 'active-heading' : ''}
-              >
-                OTHER IMAGES
-              </h5>
+           
             </div>
             <div className="toggle-data-container">
+              {imagesToggle ? <div className="other-images-container">
+                {CatelogueData ? CatelogueData.images.map((item, i) => {
+                  return (
+                    <>
+                      <div className='other-images' key={i}>
+                        <img src={`${ImgUrl}${item.files}`} />
+                      </div>
+                    </>
+                  )
+                }) : (<p>No Images Found</p>)}
+              </div> : null}
               {specificationToggle ? <div className="specification-container">
                 <div className="detail-container">
                   <div className='left-detail-container'>
@@ -227,20 +239,12 @@ const Catelogue = () => {
                   )
                 }) : "No Certificate Uploaded"}
               </div> : null}
-              {imagesToggle ? <div className="other-images-container">
-                {CatelogueData ? CatelogueData.images.map((item, i) => {
-                  return (
-                    <>
-                      <div className='other-images' key={i}>
-                        <img src={`${ImgUrl}${item.files}`} />
-                      </div>
-                    </>
-                  )
-                }) : (<p>No Images Found</p>)}
-              </div> : null}
+
             </div>
           </div>
+
         </div>
+
       </div>
     </>
   )

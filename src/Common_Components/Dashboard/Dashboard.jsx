@@ -24,6 +24,7 @@ const Dashboard = () => {
   const CustomerData = useSelector((state) => state.Customer.CustomerData)
   const EstimationData = useSelector((state) => state.Estimation.EstimationData)
   const UserLog = useSelector((state) => state.UserLog.UserlogData)
+  
   useEffect(() => {
     dispatch(getInquiryData(token))
     dispatch(getEstimationData(token))
@@ -31,25 +32,25 @@ const Dashboard = () => {
     dispatch(getUserLog(token))
   }, [])
   const Customerstyle = {
-    fontSize: '40px',
+    fontSize: '60px',
     borderRadius: '50%',
     color: "#0378e9",
     padding: '12px',
     backgroundColor: '#e4f5ff'
   }
   const inquiryStyle = {
-    fontSize: '40px',
+    fontSize: '60px',
     borderRadius: '50%',
     color: "#8763f8",
     padding: '12px',
     backgroundColor: '#f5f0ff'
   }
   const estimationStyle = {
-    fontSize: '40px',
+    fontSize: '60px',
     borderRadius: '50%',
-    color: "#f2c32b",
+    color: "#3cd856",
     padding: '12px',
-    backgroundColor: '#fff7e8'
+    backgroundColor: '#ccecde'
   }
   return (
     <>
@@ -59,6 +60,7 @@ const Dashboard = () => {
             title="Total Customer"
             count={CustomerData ? CustomerData.length : 0}
             path='/dashboard/settings/customer'
+            svg2 ={customersvgsecond}
             icon={<FaUsers style={Customerstyle} />
             }
           />
@@ -66,11 +68,13 @@ const Dashboard = () => {
           <Card title="Total Inquiry"
             count={InquiryData ? InquiryData.length : 0}
             path='/dashboard/sales/inquiry'
+            svg2={inquirysvgfirst}
             icon={<TbReportSearch style={inquiryStyle} />}
           />
           <Card title="Total Estimation"
             count={EstimationData ? EstimationData.length : 0}
             path='/dashboard/sales/estimation'
+            svg2={estimationsvgfirst}
             icon={<HiMiniCalculator style={estimationStyle} />}
           />
         </div>
@@ -104,13 +108,3 @@ const Dashboard = () => {
 }
 
 export default Dashboard
-
-// import React from 'react'
-
-// const Dashboard = () => {
-//   return (
-//     <div>Dashboard</div>
-//   )
-// }
-
-// export default Dashboard

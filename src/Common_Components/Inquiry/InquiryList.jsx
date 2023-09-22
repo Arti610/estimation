@@ -76,6 +76,7 @@ const InquiryList = () => {
 
   const createHandler = () => {
     navigate("/dashboard/sales/inquiry-registration")
+    window.location.reload();
   }
   const editHandler = (id) => {
     dispatch(getupdateInquiryData({ id, token }))

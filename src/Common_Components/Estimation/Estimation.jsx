@@ -10,7 +10,6 @@ import { createEstimationData, createEstimationResourceData, updateEstimationDat
 import { getInquiryData, getupdateInquiryData } from '../../APIs/InquirySlice';
 import './Estimation.css'
 import { RxCross2 } from "react-icons/rx";
-import { getCatelogueData } from '../../APIs/CatelogueSlice';
 import { ImgUrl } from '../../Config/Config';
 import api from '../../Config/Apis';
 import { getTaxData } from '../../APIs/TaxSlice';
@@ -21,6 +20,7 @@ import { useDownloadExcel } from "react-export-table-to-excel";
 import { useReactToPrint } from "react-to-print";
 import { PiExportBold } from 'react-icons/pi'
 import { GlobalFilter } from '../../Components/Table list/GlobalFilter';
+import { getCatelogueData } from '../../APIs/CatelogueSlice';
 
 
 const Estimation = () => {
@@ -252,11 +252,11 @@ const Estimation = () => {
     setCateModalOpen({ modalValue: true, index: index })
   }
 
-  const handleClick = async (e, myIOuter, id, token) => {
+  const handleClick = async (e, myIOuter, id) => {
     try {
       const response = await api.get(`/catalogue/${id}`, {
         headers: {
-          Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
+          Authorization: `token ${token}`,
         },
       });
       const { data } = response;
@@ -576,7 +576,6 @@ const Estimation = () => {
     AOS.init();
     dispatch(getInquiryData(token))
     dispatch(getCatelogueData(token))
-    // dispatch(updateEstimationData(token))
     dispatch(getTaxData(token))
     if (updatedEstimation) {
       setEstimationDetails({
@@ -605,7 +604,7 @@ const Estimation = () => {
       try {
         const response = await api.get(`/catalogue`, {
           headers: {
-            Authorization: `token fdd22927687fd443a5623e7137ff466623111a59`,
+            Authorization: `token ${token}`,
           },
         });
         const { data } = response;

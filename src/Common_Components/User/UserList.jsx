@@ -22,13 +22,12 @@ const UserList = () => {
   // };
   const createHandler = () =>{
     navigate("/dashboard/settings/user-registration")
-    // window.location.reload();
+    window.location.reload();
   }
   const editHandler = (id) => {
     dispatch(getupdateUserData({ id, token }));
     navigate(`/dashboard/settings/user-registration`); // Make sure to pass the user ID in the URL
   }
-  
   
   const deleteHandler = (id) => {
     dispatch(deleteUserData({id, token}))

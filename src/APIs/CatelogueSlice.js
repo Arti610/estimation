@@ -3,13 +3,14 @@ import api from "../Config/Apis";
 
 
 export const getCatelogueData = createAsyncThunk("getCatelogueData", async (token) => {
+    console.log("token cate", token);
     try {
         const response = await api.get("/catalogue", {
             headers: {
                 Authorization: `token ${token}`,
             },
         })
-
+        console.log("response cate", response.data);
         return response.data
     } catch (error) {
         throw error;
@@ -156,6 +157,7 @@ const CatelogueSlice = createSlice({
         builder.addCase(getCatelogueData.fulfilled, (state, action) => {
             state.status.get = "succeeded"
             state.CatelogueData = action.payload
+            console.log("action.payload", action.payload);
         })
         builder.addCase(getCatelogueData.rejected, (state) => {
             state.status.get = "failed"

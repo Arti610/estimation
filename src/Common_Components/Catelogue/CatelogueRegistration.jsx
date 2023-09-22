@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FaFilePdf } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { Autocomplete, Grid, ImageList, ImageListItem, TextField } from '@mui/material';
+import { Autocomplete, Grid, ImageList, ImageListItem, TextField, TextareaAutosize } from '@mui/material';
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useCookies } from 'react-cookie';
@@ -133,7 +133,7 @@ const CatelogueRegistration = () => {
     switch (name) {
       case "name":
         if (!/^[A-Za-z\s]+$/.test(value)) {
-          error = 'Name should only contain alphabetical characters';
+          error = 'Name should only contain alphabetics';
         }
         setNameError(error);
         break;
@@ -141,19 +141,19 @@ const CatelogueRegistration = () => {
 
       case "list_price":
         if (!/^[0-9]+$/.test(value)) {
-          error = 'Price should only contain numerical digits';
+          error = 'Price should only contain numeric';
         }
         setPriceError(error);
         break;
       case "discount":
         if (!/^[0-9]+$/.test(value)) {
-          error = 'Discount should only contain numerical digits';
+          error = 'Discount should only contain numeric';
         }
         setDiscountError(error);
         break;
       case "base_of_pricing":
         if (!/^[0-9]+$/.test(value)) {
-          error = 'Base of pricing should only contain numerical digits';
+          error = 'Base of pricing should only contain numeric';
         }
         setBaseOfPricing(error);
         break;
@@ -162,8 +162,6 @@ const CatelogueRegistration = () => {
       default:
         break;
     }
-
-    console.log("formData", formData);
   };
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -718,7 +716,7 @@ const CatelogueRegistration = () => {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12} md={12}>
               <label>SPECIFICATION <span style={{ color: "red" }}>*</span></label>
-              <TextField
+              <TextareaAutosize
                 type="text"
                 className="inputfield bg-color"
                 name="specification"
@@ -727,6 +725,8 @@ const CatelogueRegistration = () => {
                 placeholder="Enter Specification"
                 fullWidth
                 required
+                style={{padding:"3px 20px", height:"150px", width:"100%", fontSize:"18px"}}
+               
               />
             </Grid>
           </Grid>

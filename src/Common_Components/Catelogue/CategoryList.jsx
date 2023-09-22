@@ -103,6 +103,7 @@ const CategoryList = () => {
 
   const createHandler = () => {
     navigate("/dashboard/sales/catelogue-registration")
+    window.location.reload();
   }
  
   useEffect(() => {
