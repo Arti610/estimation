@@ -8,6 +8,8 @@ import { deleteCatelogueData, getupdateCatelogueData } from '../../APIs/Catelogu
 import { useNavigate } from 'react-router-dom'
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import ScrollCarousel from 'scroll-carousel-react';
+
 const Catelogue = (props) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -18,24 +20,24 @@ const Catelogue = (props) => {
   const CatelogueData = useSelector((state) => state.Catelogue.updateCatelogueData)
   const token = localStorage.getItem('Token');
   const [showMore, setShowMore] = useState(false);
-  const responsive = {
-    superLargeDesktop: {
-      breakpoint: { max: 4000, min: 3000 },
-      items: 5, // Minimum of 5 images
-    },
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 5,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 3,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 2,
-    },
-  };
+  // const responsive = {
+  //   superLargeDesktop: {
+  //     breakpoint: { max: 4000, min: 3000 },
+  //     items: 5, // Minimum of 5 images
+  //   },
+  //   desktop: {
+  //     breakpoint: { max: 3000, min: 1024 },
+  //     items: 5,
+  //   },
+  //   tablet: {
+  //     breakpoint: { max: 1024, min: 464 },
+  //     items: 3,
+  //   },
+  //   mobile: {
+  //     breakpoint: { max: 464, min: 0 },
+  //     items: 2,
+  //   },
+  // };
   const toggleShowMore = () => {
     setShowMore(!showMore);
   };
@@ -152,9 +154,22 @@ const Catelogue = (props) => {
               )
             }) : (<p>No Images Found</p>)}
           </Carousel> */}
+            {/* <ScrollCarousel
+                autoplay
+                autoplaySpeed={10}
+                speed={50}
+              >
+                {imagesToggle ? <div className="other-images-container">
+                  {CatelogueData && CatelogueData.images.map((item, i) => (
+                    <div className='other-images' key={i}>
+                      <img src={`${ImgUrl}${item.files}`} />
+                    </div>
+                  ))}
+                </div> : null}
+              </ScrollCarousel> */}
           <div className="details-container-heading">
             <div className={`heading-container ${imagesToggle ? 'active-container' : ''}`}>
-            <h5
+              <h5
                 onClick={imagesHandler}
                 className={imagesToggle ? 'active-heading' : ''}
               >
@@ -177,7 +192,7 @@ const Catelogue = (props) => {
               >
                 DATASHEETS
               </h5>
-           
+
             </div>
             <div className="toggle-data-container">
               {imagesToggle ? <div className="other-images-container">
@@ -191,6 +206,7 @@ const Catelogue = (props) => {
                   )
                 }) : (<p>No Images Found</p>)}
               </div> : null}
+            
               {specificationToggle ? <div className="specification-container">
                 <div className="detail-container">
                   <div className='left-detail-container'>

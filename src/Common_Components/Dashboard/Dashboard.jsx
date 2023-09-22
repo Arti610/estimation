@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Card from '../../Components/Card/Card'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
@@ -24,7 +24,8 @@ const Dashboard = () => {
   const CustomerData = useSelector((state) => state.Customer.CustomerData)
   const EstimationData = useSelector((state) => state.Estimation.EstimationData)
   const UserLog = useSelector((state) => state.UserLog.UserlogData)
-  
+  const [logToggle, setLogToggle]= useState(false)
+
   useEffect(() => {
     dispatch(getInquiryData(token))
     dispatch(getEstimationData(token))
@@ -78,8 +79,8 @@ const Dashboard = () => {
             icon={<HiMiniCalculator style={estimationStyle} />}
           />
         </div>
-        <div className='userlog-heading'><h4>Most Recent <span style={{ color: "#2e8de1", borderBottom: "2px solid #2e8de1" }}>User Log</span></h4></div>
-        <div className="log-container">
+        <div className='userlog-heading'><h4>{logToggle ? 'Collapse' : 'Expand '}&nbsp;<span style={{ color: "#2e8de1", borderBottom: "2px solid #2e8de1", cursor:"pointer" }} onClick={()=>setLogToggle(!logToggle)}>User Log</span></h4></div>
+        <div className="log-container" style={{ display: logToggle ? 'block' : 'none' }}>
           <div className="userlog">
             <div className="userlog-data">
               {UserLog && UserLog.length > 0 ? (
