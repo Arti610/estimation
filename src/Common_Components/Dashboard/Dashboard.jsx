@@ -90,7 +90,7 @@ const Dashboard = () => {
 
                   return (
                     <div key={i} className={rowClass}>
-                      <p>{item.transactions_reference} by {item.user ? item.user.email : ''}</p>
+                      <span>{item.transactions_reference} by {item.user ? item.user.email : ''}</span>
                     </div>
                   );
                 })
