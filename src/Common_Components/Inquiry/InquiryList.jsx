@@ -27,7 +27,7 @@ const InquiryList = () => {
       accessor: "inquirydate",
       Cell: ({ value }) => {
         if (value && !isNaN(new Date(value))) {
-          return format(new Date(value), "dd/MM/yyyy");
+          return format(new Date(value) , "dd/MM/yyyy");
         }
         // Handle cases where the date is missing or invalid
       },

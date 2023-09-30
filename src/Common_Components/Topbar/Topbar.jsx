@@ -53,13 +53,13 @@ const Topbar = () => {
           </div>
           <div className="topbar-user">
             {/* Topbar user elements */}
-            <div className="topbar-user-element" style={{ borderTop: '1px solid #c8c8c8', paddingTop: '3px' }}>
+            <div className="topbar-user-element" style={{ borderTop: '1px solid #c8c8c8', paddingTop: '3px' }} onClick={logout}>
               <div className="element-icon">
                 <AiOutlineLogout style={{ fontSize: '16px' }} />
               </div>
               <div className="element-text">
                 {/* Trigger the logout function when the user clicks */}
-                <p onClick={logout}>Logout</p>
+                <p>Logout</p>
               </div>
             </div>
           </div>

@@ -93,60 +93,60 @@ const SourceOfInquirySlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(getSourceOfInquiryData.pending, (state) => {
-            state.status = "loading"
+            state.status.get = "loading"
         })
         builder.addCase(getSourceOfInquiryData.fulfilled, (state, action) => {
-            state.status = "succeeded"
+            state.status.get = "succeeded"
             state.SourceOfInquiryData = action.payload
 
         })
         builder.addCase(getSourceOfInquiryData.rejected, (state) => {
-            state.status = "failed"
+            state.status.get = "failed"
         })
         builder.addCase(deleteSourceOfInquiryData.pending, (state) => {
-            state.status = "loading"
+            state.status.delete = "loading"
         })
 
         builder.addCase(deleteSourceOfInquiryData.fulfilled, (state) => {
-            state.status = "succeeded"
+            state.status.delete = "succeeded"
 
         })
         builder.addCase(deleteSourceOfInquiryData.rejected, (state) => {
-            state.status = "failed"
+            state.status.delete = "failed"
         })
         builder.addCase(createSourceOfInquiryData.pending, (state) => {
-            state.status = "loading"
+            state.status.create = "loading"
         })
 
         builder.addCase(createSourceOfInquiryData.fulfilled, (state) => {
-            state.status = "succeeded"
+            state.status.create = "succeeded"
 
         })
         builder.addCase(createSourceOfInquiryData.rejected, (state) => {
-            state.status = "failed"
+            state.status.create = "failed"
         })
         builder.addCase(updateSourceOfInquiryData.pending, (state) => {
-            state.status = "loading"
+            state.status.update = "loading"
         })
 
         builder.addCase(updateSourceOfInquiryData.fulfilled, (state) => {
-            state.status = "succeeded"
+            state.status.update = "succeeded"
 
         })
         builder.addCase(updateSourceOfInquiryData.rejected, (state) => {
-            state.status = "failed"
+            state.status.update = "failed"
         })
         builder.addCase(getupdateSourceOfInquiryData.pending, (state) => {
-            state.status = "loading"
+            state.status.updating = "loading"
         })
 
         builder.addCase(getupdateSourceOfInquiryData.fulfilled, (state, action) => {
-            state.status = "succeeded"
+            state.status.updating = "succeeded"
             state.updateSourceOfInquiryData = action.payload
 
         })
         builder.addCase(getupdateSourceOfInquiryData.rejected, (state) => {
-            state.status = "failed"
+            state.status.updating = "failed"
         })
     }
 })
