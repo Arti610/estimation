@@ -94,60 +94,60 @@ const EmployerSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(getEmployerData.pending, (state) => {
-            state.status = "loading"
+            state.status.get = "loading"
         })
         builder.addCase(getEmployerData.fulfilled, (state, action) => {
-            state.status = "succeeded"
+            state.status.get = "succeeded"
             state.EmployerData = action.payload   
            
         })
         builder.addCase(getEmployerData.rejected, (state) => {
-            state.status = "failed"
+            state.status.get = "failed"
         })
         builder.addCase(deleteEmployerData.pending, (state) => {
-            state.status = "loading"
+            state.status.delete = "loading"
         })
 
         builder.addCase(deleteEmployerData.fulfilled, (state) => {
-            state.status = "succeeded"
+            state.status.delete = "succeeded"
 
         })
         builder.addCase(deleteEmployerData.rejected, (state) => {
-            state.status = "failed"
+            state.status.delete = "failed"
         })
         builder.addCase(createEmployerData.pending, (state) => {
-            state.status = "loading"
+            state.status.create = "loading"
         })
 
         builder.addCase(createEmployerData.fulfilled, (state) => {
-            state.status = "succeeded"
+            state.status.create = "succeeded"
 
         })
         builder.addCase(createEmployerData.rejected, (state) => {
-            state.status = "failed"
+            state.status.create = "failed"
         })
         builder.addCase(updateEmployerData.pending, (state) => {
-            state.status = "loading"
+            state.status.update = "loading"
         })
 
         builder.addCase(updateEmployerData.fulfilled, (state) => {
-            state.status = "succeeded"
+            state.status.update = "succeeded"
 
         })
         builder.addCase(updateEmployerData.rejected, (state) => {
-            state.status = "failed"
+            state.status.update = "failed"
         })
         builder.addCase(getupdateEmployerData.pending, (state) => {
-            state.status = "loading"
+            state.status.updating = "loading"
         })
 
         builder.addCase(getupdateEmployerData.fulfilled, (state, action) => {
-            state.status = "succeeded"
+            state.status.updating = "succeeded"
             state.updateEmployerData = action.payload
 
         })
         builder.addCase(getupdateEmployerData.rejected, (state) => {
-            state.status = "failed"
+            state.status.updating = "failed"
         })
     }
 })

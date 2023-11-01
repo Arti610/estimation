@@ -95,60 +95,60 @@ const DepartmentSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(getDepartmentData.pending, (state) => {
-            state.status = "loading"
+            state.status.get = "loading"
         })
         builder.addCase(getDepartmentData.fulfilled, (state, action) => {
-            state.status = "succeeded"
+            state.status.get = "succeeded"
             state.DepartmentData = action.payload   
             
         })
         builder.addCase(getDepartmentData.rejected, (state) => {
-            state.status = "failed"
+            state.status.get = "failed"
         })
         builder.addCase(deleteDepartmentData.pending, (state) => {
-            state.status = "loading"
+            state.status.delete = "loading"
         })
 
         builder.addCase(deleteDepartmentData.fulfilled, (state) => {
-            state.status = "succeeded"
+            state.status.delete = "succeeded"
 
         })
         builder.addCase(deleteDepartmentData.rejected, (state) => {
-            state.status = "failed"
+            state.status.delete = "failed"
         })
         builder.addCase(createDepartmentData.pending, (state) => {
-            state.status = "loading"
+            state.status.create = "loading"
         })
 
         builder.addCase(createDepartmentData.fulfilled, (state) => {
-            state.status = "succeeded"
+            state.status.create = "succeeded"
 
         })
         builder.addCase(createDepartmentData.rejected, (state) => {
-            state.status = "failed"
+            state.status.create = "failed"
         })
         builder.addCase(updateDepartmentData.pending, (state) => {
-            state.status = "loading"
+            state.status.update = "loading"
         })
 
         builder.addCase(updateDepartmentData.fulfilled, (state) => {
-            state.status = "succeeded"
+            state.status.update = "succeeded"
 
         })
         builder.addCase(updateDepartmentData.rejected, (state) => {
-            state.status = "failed"
+            state.status.update = "failed"
         })
         builder.addCase(getupdateDepartmentData.pending, (state) => {
-            state.status = "loading"
+            state.status.updating = "loading"
         })
 
         builder.addCase(getupdateDepartmentData.fulfilled, (state, action) => {
-            state.status = "succeeded"
+            state.status.updating = "succeeded"
             state.updateDepartmentData = action.payload
 
         })
         builder.addCase(getupdateDepartmentData.rejected, (state) => {
-            state.status = "failed"
+            state.status.updating = "failed"
         })
     }
 })

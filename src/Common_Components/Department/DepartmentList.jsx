@@ -4,14 +4,20 @@ import { useSelector, useDispatch } from 'react-redux';
 import { BasicTable } from '../../Components/Table list/BasicTable';
 import { getDepartmentData, deleteDepartmentData, createDepartmentData, updateDepartmentData } from '../../APIs/DepartmentSlice';
 import DepartmentModal from '../../Components/Modal/DepartmentModal';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const DepartmentList = () => {
+
   const dispatch = useDispatch();
   const DepartmentDataBlank = ["Data Not Found"]
+
   const DepartmentData = useSelector((state) => state.Department.DepartmentData);
-  const [modalOpen, setModalOpen] = useState(false);
+  const status = useSelector((state) => state.Department.status);
+
   const token = localStorage.getItem('Token');
+
+  const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({
     name: "",
     description: "",
@@ -29,8 +35,6 @@ const DepartmentList = () => {
     setModalOpen(false);
   };
 
-
-
   const handleModalInputChange = (e) => {
     const { name, value } = e.target;
     setModalData((prevFormData) => ({
@@ -38,6 +42,7 @@ const DepartmentList = () => {
       [name]: value,
     }));
   };
+
   const handleAutoComplete = (newValue, fieldName) => {
     const selectedValue = newValue ? newValue.id : null;
     setModalData((prevFormData) => ({
@@ -45,6 +50,7 @@ const DepartmentList = () => {
       [fieldName]: selectedValue,
     }));
   };
+
   const createOrUpdateHandler = () => {
     if (modalData.id) {
       dispatch(
@@ -59,16 +65,18 @@ const DepartmentList = () => {
           }
         )
       );
+      if(status.update === "succeeded"){
+        toast.success("Department update successfully !")
+      }
     } else {
-
-
       dispatch(createDepartmentData({ modalData, token }));
+      if(status.create === "succeeded"){
+        toast.success("Department create successfully !")
+      }
     }
     closeModal();
     dispatch(getDepartmentData(token));
   };
-
-
 
   const editHandler = (id) => {
     const editData = DepartmentData.find((data) => data.id === id);
@@ -116,6 +124,7 @@ const DepartmentList = () => {
 
   return (
     <>
+    <ToastContainer/>
       {DepartmentData ? (
         <BasicTable
           colHeader={header}

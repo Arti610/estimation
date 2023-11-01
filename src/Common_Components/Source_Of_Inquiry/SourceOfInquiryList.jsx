@@ -4,19 +4,21 @@ import { useSelector, useDispatch } from 'react-redux';
 import { BasicTable } from '../../Components/Table list/BasicTable';
 import { getSourceOfInquiryData, deleteSourceOfInquiryData, createSourceOfInquiryData, updateSourceOfInquiryData } from '../../APIs/SourceOfInquirySlice';
 import SourceOfInquiryModal from '../../Components/Modal/SourceOfInquiryModal';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const SourceOfInquiryList = () => {
+
   const dispatch = useDispatch();
   const SourceOfInquiryDataBlank = ["Data Not Found"]
+
   const SourceOfInquiryData = useSelector((state) => state.SourceOfInquiry.SourceOfInquiryData);
-  // const SourceOfInquiryData =[{
-  //   name:"New",
-  //   description:"new"
-  // }]
+  const status = useSelector((state) => state.SourceOfInquiry.status);
+  console.log(status);
+
+  const token = localStorage.getItem('Token');
 
   const [modalOpen, setModalOpen] = useState(false);
-    const token = localStorage.getItem('Token');
   const [modalData, setModalData] = useState({
     name: "",
     description: "",
@@ -34,8 +36,6 @@ const SourceOfInquiryList = () => {
     setModalOpen(false);
   };
 
-
-
   const handleModalInputChange = (e) => {
     const { name, value } = e.target;
     setModalData((prevFormData) => ({
@@ -43,6 +43,7 @@ const SourceOfInquiryList = () => {
       [name]: value,
     }));
   };
+
   const handleAutoComplete = (newValue, fieldName) => {
     const selectedValue = newValue ? newValue.id : null;
     setModalData((prevFormData) => ({
@@ -50,6 +51,7 @@ const SourceOfInquiryList = () => {
       [fieldName]: selectedValue,
     }));
   };
+
   const createOrUpdateHandler = () => {
     if (modalData.id) {
       dispatch(
@@ -64,16 +66,18 @@ const SourceOfInquiryList = () => {
           }
         )
       );
+      if(status.update === "succeeded"){
+        toast.success("Source of Inquiry update successfully !")
+      }
     } else {
-
-
       dispatch(createSourceOfInquiryData({ modalData, token }));
+      if(status.create === "succeeded"){
+        toast.success("Source of Inquiry create successfully !")
+      }
     }
     closeModal();
     dispatch(getSourceOfInquiryData(token));
   };
-
-
 
   const editHandler = (id) => {
     const editData = SourceOfInquiryData.find((data) => data.id === id);
@@ -95,11 +99,8 @@ const SourceOfInquiryList = () => {
       });
   };
   
-
   useEffect(() => {
-
     dispatch(getSourceOfInquiryData(token));
-
   }, [dispatch, token, modalOpen]);
 
   const header = [
@@ -121,6 +122,7 @@ const SourceOfInquiryList = () => {
 
   return (
     <>
+    
       {SourceOfInquiryData ? (
         <BasicTable
           colHeader={header}
@@ -142,6 +144,7 @@ const SourceOfInquiryList = () => {
       />}
 
       <SourceOfInquiryModal modalOpen={modalOpen} handleModalInputChange={handleModalInputChange} handleAutoComplete={handleAutoComplete} createOrUpdateHandler={createOrUpdateHandler} openModal={openModal} closeModal={closeModal} modalData={modalData} label="ADD SOURCE OF INQUIRY" heading="Source Of Inquiry" />
+      <ToastContainer/>
     </>
   );
 };

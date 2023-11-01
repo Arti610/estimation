@@ -56,7 +56,7 @@ const TaxAgenciesList = () => {
         )
       );
       if(TaxAgencyDataStatus.update === "succeeded"){
-        toast.success("Tax Agency updated successfully")
+        toast.success("Tax Agency update successfully !")
       }
     } else {
       if (modalData.name === "") {
@@ -72,7 +72,7 @@ const TaxAgenciesList = () => {
 
       dispatch(createTaxAgencyData({ modalData, token }));
       if(TaxAgencyDataStatus.create === "succeeded"){
-        toast.success("Tax Agency created successfully")
+        toast.success("Tax Agency create successfully !")
       }
     }
     closeModal();

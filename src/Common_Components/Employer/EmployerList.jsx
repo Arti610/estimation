@@ -4,14 +4,20 @@ import { useSelector, useDispatch } from 'react-redux';
 import { BasicTable } from '../../Components/Table list/BasicTable';
 import { getEmployerData, deleteEmployerData, createEmployerData, updateEmployerData } from '../../APIs/EmployerSlice';
 import EmployerModal from '../../Components/Modal/EmployerModal';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const EmployerList = () => {
+
     const dispatch = useDispatch();
     const EmployerDataBlank = ["Data Not Found"]
+
     const EmployerData = useSelector((state) => state.Employer.EmployerData);
-    const [modalOpen, setModalOpen] = useState(false);
+    const status = useSelector((state) => state.Employer.status);
+
     const token = localStorage.getItem('Token');
+
+    const [modalOpen, setModalOpen] = useState(false);
     const [nameError, setNameError] = useState('');
     const [emailError, setEmailError] = useState('');
     const [phoneNumberError, setPhoneNumberError] = useState('');
@@ -100,16 +106,18 @@ const EmployerList = () => {
                     }
                 )
             );
+            if (status.update === "succeeded") {
+                toast.success("Employer update successfully !")
+            }
         } else {
-
-
             dispatch(createEmployerData({ modalData, token }));
+            if (status.create === "succeeded") {
+                toast.success("Employer create successfully !")
+            }
         }
         closeModal();
         dispatch(getEmployerData(token));
     };
-
-
 
     const editHandler = (id) => {
         const editData = EmployerData.find((data) => data.id === id);
@@ -120,20 +128,19 @@ const EmployerList = () => {
     };
 
     const deleteHandler = (id) => {
-        dispatch(deleteEmployerData({id, token}))
-          .then(() => {
-            // Once the delete action is completed successfully, dispatch the get action
-            dispatch(getEmployerData(token));
-          })
-          .catch((error) => {
-            // Handle any errors from the delete operation
-            alert("wait")
-          });
-      };
+        dispatch(deleteEmployerData({ id, token }))
+            .then(() => {
+                // Once the delete action is completed successfully, dispatch the get action
+                dispatch(getEmployerData(token));
+            })
+            .catch((error) => {
+                // Handle any errors from the delete operation
+                throw error
+            });
+    };
+
     useEffect(() => {
-
         dispatch(getEmployerData(token));
-
     }, [dispatch, token, modalOpen]);
 
     const header = [
@@ -141,7 +148,7 @@ const EmployerList = () => {
             Header: "Serial No",
             accessor: (row, index) => index + 1,
             id: "serialNumber", // A unique ID for this column
-          },
+        },
         {
             Header: "Name",
             accessor: "name",
@@ -184,6 +191,7 @@ const EmployerList = () => {
             />}
 
             <EmployerModal modalOpen={modalOpen} handleModalInputChange={handleModalInputChange} createOrUpdateHandler={createOrUpdateHandler} openModal={openModal} closeModal={closeModal} modalData={modalData} label="ADD EMPLOYER" heading="Employer" nameError={nameError} emailError={emailError} phoneNumberError={phoneNumberError} countryError={countryError} />
+            <ToastContainer/>
         </>
     );
 };

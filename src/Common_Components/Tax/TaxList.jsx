@@ -21,19 +21,22 @@ import { getTaxAgencyData } from '../../APIs/TaxAgencySlice';
 import { ToastContainer, toast } from 'react-toastify';
 
 const TaxList = () => {
+
     const dispatch = useDispatch();
     const TaxDataBlank = ["Data Not Found"]
+
     const TaxData = useSelector((state) => state.Tax.TaxData)
     const TaxDataStatus = useSelector((state) => state.Tax.status)
-    console.log("TaxDataStatus", TaxDataStatus);
     const updatedTaxData = useSelector((state) => state.Tax.updateTaxData);
-    const [modalOpen, setModalOpen] = useState(false);
+    const Agency = useSelector((state) => state.TaxAgency.TaxAgencyData);
+
     const token = localStorage.getItem('Token');
+    
+    const [modalOpen, setModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
     const [nameError, setNameError] = useState('');
     const [rateError, setRateError] = useState('');
     const [taxDataHandler, setTaxDataHandler] = useState(false)
-    const Agency = useSelector((state) => state.TaxAgency.TaxAgencyData);
     const [modalData, setModalData] = useState({
         name: null,
         rate: null,
@@ -75,6 +78,7 @@ const TaxList = () => {
                 break;
         }
     };
+    
     const handleAutoComplete = (newValue, fieldName) => {
         const selectedValue = newValue ? newValue.id : null;
 
@@ -98,14 +102,14 @@ const TaxList = () => {
                 token,
             }));
             if(TaxDataStatus.update === "succeeded"){
-                toast.success("Tax updated successfully")
+                toast.success("Tax update successfully !")
             }
             setTaxDataHandler(true)
 
         } else {
             dispatch(createTaxData({ modalData, token }));
             if(TaxDataStatus.create === "succeeded"){
-                toast.success("Tax created successfully")
+                toast.success("Tax create successfully !")
             }
         }
         closeModal();

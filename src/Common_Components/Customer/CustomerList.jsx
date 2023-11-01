@@ -12,10 +12,14 @@ import {
   updateCustomerData,
 } from '../../APIs/CustomerSlice';
 import ModalComp from '../../Components/Modal/ModalComp';
+import { ToastContainer, toast } from 'react-toastify';
 
 const CustomerList = () => {
+
+
   const dispatch = useDispatch();
   const CustomerDataBlank = ["Data Not Found"];
+
   const CustomerData = useSelector((state) => state.Customer.CustomerData);
   const status = useSelector((state) => state.Customer.status);
 
@@ -140,10 +144,16 @@ const CustomerList = () => {
             token
           }
         )
-      );
+        );
+        if(status.update === "succeeded"){
+          toast.success("Customer update successfully !")
+        }
     } else {
       // Dispatch a create action if 'id' does not exist in modalData
       dispatch(createCustomerData({ modalData, token }));
+      if(status.create === "succeeded"){
+        toast.success("Customer create successfully !")
+      }
     }
     // Close the modal and refresh customer data
     closeModal();
@@ -168,7 +178,7 @@ const CustomerList = () => {
       })
       .catch((error) => {
         // Handle any errors from the delete operation
-        alert("wait");
+       throw error
       });
   };
 
@@ -256,6 +266,7 @@ const CustomerList = () => {
         emailError={emailError}
         countryError={countryError}
       />
+      <ToastContainer/>
     </>
   );
 };
