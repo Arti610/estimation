@@ -8,8 +8,8 @@ export const getUserLog = createAsyncThunk("getUserLog", async (token)=>{
                 Authorization: `token ${token}`,
             },
         })
-
-        return response.data
+        console.log("response", response);
+        return {data : response.data, status : response.status, statusText: response.statusText}
     } catch (error) {
       throw error
     }

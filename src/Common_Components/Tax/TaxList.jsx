@@ -18,17 +18,21 @@ import {
     getupdateTaxData,
 } from '../../APIs/TaxSlice';
 import { getTaxAgencyData } from '../../APIs/TaxAgencySlice';
+import { ToastContainer, toast } from 'react-toastify';
 
 const TaxList = () => {
     const dispatch = useDispatch();
     const TaxDataBlank = ["Data Not Found"]
     const TaxData = useSelector((state) => state.Tax.TaxData)
+    const TaxDataStatus = useSelector((state) => state.Tax.status)
+    console.log("TaxDataStatus", TaxDataStatus);
     const updatedTaxData = useSelector((state) => state.Tax.updateTaxData);
     const [modalOpen, setModalOpen] = useState(false);
     const token = localStorage.getItem('Token');
+    const [isLoading, setIsLoading] = useState(false)
     const [nameError, setNameError] = useState('');
     const [rateError, setRateError] = useState('');
-    const [taxDataHandler, setTaxDataHandler]= useState(false)
+    const [taxDataHandler, setTaxDataHandler] = useState(false)
     const Agency = useSelector((state) => state.TaxAgency.TaxAgencyData);
     const [modalData, setModalData] = useState({
         name: null,
@@ -82,38 +86,41 @@ const TaxList = () => {
 
     const createOrUpdateHandler = () => {
         if (updatedTaxData) {
-          const updatedFields = {
-            name: modalData.name,
-            rate: modalData.rate,
-            agency: modalData.agency,
-          };
-      
-          dispatch(updateTaxData({
-            id: updatedTaxData.id,
-            updatedData: updatedFields,
-            token,
-          }));
-          setTaxDataHandler(true)
+            const updatedFields = {
+                name: modalData.name,
+                rate: modalData.rate,
+                agency: modalData.agency,
+            };
+
+            dispatch(updateTaxData({
+                id: updatedTaxData.id,
+                updatedData: updatedFields,
+                token,
+            }));
+            if(TaxDataStatus.update === "succeeded"){
+                toast.success("Tax updated successfully")
+            }
+            setTaxDataHandler(true)
+
         } else {
-          dispatch(createTaxData({ modalData, token }));
+            dispatch(createTaxData({ modalData, token }));
+            if(TaxDataStatus.create === "succeeded"){
+                toast.success("Tax created successfully")
+            }
         }
         closeModal();
         dispatch(getTaxData(token));
-      };
-      
+    };
+
 
     const editHandler = (id) => {
-        // const editData = TaxData.find((data) => data.id === id);
-        // if (editData) {
-        //     setModalData(editData);
-        // }
         setTaxDataHandler(false)
         dispatch(getupdateTaxData({ id, token }));
         setModalOpen(true);
     };
 
     const deleteHandler = (id) => {
-       
+
         dispatch(deleteTaxData({ id, token }))
             .then(() => {
                 // Once the delete action is completed successfully, dispatch the get action
@@ -134,8 +141,8 @@ const TaxList = () => {
                 rate: updatedTaxData.rate,
                 agency: String(updatedTaxData.agency.id),  // Set the whole agency object
             });
-        } 
-        if(taxDataHandler){
+        }
+        if (taxDataHandler) {
             setModalData({
                 name: null,
                 rate: null,
@@ -180,6 +187,8 @@ const TaxList = () => {
 
     return (
         <>
+            <ToastContainer />
+          
             {TaxData ? (
                 <BasicTable
                     colHeader={header}

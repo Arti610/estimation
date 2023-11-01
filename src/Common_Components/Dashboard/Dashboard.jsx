@@ -17,6 +17,7 @@ import inquirysvgsecond from '../../assets/inquiry_svg_02.svg'
 import { FaUsers } from 'react-icons/fa'
 import { TbReportSearch } from 'react-icons/tb'
 import { HiMiniCalculator } from 'react-icons/hi2'
+import { ToastContainer } from 'react-toastify'
 const Dashboard = () => {
   const dispatch = useDispatch()
   const token = localStorage.getItem('Token');
@@ -104,6 +105,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      <ToastContainer/>
     </>
   )
 }

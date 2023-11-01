@@ -5,6 +5,7 @@ import { BasicTable } from '../../Components/Table list/BasicTable';
 
 import TaxAgencyModal from '../../Components/Modal/TaxAgencyModal';
 import { getTaxAgencyData, createTaxAgencyData, updateTaxAgencyData, deleteTaxAgencyData } from '../../APIs/TaxAgencySlice';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 
@@ -12,6 +13,8 @@ const TaxAgenciesList = () => {
   const dispatch = useDispatch();
   const TaxAgencyDataBlank = ["Data Not Found"]
   const TaxAgencyData = useSelector((state) => state.TaxAgency.TaxAgencyData);
+  const TaxAgencyDataStatus = useSelector((state) => state.TaxAgency.status);
+  console.log("TaxAgencyDataStatus",TaxAgencyDataStatus);
   const [modalOpen, setModalOpen] = useState(false);
   const token = localStorage.getItem('Token');
   const [modalData, setModalData] = useState({
@@ -52,6 +55,9 @@ const TaxAgenciesList = () => {
           }
         )
       );
+      if(TaxAgencyDataStatus.update === "succeeded"){
+        toast.success("Tax Agency updated successfully")
+      }
     } else {
       if (modalData.name === "") {
         return (
@@ -65,6 +71,9 @@ const TaxAgenciesList = () => {
       }
 
       dispatch(createTaxAgencyData({ modalData, token }));
+      if(TaxAgencyDataStatus.create === "succeeded"){
+        toast.success("Tax Agency created successfully")
+      }
     }
     closeModal();
     dispatch(getTaxAgencyData(token));
@@ -132,6 +141,7 @@ const TaxAgenciesList = () => {
       />)}
 
       <TaxAgencyModal modalOpen={modalOpen} handleModalInputChange={handleModalInputChange} createOrUpdateHandler={createOrUpdateHandler} openModal={openModal} closeModal={closeModal} modalData={modalData} label="ADD TAX ACGENCY" heading="Tax Agency" />
+      <ToastContainer/>
     </>
   );
 };

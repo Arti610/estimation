@@ -5,6 +5,7 @@ import './Topbar.css';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { userLogout } from '../../APIs/LoginSlice';
+import { toast } from 'react-toastify';
 
 const Topbar = () => {
   // Initialize the navigate and dispatch functions
@@ -16,25 +17,27 @@ const Topbar = () => {
 
   // Initialize the logoutStatus state to track the logout result
   const [logoutStatus, setLogoutStatus] = useState(null);
-
+  const logoutDataStatus = useSelector((state)=>state.Login.status)
   // Function to handle logout
   const logout = async () => {
     try {
       // Dispatch the userLogout action with the token
       await dispatch(userLogout(token));
-
+      if(logoutDataStatus.logout === "succeeded"){
+        localStorage.removeItem('Token');
+        navigate('/');
+        toast.success("Logout successfully !")
+      }
       // Remove the token from local storage on successful logout
-      localStorage.removeItem('Token');
 
       // Set the logout status to 'success'
-      setLogoutStatus('success');
+      // setLogoutStatus('success');
 
       // Redirect the user to the '/' route
-      navigate('/');
     } catch (error) {
       // If there's an error during logout, set the logout status to 'error'
-      setLogoutStatus('error');
-      console.error('Logout error:', error);
+      // setLogoutStatus('error');
+    
     }
   };
 

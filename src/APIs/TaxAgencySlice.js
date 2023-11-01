@@ -30,12 +30,12 @@ export const createTaxAgencyData = createAsyncThunk("createTaxAgencyData", async
     }
 })
 
-export const deleteTaxAgencyData = createAsyncThunk("deleteTaxAgencyData", async ({id, token}) => {
+export const deleteTaxAgencyData = createAsyncThunk("deleteTaxAgencyData", async ({ id, token }) => {
     try {
         const response = await api.delete(`/delete_taxagency/${id}`,
             {
                 headers: {
-                    Authorization: `token ${token}`,                    
+                    Authorization: `token ${token}`,
                 }
             }
         )
@@ -51,12 +51,12 @@ export const updateTaxAgencyData = createAsyncThunk("updateTaxAgencyData", async
         const response = await api.put(`/tax_agency/${payload.id}`, payload.updatedData, {
             headers: {
                 "Content-Type": "multipart/form-data, application/json",
-                Authorization: `token ${payload.token}`,              
+                Authorization: `token ${payload.token}`,
             },
         });
         return response.data;
     } catch (error) {
-               throw error;
+        throw error;
     }
 });
 export const getupdateTaxAgencyData = createAsyncThunk("getupdateTaxAgencyData", async (payload) => {
@@ -64,7 +64,7 @@ export const getupdateTaxAgencyData = createAsyncThunk("getupdateTaxAgencyData",
         const response = await api.get(`/tax_agency/${payload.id}`,
             {
                 headers: {
-                    Authorization: `token ${payload.token}`                   
+                    Authorization: `token ${payload.token}`
                 },
             })
         return response.data
@@ -78,10 +78,10 @@ const TaxAgencyAgency = createSlice({
     name: "TaxAgency",
     initialState: {
         status: {
-            get : null,
-            create : null,
-            update : null,
-            updating : null,
+            get: null,
+            create: null,
+            update: null,
+            updating: null,
             delete: null
         },
         TaxAgencyData: null,
@@ -93,61 +93,59 @@ const TaxAgencyAgency = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(getTaxAgencyData.pending, (state) => {
-            state.status = "loading"
+            state.status.get = "loading"
         })
         builder.addCase(getTaxAgencyData.fulfilled, (state, action) => {
-            state.status = "succeeded"
-            state.TaxAgencyData = action.payload   
-            console.log("action", action.payload);  
-            console.log(" state.TaxAgencyData",  state.TaxAgencyData);     
+            state.status.get = "succeeded"
+            state.TaxAgencyData = action.payload
         })
         builder.addCase(getTaxAgencyData.rejected, (state) => {
-            state.status = "failed"
+            state.status.get = "failed"
         })
         builder.addCase(deleteTaxAgencyData.pending, (state) => {
-            state.status = "loading"
+            state.status.delete = "loading"
         })
 
         builder.addCase(deleteTaxAgencyData.fulfilled, (state) => {
-            state.status = "succeeded"
+            state.status.delete = "succeeded"
 
         })
         builder.addCase(deleteTaxAgencyData.rejected, (state) => {
-            state.status = "failed"
+            state.status.delete = "failed"
         })
         builder.addCase(createTaxAgencyData.pending, (state) => {
-            state.status = "loading"
+            state.status.create = "loading"
         })
 
         builder.addCase(createTaxAgencyData.fulfilled, (state) => {
-            state.status = "succeeded"
+            state.status.create = "succeeded"
 
         })
         builder.addCase(createTaxAgencyData.rejected, (state) => {
-            state.status = "failed"
+            state.status.create = "failed"
         })
         builder.addCase(updateTaxAgencyData.pending, (state) => {
-            state.status = "loading"
+            state.status.update = "loading"
         })
 
         builder.addCase(updateTaxAgencyData.fulfilled, (state) => {
-            state.status = "succeeded"
+            state.status.update = "succeeded"
 
         })
         builder.addCase(updateTaxAgencyData.rejected, (state) => {
-            state.status = "failed"
+            state.status.update = "failed"
         })
         builder.addCase(getupdateTaxAgencyData.pending, (state) => {
-            state.status = "loading"
+            state.status.updating = "loading"
         })
 
         builder.addCase(getupdateTaxAgencyData.fulfilled, (state, action) => {
-            state.status = "succeeded"
+            state.status.updating = "succeeded"
             state.updateTaxAgencyData = action.payload
 
         })
         builder.addCase(getupdateTaxAgencyData.rejected, (state) => {
-            state.status = "failed"
+            state.status.updating = "failed"
         })
     }
 })

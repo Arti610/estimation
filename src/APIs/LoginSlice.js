@@ -28,7 +28,7 @@ export const userLogout = createAsyncThunk("userLogout", async (token, { rejectW
     if (response.status === 200) {
       // Successful logout, you can perform additional actions if needed.
       localStorage.removeItem('Token');
-  
+      console.log("response logout", response);
       return response.data; // This will be the data returned by the API on successful logout.
     } else {
       // Handle the case where the logout was not successful.
@@ -46,6 +46,10 @@ const loginSlice = createSlice({
   name: "Login",
   initialState: {
     loading: null,
+    status:{
+      login:"",
+      logout:""
+    },
     login: null,
     error: null,
     token: null
@@ -56,23 +60,26 @@ const loginSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(userLogin.pending, (state) => {
       state.loading = true;
+      state.status.login = "loading"
       state.login = null;
       state.error = null;
     });
     builder.addCase(userLogin.fulfilled, (state, action) => {
       state.loading = false;
+      state.status.login = "succeeded"
       state.login = action.payload;
-      // state.token = action.payload.token
       state.error = null;
     });
     builder.addCase(userLogin.rejected, (state) => {
       state.loading = false;
+      state.status.login = "failed"
       state.login = null;
       state.error = "error";
     });
 
 
     builder.addCase(userLogout.fulfilled, (state) => {
+      state.status.logout = "succeeded"
       state.token = null;
     });
   },
