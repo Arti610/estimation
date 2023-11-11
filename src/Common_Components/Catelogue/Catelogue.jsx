@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ImgUrl } from '../../Config/Config'
-// import './Catelogue.css'
 import './CatelogueDetails.css'
 import { FaFilePdf } from 'react-icons/fa'
 import { deleteCatelogueData, getupdateCatelogueData } from '../../APIs/CatelogueSlice'
-import { useNavigate } from 'react-router-dom'
-import Carousel from "react-multi-carousel";
+import { useNavigate, useParams } from 'react-router-dom'
 import "react-multi-carousel/lib/styles.css";
-import ScrollCarousel from 'scroll-carousel-react';
+import { useEffect } from 'react'
+
 
 const Catelogue = (props) => {
+  
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
   const [imagesToggle, setImagesToggle] = useState(true)
   const [certificatesToggle, setCertificatesToggle] = useState(false)
   const [datasheetsToggle, setDatasheetsToggle] = useState(false)
@@ -20,27 +21,11 @@ const Catelogue = (props) => {
   const CatelogueData = useSelector((state) => state.Catelogue.updateCatelogueData)
   const token = localStorage.getItem('Token');
   const [showMore, setShowMore] = useState(false);
-  // const responsive = {
-  //   superLargeDesktop: {
-  //     breakpoint: { max: 4000, min: 3000 },
-  //     items: 5, // Minimum of 5 images
-  //   },
-  //   desktop: {
-  //     breakpoint: { max: 3000, min: 1024 },
-  //     items: 5,
-  //   },
-  //   tablet: {
-  //     breakpoint: { max: 1024, min: 464 },
-  //     items: 3,
-  //   },
-  //   mobile: {
-  //     breakpoint: { max: 464, min: 0 },
-  //     items: 2,
-  //   },
-  // };
+
   const toggleShowMore = () => {
     setShowMore(!showMore);
   };
+  
   const truncateText = (text, maxLength) => {
     if (!text) return "";
     if (!maxLength) return text;
@@ -48,14 +33,16 @@ const Catelogue = (props) => {
     return text.substring(0, maxLength) + "...";
   };
 
-  const updateHandler = (id) => {
-    dispatch(getupdateCatelogueData({ token, id }))
-    navigate("/dashboard/sales/catelogue-registration")
+  const updateHandler = (cateId) => {
+    dispatch(getupdateCatelogueData({ token, id: cateId }))
+    navigate(`/dashboard/sales/catelogue-registration/${cateId}`)
   }
+
   const deleteHandle = (id) => {
     dispatch(deleteCatelogueData({ token, id }))
     navigate("/dashboard/sales/catelogue")
   }
+
   const imagesHandler = () => {
     setImagesToggle(true)
     setDatasheetsToggle(false)
@@ -126,47 +113,7 @@ const Catelogue = (props) => {
               </div>
             </div>
           </div>
-          {/* <Carousel
-            responsive={responsive}
-            swipeable={false}
-            draggable={false}
-            showDots={true}
-            ssr={true}
-            infinite={true}
-            autoPlay={props.deviceType !== "mobile" ? true : false}
-            autoPlaySpeed={1000}
-            keyBoardControl={true}
-            customTransition="all .5"
-            transitionDuration={1000}
-            containerClass="carousel-container"
-            removeArrowOnDeviceType={["tablet", "mobile"]}
-            deviceType={props.deviceType}
-            dotListClass="custom-dot-list-style"
-            itemClass="carousel-item-padding-40-px"
-          >
-            {CatelogueData ? CatelogueData.images.map((item, i) => {
-              return (
-                <>
-                  <div className='other-images' key={i}>
-                    <img src={`${ImgUrl}${item.files}`} />
-                  </div>
-                </>
-              )
-            }) : (<p>No Images Found</p>)}
-          </Carousel> */}
-            {/* <ScrollCarousel
-                autoplay
-                autoplaySpeed={10}
-                speed={50}
-              >
-                {imagesToggle ? <div className="other-images-container">
-                  {CatelogueData && CatelogueData.images.map((item, i) => (
-                    <div className='other-images' key={i}>
-                      <img src={`${ImgUrl}${item.files}`} />
-                    </div>
-                  ))}
-                </div> : null}
-              </ScrollCarousel> */}
+          
           <div className="details-container-heading">
             <div className={`heading-container ${imagesToggle ? 'active-container' : ''}`}>
               <h5

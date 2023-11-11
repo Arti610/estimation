@@ -10,9 +10,10 @@ import { PiExportBold } from 'react-icons/pi'
 import { MdOutlineAdd } from 'react-icons/md'
 import { useDispatch } from "react-redux";
 import { getupdateCatelogueData } from "../../APIs/CatelogueSlice";
-import { useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { ImgUrl } from "../../Config/Config";
-
+import { BsFillTagsFill } from 'react-icons/bs'
+import { AiFillCheckCircle, AiFillCloseCircle } from 'react-icons/ai'
 
 export const ProductTable = ({
     colHeader,
@@ -51,6 +52,7 @@ export const ProductTable = ({
         useGlobalFilter,
         usePagination
     );
+
     const { pageIndex } = state;
     const { globalFilter } = state;
     const { onDownload } = useDownloadExcel({
@@ -74,11 +76,12 @@ export const ProductTable = ({
         }, 700);
     };
     const detailsRef = useRef(null);
-    const handleClick = (id) => {
-        dispatch(getupdateCatelogueData({ token, id }))
-        navigate("/dashboard/sales/catelogue-details")
+
+    const handleClick = (cateId) => {
+        dispatch(getupdateCatelogueData({ id: cateId, token }))
+        navigate(`/dashboard/sales/catelogue-details/${cateId}`)
     }
-  
+
     useEffect(() => {
         AOS.init();
         const handleClickOutside = (event) => {
@@ -99,6 +102,7 @@ export const ProductTable = ({
             document.removeEventListener("click", handleClickOutside);
         };
     }, []);
+
     return (
         <>
             <div className="all_table_list" data-aos="fade-left" data-aos-duration="1000">
@@ -122,25 +126,33 @@ export const ProductTable = ({
                                 {page.map((row) => {
                                     prepareRow(row);
 
-                                    const cellId = row.original.id;
+                                    
                                     return (
-                                        <div {...row.getRowProps()} className="product-container-main">
+                                        <div {...row.getRowProps()} className="catelogue-card-container">
+                                            <div className="catelogue-card" onClick={() => handleClick(row.original.id)}>
+                                                <div style={{ height: "60vh", width: "100vw" }}>
+                                                    <img src={`${ImgUrl}${row.original.primary_image}`} alt="Product Image" style={{ width: "280px", height: "220px" }} />
+                                                </div>
+                                                <div className="catalogue-card-data-container">
+                                                    <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                                                        <h4 style={{ display: "inline-flex", color: "black", fontWeight: "bold" }}>{row.original.name}</h4>
+                                                        <p style={{ display: "inline-flex", fontSize: "18px", fontWeight: "bold", color: "green" }}>{row.original.currency}&nbsp;{row.original.base_of_pricing}</p>
+                                                        <p style={{ fontSize: "14px", display: "flex", flexDirection: "column", padding: "4px 0px 4px 10px", color: "#4c4c4c" }}>
+                                                            <span><BsFillTagsFill />&nbsp;&nbsp;{row.original.model}</span>
+                                                            <span><BsFillTagsFill />&nbsp;&nbsp;{row.original.series}</span>
+                                                            <span><BsFillTagsFill />&nbsp;&nbsp;{row.original.category}</span>
+                                                            <span><BsFillTagsFill />&nbsp;&nbsp;{row.original.origin}</span>
+                                                            <span><BsFillTagsFill />&nbsp;&nbsp;{row.original.size}</span>
+                                                            <span><BsFillTagsFill />&nbsp;&nbsp;{row.original.sub_category}</span>
+                                                            <span><BsFillTagsFill />&nbsp;&nbsp;{row.original.type}</span>
+                                                            <span><BsFillTagsFill />&nbsp;&nbsp;{row.original.type_sub_category}</span>
 
-                                            <div className="product-container">
-                                                <img src={`${ImgUrl}${row.original.primary_image}`} alt="Product Image" height='100px' />
-                                                <div className="product-details-container">
-                                                    <strong>{row.original.name}</strong>
-                                                    <div className="currency-container">
-                                                        <span>{row.original.currency}</span>&nbsp;<span>{row.original.list_price}</span>
+                                                        </p>
+
                                                     </div>
+                                                    {row.original.is_active ? <p style={{ display: "flex", justifyContent: "flex-end", color: "green", fontSize: "12.5px", fontWeight: "bold" }}><AiFillCheckCircle style={{ fontSize: "15px" }} />&nbsp;Acive</p> : <p style={{ display: "flex", justifyContent: "flex-end", color: "#cc2138", fontSize: "12.5px", fontWeight: "bold" }}><AiFillCloseCircle style={{ fontSize: "15px" }} />&nbsp;Inacive</p>}
                                                 </div>
                                             </div>
-                                            {/* <span className="product-container-span"><strong>Type: </strong>{row.original.type}</span> */}
-                                            <span className="product-container-span">Brand :  <span style={{ color: "#" }}>{row.original.brand}</span></span>
-                                            <span className="product-container-span">Model :  <span style={{ color: "#" }}>{row.original.model}</span></span>
-                                            <span className="product-container-span" style={{display:"flex", justifyContent:"space-between", alignContent:"center"}}><span style={{ color: "#" }}>Origin :  {row.original.origin}</span><span className="view-container" onClick={() => handleClick(cellId)}>
-                                                <button style={{ background: "white", color: "#0072d3", display:"inline-block" }} onClick={() => handleClick(cellId)}>View</button>
-                                            </span></span>
 
                                         </div>
 

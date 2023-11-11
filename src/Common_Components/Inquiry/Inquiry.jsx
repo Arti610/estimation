@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createUserData, getUserData, updateUserData } from '../../APIs/UserSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Autocomplete, Button, Grid, TextField } from '@mui/material';
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -56,21 +56,12 @@ const Inquiry = () => {
     ],
   })
 
-
-  // const deleteDetailsHandler = (index) => {
-  //   dispatch(deleteInquiryDetailsData({ token, id: formData.details[index].id }));
-  // };
-
-  // // Memoize the status variable using useMemo
-  // const memoizedStatus = useMemo(() => stateStaus, [stateStaus]);
   const deleteDetailsHandler = useCallback((index, id) => {
     dispatch(deleteInquiryDetailsData({ token, id: formData.details[index].id }));
     dispatch(getupdateInquiryData({ id, token }))
   }, [dispatch, formData.details, token,]);
 
-  // Now, deleteDetailsHandler will be memoized and will only change when its dependencies change.
-
-  const handleDocRender = () => {
+    const handleDocRender = () => {
     setFormData((prevState) => ({
       ...prevState,
       details: [
@@ -645,3 +636,4 @@ const Inquiry = () => {
 }
 
 export default Inquiry
+

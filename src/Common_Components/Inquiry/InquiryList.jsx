@@ -5,11 +5,12 @@ import { BasicTable } from '../../Components/Table list/BasicTable'
 import { useEffect } from 'react'
 import { deleteInquiryData, getInquiryData, getupdateInquiryData, updateInquiryData } from '../../APIs/InquirySlice'
 import { useCookies } from 'react-cookie';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 const InquiryList = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-    const token = localStorage.getItem('Token');
+  const {inqId} = useParams()
+  const token = localStorage.getItem('Token');
   const InquiryDataBlank = ["Data Not Found"]
   const InquiryData = useSelector((state) => state.Inquiry.InquiryData)
   const header = [
@@ -76,11 +77,10 @@ const InquiryList = () => {
 
   const createHandler = () => {
     navigate("/dashboard/sales/inquiry-registration")
-    window.location.reload();
   }
-  const editHandler = (id) => {
-    dispatch(getupdateInquiryData({ id, token }))
-    navigate("/dashboard/sales/inquiry-registration")
+  const editHandler = (inqId) => {
+    dispatch(getupdateInquiryData({ id : inqId, token }))
+    navigate(`/dashboard/sales/inquiry-registration/${inqId}`)
   }
 
   const deleteHandler = (id) => {

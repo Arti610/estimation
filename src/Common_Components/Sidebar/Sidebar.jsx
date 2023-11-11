@@ -98,7 +98,7 @@ const Sidebar = () => {
                     {/* </div> */}
                     </div>
                 </div>
-                <div className="contentbar"><Outlet /></div>
+                <div className="contentbar form-wrapper-container"><Outlet /></div>
             </div>
         </div>
     );

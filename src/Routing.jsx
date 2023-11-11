@@ -33,9 +33,11 @@ const Routing = () => {
             <Route path="catelogue" element={<CategoryList />} />
             <Route path="inquiry" element={<InquiryList />} />
             <Route path="estimation" element={<EstimationList />} />
-            <Route path="catelogue-details" element={<Catelogue />} />
+            <Route path="/dashboard/sales/catelogue-details/:cateId" element={<Catelogue />} />
             <Route path="catelogue-registration" element={<CatelogueRegistration />} />
+            <Route path="catelogue-registration/:cateId" element={<CatelogueRegistration />} />
             <Route path="inquiry-registration" element={<Inquiry />} />
+            <Route path="inquiry-registration/:inqId" element={<Inquiry />} />
             <Route path="estimation-registration" element={<Estimation />} />
             <Route path="estimation-registration-detail" element={<EstimationDetails/>} />
           </Route>
@@ -47,6 +49,7 @@ const Routing = () => {
             <Route path="source-of-inquiry" element={<SourceOfInquiryList />} />
             <Route path="users" element={<UserList />} />
             <Route path="user-registration" element={<User />} />
+            <Route path="user-registration/:userId" element={<User />} />
             <Route path="tax" element={<TaxList />} />
             <Route path="tax-agencies" element={<TaxAgenciesList />} />
           </Route>

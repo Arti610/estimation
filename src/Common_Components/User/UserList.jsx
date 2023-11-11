@@ -3,34 +3,28 @@ import { useCookies } from 'react-cookie';
 import { useSelector, useDispatch } from 'react-redux';
 import { BasicTable } from '../../Components/Table list/BasicTable';
 import { getUserData, deleteUserData, createUserData, updateUserData, getupdateUserData } from '../../APIs/UserSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ImgUrl } from '../../Config/Config';
-import {FaUserAlt} from'react-icons/fa'
+import { FaUserAlt } from 'react-icons/fa'
+import { ToastContainer } from 'react-toastify';
 const UserList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const UserData = useSelector((state) => state.User.UserData);
   const UserDataBlank = ["Data Not Found"]
-    const token = localStorage.getItem('Token');
+  const token = localStorage.getItem('Token');
 
-  // const editHandler = (id) => {
-  //   const editData = UserData.find((data) => data.id === id);
-  //   if (editData) {
-  //     setModalData(editData);
-  //     setModalOpen(true);
-  //   }
-  // };
-  const createHandler = () =>{
+
+  const createHandler = () => {
     navigate("/dashboard/settings/user-registration")
-    window.location.reload();
   }
   const editHandler = (id) => {
-    dispatch(getupdateUserData({ id, token }));
-    navigate(`/dashboard/settings/user-registration`); // Make sure to pass the user ID in the URL
+    // dispatch(getupdateUserData({ id, token }));
+    navigate(`/dashboard/settings/user-registration/${id}`); // Make sure to pass the user ID in the URL
   }
-  
+
   const deleteHandler = (id) => {
-    dispatch(deleteUserData({id, token}))
+    dispatch(deleteUserData({ id, token }))
       .then(() => {
         // Once the delete action is completed successfully, dispatch the get action
         dispatch(getUserData(token));
@@ -46,21 +40,21 @@ const UserList = () => {
   }, [dispatch, token]);
 
   const header = [
-    
+
     {
       Header: "User Profile",
       // accessor: `${ImgUrl}.image`,
       accessor: "profile_image",
       disableFilters: true,
       Cell: props => (
-          <img
-              src={`${ImgUrl}${props.row.original.profile_image}`}
-              width={50}
-              height={50}
-              style={{borderRadius:"50%", cursor:"pointer"}}
-              alt={<FaUserAlt/>}
-          />)
-  },
+        <img
+          src={`${ImgUrl}${props.row.original.profile_image}`}
+          width={50}
+          height={50}
+          style={{ borderRadius: "50%", cursor: "pointer" }}
+          alt={<FaUserAlt />}
+        />)
+    },
     {
       Header: "Name",
       accessor: "first_name",
@@ -89,7 +83,7 @@ const UserList = () => {
       Header: "Account Status",
       accessor: "account_status",
     }
- 
+
   ];
 
   return (
@@ -102,10 +96,10 @@ const UserList = () => {
           deleteHandler={deleteHandler}
           createHandler={createHandler}
           pageHeading="User"
-          tableHeading ="All Users"
-        
+          tableHeading="All Users"
+
         />
-      ) : ( <BasicTable
+      ) : (<BasicTable
         colHeader={header}
         rowData={UserDataBlank}
         updateHandler={editHandler}
@@ -114,7 +108,7 @@ const UserList = () => {
         tableHeading="All Users"
         pageHeading='User'
       />)}
-
+      <ToastContainer />
       {/* <UserModal modalOpen={modalOpen} handleModalInputChange={handleModalInputChange} handleAutoComplete={handleAutoComplete} createOrUpdateHandler={createOrUpdateHandler} openModal={openModal} closeModal={closeModal} modalData={modalData} label="ADD SOURCE OF INQUIRY" heading="Source Of Inquiry" /> */}
     </>
   );

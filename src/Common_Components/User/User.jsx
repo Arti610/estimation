@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createUserData, getUserData, updateUserData } from '../../APIs/UserSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Autocomplete, Grid, IconButton, ImageList, ImageListItem, InputAdornment, MenuItem, Select, TextField } from '@mui/material';
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -9,12 +9,19 @@ import { getDepartmentData } from '../../APIs/DepartmentSlice';
 import './User.css';
 import { ImgUrl } from '../../Config/Config';
 import { MdVisibilityOff, MdVisibility } from 'react-icons/md'
+import api from '../../Config/Apis';
+import { toast } from 'react-toastify';
 const User = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const fData = new FormData();
+  const token = localStorage.getItem('Token');
+
+  const { userId } = useParams()
+
   const [showpass, setShowPass] = useState(false)
   const [showConfirmPass, setShowConfirmPass] = useState(false)
-  const fData = new FormData();
+
   const [nameError, setNameError] = useState('');
   const [lastNameError, setLastNameError] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -22,11 +29,14 @@ const User = () => {
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [confirmPassword, setConfirmPassword] = useState("");
-  const Department = useSelector((state) => state.Department.DepartmentData)
-  const updatedUser = useSelector((state) => state.User.updateUserData)
-  const token = localStorage.getItem('Token');
+
+
   const accountType = ['Active', 'Closed', 'Suspended']
   const userType = ['Admin', 'Operator', 'Customer']
+
+  const Department = useSelector((state) => state.Department.DepartmentData)
+  const updatedUser = useSelector((state) => state.User.updateUserData)
+
   const [formData, setFormData] = useState({
     first_name: null,
     last_name: null,
@@ -40,12 +50,15 @@ const User = () => {
     department: null,
     account_status: null,
   })
+
   const passwordHandler = () => {
     setShowPass(!showpass)
   }
+
   const confirmPassHandler = () => {
     setShowConfirmPass(!showConfirmPass)
   }
+
   const handleAutoComplete = (newValue, fieldName) => {
     const selectedValue = newValue ? newValue.id : null;
 
@@ -54,6 +67,7 @@ const User = () => {
       [fieldName]: selectedValue,
     }));
   };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -131,16 +145,6 @@ const User = () => {
 
   };
 
-  // const handleImageChange = (e) => {
-  //   const { files } = e.target;
-  //   if (files) {
-  //     formData.imgFile = null;
-  //   }
-  //   setFormData((previous) => ({
-  //     ...previous,
-  //     profile_image: files[0],
-  //   }));
-  // };
   const handleImageChange = (e) => {
     const { files } = e.target;
     if (files) {
@@ -151,41 +155,10 @@ const User = () => {
       profile_image: files[0],
     }));
   };
-  // const createOrUpdateHandler = () => {
 
-  //   if (formData.id) {
-  //     dispatch(
-  //       updateUserData(
-  //         {
-  //           id: formData.id,
-  //           updatedData: {
-  //             first_name: formData.first_name,
-  //             last_name: formData.last_name,
-  //             email: formData.email,
-  //             phone_number: formData.phone_number,
-  //             address: formData.address,
-  //             profile_image: formData.profile_image,
-  //             user_type: formData.user_type,
-  //             password: formData.password,
-  //             department: formData.department,
-  //             account_status: formData.account_status,
-  //           },
-  //           token
-  //         }
-  //       )
-  //     );
-  //     alert("application updated successfully")
-  //   } else {
-
-  //     dispatch(createUserData({ formData, token }));
-  //     alert("application created successfully")
-
-  //   }
-
-  // };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    if (updatedUser) {
+    if (userId) {
       fData.append("first_name", formData.first_name);
       fData.append("last_name", formData.last_name);
       fData.append("email", formData.email);
@@ -194,15 +167,30 @@ const User = () => {
       fData.append("department", formData.department);
       fData.append("user_type", formData.user_type);
       fData.append("account_status", formData.account_status);
-      // if (formData.profile_image) {
-      //   fData.append("profile_image", formData.profile_image);
-      // }
       if (formData.profile_image) {
         fData.append("profile_image", formData.profile_image);
       }
       // fData.append("profile_image", formData.profile_image);
-      dispatch(updateUserData({ fData, token, id: updatedUser.id }))
-      navigate("/dashboard/settings/users")
+      // dispatch(updateUserData({ fData, token, id: userId }))
+      // navigate("/dashboard/settings/users")
+      try {
+        const response = await api.put(`/updateuser/${userId}`, fData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `token ${token}`
+          }
+        })
+
+        if (response.statusText === "OK" || response.status === "200") {
+
+          navigate('/dashboard/settings/users')
+          toast.success("User update successfully")
+        }
+      } catch (error) {
+        throw error
+      } finally {
+        // setLoading(false)
+      }
     } else {
       fData.append("first_name", formData.first_name);
       fData.append("last_name", formData.last_name);
@@ -215,30 +203,63 @@ const User = () => {
       fData.append("password", formData.password);
       fData.append("account_status", formData.account_status);
 
-      dispatch(createUserData({ fData, token }))
-      navigate("/dashboard/settings/users")
+      // dispatch(createUserData({ fData, token }))
+      // navigate("/dashboard/settings/users")
+      try {
+        const response = await api.put(`/createuser`, fData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `token ${token}`
+          }
+        })
+
+        if (response.statusText === "OK" || response.status === "200") {
+
+          navigate('/dashboard/settings/users')
+          toast.success("User create successfully")
+        }
+      } catch (error) {
+        throw error
+      } finally {
+        // setLoading(false)
+      }
+
 
     }
   }
+
+  const handleUpdateUser = async () => {
+    try {
+      // setLoading(true)
+      const response = await api.get(`/user/${userId}`, {
+        headers: {
+          Authorization: `token ${token}`
+        }
+      });
+      const updatedUserById = response.data;
+
+      setFormData({
+        first_name: updatedUserById.first_name ? updatedUserById.first_name : null,
+        last_name: updatedUserById.last_name ? updatedUserById.last_name : null,
+        email: updatedUserById.email ? updatedUserById.email : null,
+        phone_number: updatedUserById.phone_number ? updatedUserById.phone_number : null,
+        address: updatedUserById.address ? updatedUserById.address : null,
+        imgFile: updatedUserById.profile_image ? updatedUserById.profile_image : null,
+        password: updatedUserById.password ? updatedUserById.password : null,
+        user_type: updatedUserById.user_type ? updatedUserById.user_type : null,
+        department: updatedUserById.department.id ? updatedUserById.department.id : null,
+        account_status: updatedUserById.account_status ? updatedUserById.account_status : null,
+      });
+    } catch (error) {
+      throw error
+    }
+  }
+  
   useEffect(() => {
     AOS.init();
+    handleUpdateUser()
     dispatch(getDepartmentData(token))
-    if (updatedUser) {
-      setFormData({
-        first_name: updatedUser.first_name,
-        last_name: updatedUser.last_name,
-        email: updatedUser.email,
-        phone_number: updatedUser.phone_number,
-        address: updatedUser.address,
-        // profile_image: updatedUser.profile_image,
-        imgFile: updatedUser.profile_image,
-        password: updatedUser.password,
-        user_type: updatedUser.user_type,
-        department: String(updatedUser.department.id),
-        account_status: updatedUser.account_status,
-      });
-    }
-  }, [token, updatedUser]);
+  }, [token]);
 
   return (
     <>

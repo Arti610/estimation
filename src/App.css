@@ -47,7 +47,7 @@ button {
   font-size: 14.5px;
   font-weight: 500;
   font-family: inherit;
-  background-color: var(--primary-color);
+  background-color: #7b5c1b;
   cursor: pointer;
   transition: border-color 0.25s;
   color: white;
@@ -55,6 +55,7 @@ button {
   justify-content: space-between;
   gap: 5px;
   align-items: center;
+  text-align: center;
 }
 
 
@@ -133,4 +134,13 @@ width: 100%;
  border:1px solid #b2b2b2;
  padding: 9px;
  border-radius:5px 
+}
+
+
+
+.form-wrapper-container {
+  background-attachment: fixed;
+  background-color: #fff;
+  background-image: url(/src/assets/Right_bg.png);
+  background-size: 100%;
 }
