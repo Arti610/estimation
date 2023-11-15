@@ -129,7 +129,15 @@ export const ProductTable = ({
                                     
                                     return (
                                         <div {...row.getRowProps()} className="catelogue-card-container">
-                                            <div className="catelogue-card" onClick={() => handleClick(row.original.id)}>
+                                            <div className="catelogue-card" onClick={() => handleClick(row.original.id)}  
+                                             data-content={`
+                                             ${row.original.origin ? `Origin: ${row.original.origin}` : ''}
+                                             ${row.original.finish ? `Finish: ${row.original.finish}` : ''}
+                                             ${row.original.model ? `Model: ${row.original.model}` : ''}
+                                             ${row.original.base_of_pricing ? `Base of Pricing: ${row.original.base_of_pricing}` : ''}
+                                             --------------------------------------------------------
+                                             ${(row.original.specification|| '').slice(0,300)}
+                                         `}   >
                                                 <div style={{ height: "60vh", width: "100vw" }}>
                                                     <img src={`${ImgUrl}${row.original.primary_image}`} alt="Product Image" style={{ width: "280px", height: "220px" }} />
                                                 </div>

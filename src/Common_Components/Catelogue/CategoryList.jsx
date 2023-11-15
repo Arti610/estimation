@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCatelogueData, getupdateCatelogueData, resetCatelogueData } from '../../APIs/CatelogueSlice';
 import './Catelogue.css'
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ImgUrl } from '../../Config/Config';
 import { ProductTable } from '../../Components/Table list/ProductTable';
 import { FaUserAlt } from 'react-icons/fa'
@@ -99,30 +99,27 @@ const CategoryList = () => {
       accessor: "base_of_pricing",
     },
   ];
- 
+
 
   const createHandler = () => {
     navigate("/dashboard/sales/catelogue-registration")
   }
- 
+
   useEffect(() => {
     dispatch(getCatelogueData(token));
   }, []);
 
   return (
-    
+
     <>
       {/* <button onClick={() => setBtnToggle(!btnToggle)}>{btnToggle ? "List View" : "Card View"}</button> */}
       {catelogueData && btnToggle ? <ProductTable
         colHeader={header}
         rowData={catelogueData}
-        // updateHandler={editHandler}
-        // deleteHandler={deleteHandler}
         createHandler={createHandler}
         tableHeading="All Catelogues"
-        // handleClick={handleClick}
         pageHeading="Catelogue" /> :
-     "No Catalogue Available"}
+        "No Catalogue Available"}
     </>
   );
 };

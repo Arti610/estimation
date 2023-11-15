@@ -1,29 +1,38 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FaFilePdf } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Autocomplete, Grid, ImageList, ImageListItem, TextField, TextareaAutosize } from '@mui/material';
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useCookies } from 'react-cookie';
 import { AiFillDelete } from 'react-icons/ai'
 import { ImgUrl } from '../../Config/Config';
-import { createCatelogueData, deleteCatelogueCertificates, deleteCatelogueDatasheets, deleteCatelogueImages, getCatelogueData, updateCatelogueData } from '../../APIs/CatelogueSlice';
+import { createCatelogueData, deleteCatelogueCertificates, deleteCatelogueDatasheets, deleteCatelogueImages, getCatelogueData, getupdateCatelogueData, updateCatelogueData } from '../../APIs/CatelogueSlice';
 import { updateDepartmentData } from '../../APIs/DepartmentSlice';
 import { getTaxData } from '../../APIs/TaxSlice';
+import DeleteConfirmationModal from '../../Components/DeleteConfirmModal/DeleteConfirmationModal';
+import api from '../../Config/Apis';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 const CatelogueRegistration = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const { cateId } = useParams()
   const fData = new FormData();
+
+
   const [nameError, setNameError] = useState('');
   const [priceError, setPriceError] = useState('');
   const [discountError, setDiscountError] = useState('');
   const [baseOfPricing, setBaseOfPricing] = useState('');
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
   const token = localStorage.getItem('Token');
   const Tax = useSelector((state) => state.Tax.TaxData)
   const CatelogueData = useSelector((state) => state.Catelogue.updateCatelogueData)
   const updatedCatelogue = useSelector((state) => state.Catelogue.updateCatelogueData)
+  const Status = useSelector((state) => state.Catelogue.status)
 
   const [formData, setFormData] = useState({
     name: null,
@@ -108,8 +117,11 @@ const CatelogueRegistration = () => {
     }));
   };
   //Delete handler
-  const deleteImagesHandler = (id) => {
+  const deleteImagesHandler = async (id) => {
+    // setDeleteModalOpen(true)
     dispatch(deleteCatelogueImages({ token, id }))
+    alert("Data deleted successfully !")
+    dispatch(getCatelogueData(token))
   }
   const deleteDatasheetHandler = (id) => {
     dispatch(deleteCatelogueDatasheets({ token, id }))
@@ -207,34 +219,12 @@ const CatelogueRegistration = () => {
         });
       }
 
-      dispatch(updateCatelogueData({ fData, token, id: updatedCatelogue.catelouge.id }))
+      dispatch(updateCatelogueData({ fData, token, id: cateId }))
       navigate("/dashboard/sales/catelogue")
+      // if (Status.update === "succeeded") {
+      // }
+
     } else {
-      setFormData({
-        name: null,
-        type: null,
-        unit_of_measurement: null,
-        category: null,
-        sub_category: null,
-        type_sub_category: null,
-        origin: null,
-        finish: null,
-        brand: null,
-        series: null,
-        model: null,
-        size: null,
-        specification: null,
-        list_price: null,
-        currency: null,
-        discount: null,
-        base_of_pricing: null,
-        is_active: null,
-        primary_image: '',
-        imgFile: null,
-        images: null,
-        datasheet: null,
-        certificate: null,
-      })
       fData.append("name", formData.name);
       fData.append("unit_of_measurement", formData.unit_of_measurement);
       fData.append("type", formData.type);
@@ -272,51 +262,44 @@ const CatelogueRegistration = () => {
   useEffect(() => {
     AOS.init();
     dispatch(getTaxData(token))
-    if (updatedCatelogue) {
+    dispatch(getupdateCatelogueData({ id: cateId, token }))
+    if (cateId) {
       setFormData({
         // id:  updatedCatelogue.catelogue.id,
-        name: updatedCatelogue.catelouge.name,
-        unit_of_measurement: updatedCatelogue.catelouge.unit_of_measurement,
-        type: updatedCatelogue.catelouge.type,
-        category: updatedCatelogue.catelouge.category,
-        sub_category: updatedCatelogue.catelouge.sub_category,
-        type_sub_category: updatedCatelogue.catelouge.type_sub_category,
-        origin: updatedCatelogue.catelouge.origin,
-        finish: updatedCatelogue.catelouge.finish,
-        brand: updatedCatelogue.catelouge.brand,
-        series: updatedCatelogue.catelouge.series,
-        model: updatedCatelogue.catelouge.model,
-        size: updatedCatelogue.catelouge.size,
-        specification: updatedCatelogue.catelouge.specification,
-        list_price: updatedCatelogue.catelouge.list_price,
-        currency: updatedCatelogue.catelouge.currency,
-        discount: updatedCatelogue.catelouge.discount,
-        tax: String(updatedCatelogue.catelouge.tax.id),
-        base_of_pricing: updatedCatelogue.catelouge.base_of_pricing,
-        is_active: updatedCatelogue.catelouge.is_active,
-        // primary_image: updatedCatelogue.catelouge.primary_image
-        imgFile: updatedCatelogue.catelouge.primary_image,
-        // images: updatedCatelogue.images
+        name: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.name ? updatedCatelogue.catelouge.name : null,
+        unit_of_measurement: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.unit_of_measurement ? updatedCatelogue.catelouge.unit_of_measurement : null,
+        type: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.type ? updatedCatelogue.catelouge.type : null,
+        category: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.category ? updatedCatelogue.catelouge.category : null,
+        sub_category: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.sub_category ? updatedCatelogue.catelouge.sub_category : null,
+        type_sub_category: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.type_sub_category ? updatedCatelogue.catelouge.type_sub_category : null,
+        origin: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.origin ? updatedCatelogue.catelouge.origin : null,
+        finish: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.finish ? updatedCatelogue.catelouge.finish : null,
+        brand: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.brand ? updatedCatelogue.catelouge.brand : null,
+        series: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.series ? updatedCatelogue.catelouge.series : null,
+        model: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.model ? updatedCatelogue.catelouge.model : null,
+        size: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.size ? updatedCatelogue.catelouge.size : null,
+        specification: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.specification ? updatedCatelogue.catelouge.specification : null,
+        list_price: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.list_price ? updatedCatelogue.catelouge.list_price : null,
+        currency: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.currency ? updatedCatelogue.catelouge.currency : null,
+        discount: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.discount ? updatedCatelogue.catelouge.discount : null,
+        tax: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.tax && updatedCatelogue.catelouge.tax.id ? updatedCatelogue.catelouge.tax.id : null,
+        base_of_pricing: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.base_of_pricing ? updatedCatelogue.catelouge.base_of_pricing : null,
+        is_active: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.is_active ? updatedCatelogue.catelouge.is_active : null,
+        // primary_image: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge. ? updatedCatelogue.catelouge.primary_imag : nulle
+        imgFile: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.primary_image ? updatedCatelogue.catelouge.primary_image : null,
+        // images: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge. ? updatedCatelogue.image : nulls
       });
 
     }
 
 
-  }, [token, updatedCatelogue]);
+  }, []);
 
   return (
     <>
-      <div
-
-        data-aos="fade-left"
-        data-aos-duration="1000"
-      >
+      <div data-aos="fade-left" data-aos-duration="1000">
         <div className="registration_top_header">
-          <p>
-            <h2>
-              Catelogue Registration
-            </h2>
-          </p>
+          <p><h2>Catelogue Registration</h2></p>
         </div>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
@@ -725,8 +708,8 @@ const CatelogueRegistration = () => {
                 placeholder="Enter Specification"
                 fullWidth
                 required
-                style={{padding:"3px 20px", height:"150px", width:"100%", fontSize:"18px"}}
-               
+                style={{ padding: "3px 20px", height: "150px", width: "100%", fontSize: "18px" }}
+
               />
             </Grid>
           </Grid>
@@ -869,6 +852,8 @@ const CatelogueRegistration = () => {
         </form>
 
       </div>
+      {/* <DeleteConfirmationModal open={deleteModalOpen} handleClose={() => setDeleteModalOpen(false)} title="User" deleteData={deleteImagesHandler} /> */}
+      {/* <ToastContainer/> */}
     </>
   )
 }

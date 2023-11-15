@@ -7,17 +7,20 @@ import { deleteCatelogueData, getupdateCatelogueData } from '../../APIs/Catelogu
 import { useNavigate, useParams } from 'react-router-dom'
 import "react-multi-carousel/lib/styles.css";
 import { useEffect } from 'react'
+import DeleteConfirmationModal from '../../Components/DeleteConfirmModal/DeleteConfirmationModal'
 
 
 const Catelogue = (props) => {
   
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const {cateId}  = useParams()
 
   const [imagesToggle, setImagesToggle] = useState(true)
   const [certificatesToggle, setCertificatesToggle] = useState(false)
   const [datasheetsToggle, setDatasheetsToggle] = useState(false)
   const [specificationToggle, setSpecificationToggle] = useState(false)
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
   const CatelogueData = useSelector((state) => state.Catelogue.updateCatelogueData)
   const token = localStorage.getItem('Token');
   const [showMore, setShowMore] = useState(false);
@@ -34,7 +37,7 @@ const Catelogue = (props) => {
   };
 
   const updateHandler = (cateId) => {
-    dispatch(getupdateCatelogueData({ token, id: cateId }))
+    dispatch(getupdateCatelogueData({  id: cateId, token }))
     navigate(`/dashboard/sales/catelogue-registration/${cateId}`)
   }
 
@@ -67,8 +70,15 @@ const Catelogue = (props) => {
     setCertificatesToggle(false)
     setSpecificationToggle(true)
   }
+
+
+  useEffect(()=>{
+    dispatch(getupdateCatelogueData({id: cateId, token}))
+  },[])
+  
   return (
     <>
+    
       <div data-aos="fade-left" data-aos-duration="1000">
         <div className="registration_top_header">
           <p>
@@ -76,8 +86,8 @@ const Catelogue = (props) => {
               Catelogue Details
             </h2>
             <div style={{ display: "flex", gap: "5px" }}>
-              <button onClick={() => updateHandler(CatelogueData && CatelogueData.catelouge.id)}>Edit</button>
-              <button onClick={() => deleteHandle(CatelogueData && CatelogueData.catelouge.id)}>Delete</button>
+              <button onClick={() => updateHandler(cateId)}>Edit</button>
+              <button onClick={() => deleteHandle(cateId)}>Delete</button>
             </div>
           </p>
 
@@ -101,7 +111,7 @@ const Catelogue = (props) => {
                 <div className="specification-detail-container">
                   <p className={`detail-label specification-detail ${showMore ? 'expanded' : 'collapsed'}`}>
                     <label style={{ fontSize: "15px" }}></label>
-                    {truncateText(CatelogueData && CatelogueData.catelouge.specification, showMore ? undefined : 300)}
+                    {truncateText(CatelogueData && CatelogueData.catelouge.specification, showMore ? undefined : 600)}
                   </p>
                   {CatelogueData &&
                     CatelogueData.catelouge.specification.length > 50 && (
@@ -209,6 +219,8 @@ const Catelogue = (props) => {
         </div>
 
       </div>
+      {/* <DeleteConfirmationModal open={deleteModalOpen} handleClose={() => setDeleteModalOpen(false)} title="User" deleteData={deleteData} /> */}
+
     </>
   )
 }

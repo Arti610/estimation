@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import { TextField, Grid, InputAdornment, IconButton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { getTaxAgencyData } from "../../APIs/TaxAgencySlice";
-import { useCookies } from "react-cookie";
 import "./Login.css"
 import "../../Components/Modal/Modal.css"
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
@@ -61,7 +60,8 @@ const Login = (props) => {
       <section className="login-section login-page">
 
         <div className="login-left-container">
-          fff
+          <h1>WELCOME BACK !</h1>
+          <p>You can sign in to access with your existing profile</p>
         </div>
         <div className="login-right-container">
           <div className="login-module-container">

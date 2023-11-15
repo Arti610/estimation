@@ -54,7 +54,7 @@
     position: absolute;
     top: 100%; /* Initially, place the background below the card */
     left: 0;
-    width: 100%;
+    width: 90%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7); /* Transparent black background color */
     color: white; /* Text color */
@@ -62,7 +62,7 @@
     justify-content: center;
     align-items: flex-start;
     font-size: 15px; /* Adjust the font size as needed */
-    padding: 60px 20px;
+    padding: 60px 15px;
     text-align: justify;
     transition: top 0.5s ease; /* Add a smooth transition effect */
     z-index: 3; /* Ensure the overlay is above card content */
