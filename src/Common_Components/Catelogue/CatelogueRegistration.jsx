@@ -117,12 +117,39 @@ const CatelogueRegistration = () => {
     }));
   };
   //Delete handler
-  const deleteImagesHandler = async (id) => {
-    // setDeleteModalOpen(true)
-    dispatch(deleteCatelogueImages({ token, id }))
-    alert("Data deleted successfully !")
-    dispatch(getCatelogueData(token))
+// Declare a global variable to store the id
+let globalImageId = null;
+console.log("globalImageId==>", globalImageId);
+
+const DeleteImageId = (id) => {
+  // Use a promise to ensure that globalImageId is set before continuing
+  setDeleteModalOpen(true)
+  return new Promise((resolve) => {
+    globalImageId = id;
+    console.log("globalImageId", globalImageId);
+    resolve();
+  });
+};
+
+const deleteImagesHandler = async (someId) => {
+  // Call DeleteImageId and wait for the promise to resolve
+  await DeleteImageId(someId); // Replace someId with the actual ID you want to set
+
+  // Now globalImageId should be set correctly
+  const idToDelete = globalImageId;
+
+  if (idToDelete) {
+    dispatch(deleteCatelogueImages({ token, id: idToDelete }));
+    dispatch(getCatelogueData(token));
+  } else {
+    console.error("No id available for deletion");
   }
+};
+
+// Example usage
+// deleteImagesHandler();
+
+
   const deleteDatasheetHandler = (id) => {
     dispatch(deleteCatelogueDatasheets({ token, id }))
   }
@@ -657,7 +684,6 @@ const CatelogueRegistration = () => {
                   multiple
                   onChange={handleImageChange}
                   required={!updatedCatelogue}
-
                 />
               </div>
             </Grid>}
@@ -743,7 +769,8 @@ const CatelogueRegistration = () => {
                           loading="lazy"
                         />
                       )}
-                      <span style={{ cursor: "pointer" }} onClick={() => deleteImagesHandler(image.id)}><AiFillDelete /></span>
+                      {/* <span style={{ cursor: "pointer" }} onClick={() => deleteImagesHandler(image.id)}><AiFillDelete /></span> */}
+                      <span style={{ cursor: "pointer" }} onClick={()=>DeleteImageId(image.id)}><AiFillDelete /></span>
                     </div>
                   )) : "No Images Uploaded"}
 
@@ -852,7 +879,7 @@ const CatelogueRegistration = () => {
         </form>
 
       </div>
-      {/* <DeleteConfirmationModal open={deleteModalOpen} handleClose={() => setDeleteModalOpen(false)} title="User" deleteData={deleteImagesHandler} /> */}
+      <DeleteConfirmationModal open={deleteModalOpen} handleClose={() => setDeleteModalOpen(false)} title="User" deleteData={deleteImagesHandler} />
       {/* <ToastContainer/> */}
     </>
   )

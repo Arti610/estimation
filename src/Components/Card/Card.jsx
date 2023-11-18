@@ -5,45 +5,21 @@ import { Link } from 'react-router-dom';
 import './Card.css';
 
 
-const Card = ({ title, count, path, icon, svg2 }) => {
-  const cardStyle = {
-    // Yahan 0.5 opacity ke liye 0.5 value hai.
-    backgroundImage: `url(${svg2})`,
-  };
- 
+const Card = (props) => {
   return (
-    <div className="card-data-container" style={cardStyle}>
-      <Link to={path} className="card-link">
-        <div className="card-content">
-          <span>
-            {icon}
-          </span>
-          {/* <img src={pic} alt={title} className="card-image" /> */}
-          {/* <h3 className="card-title">{title}</h3> */}
-          <p className="card-title">{title}</p>
+    <div className="registrationCard">
+      <Link to={props.url}>
+        <div>
+          {/* <img src={<PiUsersFourBold />} alt="" /> */}
+          <p>{props.icon}</p>
+          <span>{props.text}</span>
         </div>
-        <div className="card-count">
-          <span>{count}</span>
+        <div>
+          <span>{props.count}</span>
         </div>
       </Link>
-
     </div>
-    // <div className='card-data-container' >
-    //   <Link to={path}>
-    //     <div className='card-content'>
-    //       <span>
-    //         {icon}
-    //       </span>
 
-    //       <div className="card-count">
-    //         <span>{count}</span>
-    //       </div>
-    //       <p className="card-title">{title}</p>
-
-    //     </div>
-    //   </Link>
-
-    // </div>
   );
 };
 

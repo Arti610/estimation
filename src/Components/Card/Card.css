@@ -1,87 +1,60 @@
-.card-data-container {
+
+.registration-card-container .registrationCard a {
+  align-items: center;
+  border: 1px solid #7c5e1e;
   border-radius: 8px;
-  overflow: hidden;
-  margin: 10px;
-  width: 400px;
-  height: 160px;
-  background-size: cover;
-  border: 1px solid #e8e8e8;
+  display: flex;
+  justify-content: center;
+  padding: .4rem;
+  position: relative;
+  transition: all all .3s;
+  color: black;
 }
 
-.card-link {
+.registration-card-container .registrationCard a>div:first-child {
+  align-items: center;
   display: flex;
   flex-direction: column;
-  text-decoration: none;
-  color: #333;
+  justify-content: center;
 }
 
-.card-content {
-  padding: 16px;
+.registration-card-container .registrationCard a p {
+  height: 55px;
+  object-fit: fill;
+  width: 55px;
+  color: black;
   display: flex;
-  gap: 30px;
-  justify-content: flex-start;
   align-items: center;
-
-}
-
-.card-image {
-  max-width: 60px;
-  border: 1px solid #e8e8e8;
-  height: 60px;
-  border-radius: 8px;
-  padding: 8px;
-}
-
-.card-title {
-  font-size: 17px;
-  font-weight: bold;
-  /* color: #7b7d7e; */
-  color: black;
-}
-
-.card-count {
-  color: black;
-  padding: 8px 25px;
-  font-weight: bold;
-  font-size: 20px;
-  display: flex;
-  justify-content: flex-end;
-
-}
-
-.card-icon {
-  font-size: 60px;
-  border-radius: 50%;
-  padding: 12px;
-  background-color: #e8e8e8;
-}
-
-/* my css */
-/* .card-content {
-    box-shadow: 0px 0px 10px rgba(169, 169, 169, 0.5);
-    border-radius: 8px;
-    height: 180px;
-    width: 200px;
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-}
-.card-count span{
-  font-weight: bolder;
-  font-size: 25px;
-  color: black;
-}
-.card-icon{
+  justify-content: center;
   font-size: 40px;
-  border-radius: 50%;
-  padding: 12px;
-  background-color: #e8e8e8;
 }
-.card-title{
-  font-size: 13px;
-  font-weight: bold;
-  color: #7b7d7e;
-} */
+
+.registration-card-container .registrationCard a>div:first-child span {
+  font-size: .8rem;
+  font-weight: 600;
+  transition: all .2s linear;
+
+}
+
+
+.registration-card-container .registrationCard a>div:nth-child(2) {
+  align-items: center;
+  background-color: #e7e2d5;
+  border-radius: 5px;
+  display: flex;
+  font-size: .8rem;
+  height: 30px;
+  justify-content: center;
+  position: absolute;
+  right: 1%;
+  top: 1%;
+  transition: all .3s linear;
+  width: 30px;
+}
+.registration-card-container .registrationCard:hover {
+  background-color: #f1f0e8;
+}
+
+.registration-card-container .registrationCard a span {
+  color: var(--primary_color);
+}
