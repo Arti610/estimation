@@ -31,7 +31,7 @@ const Dashboard = () => {
   const UserData = useSelector((state) => state.User.UserData)
   const EmployerData = useSelector((state) => state.Employer.EmployerData)
   const CatalogueData = useSelector((state) => state.Catelogue.CatelogueData)
-
+  console.log("UserLog", UserLog);
   const token = localStorage.getItem('Token');
   // Retrieve user data from localStorage
   const userDetailsString = localStorage.getItem('UserData');
@@ -74,7 +74,18 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="status-container">
-
+            <div className="registration-card-wrapper">
+              <h1 className="dashboard-header">User Log</h1>
+              <div className='userlog-container'>
+                {UserLog ? UserLog.data.map((item, i) => {
+                  return (
+                    <>
+                     <p> <span>{item.transactions_reference}</span>  <span>at&nbsp;{item.timestamp}</span></p>
+                    </>
+                  )
+                }) : "No logs available"}
+              </div>
+            </div>
           </div>
         </div>
         <div className="dashboard-right-container">
@@ -97,7 +108,7 @@ const Dashboard = () => {
                 </div>
               </Link>
               <p>Status :&nbsp;<AiFillCheckCircle />&nbsp;<span>{userDetails && userDetails.account_status ? userDetails.account_status : "Account Status"}</span> </p>
-             
+
             </div>
           </div>
         </div>

@@ -30,6 +30,30 @@
   margin: 1rem 0;
 }
 
+.userlog-container{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-block: 10px;
+  border: 1px solid #7c5e1e;
+  border-radius: 8px;
+  transition: all all .3s;
+  height: 20rem;
+  padding: .5rem;
+  overflow: auto;
+  width: 100%;
+}
+
+.userlog-container p {
+  display: flex;
+  justify-content: space-between;
+}
+.userlog-container span{
+  font-size: .8rem;
+  font-weight: 600;
+  transform: all .2s linear;
+}
+
 .dashboard .dashboard-right-container {
   background-color: #f8f4f0;
   height: 100%;
