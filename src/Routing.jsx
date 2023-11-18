@@ -20,6 +20,7 @@ import CatelogueRegistration from "./Common_Components/Catelogue/CatelogueRegist
 import Inquiry from "./Common_Components/Inquiry/Inquiry";
 import Estimation from "./Common_Components/Estimation/Estimation";
 import EstimationDetails from './Common_Components/Estimation/EstimationDetails'
+import ProfileContainer from "./Common_Components/User/ProfileContainer";
 const Routing = () => {
   return (
     <BrowserRouter>
@@ -27,6 +28,7 @@ const Routing = () => {
         <Route path="/" element={<Login />} />
         <Route path="/dashboard" element={<Sidebar />}>
           <Route index element={<Dashboard />} />
+          <Route path="/dashboard/edit-profile/:id" element={<ProfileContainer />} />
 
           {/* Nested "sales" routes */}
           <Route path="sales">

@@ -1,0 +1,67 @@
+.registration-card-container {
+    position: relative;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1.2rem;
+    margin: 2rem 0;
+}
+
+
+.edit-profile-container {
+    display: flex;
+    width: 100%;
+    
+}
+
+.edit-profile-left-container {
+    width: 70%;
+    margin: 20px 10px;
+    height: 100vh;
+    padding: 30px 30px;
+}
+
+.edit-profile-right-container {
+    width: 30%;
+    margin: 20px 10px;
+    height: 100vh;
+    padding: 30px 20px;
+}
+
+.reset-password-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.reset-password-text-header{
+    text-transform: capitalize;
+    font-size:1.2rem;
+    margin: 0px;
+    padding: 0px;
+    color: #333333;
+  }
+
+  .edit-profile-form-group {
+    margin: 15px 20px;
+  }
+  
+  .edit-profile-form-group label {
+    display: block;
+    font-weight: bold;
+    margin-block: 8px;
+  }
+  
+  .edit-profile-form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+  }
+
+  .css-mhc70k-MuiGrid-root>.MuiGrid-item {
+    padding-top: 8.5px !important;
+}
+
+.placeholder-text-color {
+  color: red; /* Change the color to your desired color */
+}

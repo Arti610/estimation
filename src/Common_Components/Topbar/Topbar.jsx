@@ -1,45 +1,52 @@
 import React, { useState } from 'react';
-import { AiOutlineLogout } from 'react-icons/ai';
-import { FaUserAlt } from 'react-icons/fa';
+import { AiFillDashboard, AiOutlineLogout } from 'react-icons/ai';
+import { FaKey, FaUserAlt } from 'react-icons/fa';
 import './Topbar.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { userLogout } from '../../APIs/LoginSlice';
 import { toast } from 'react-toastify';
+import { ImProfile } from "react-icons/im";
+import { getupdateUserData } from '../../APIs/UserSlice';
+import { ImgUrl } from '../../Config/Config';
 
 const Topbar = () => {
   // Initialize the navigate and dispatch functions
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const userDetailsString = localStorage.getItem('UserData');
+  // Parse the JSON string to get an object
+  const userDetails = JSON.parse(userDetailsString);
   // Get the token from local storage
   const token = localStorage.getItem('Token');
 
   // Initialize the logoutStatus state to track the logout result
   const [logoutStatus, setLogoutStatus] = useState(null);
-  const logoutDataStatus = useSelector((state)=>state.Login.status)
+  const logoutDataStatus = useSelector((state) => state.Login.status)
   // Function to handle logout
   const logout = async () => {
     try {
       // Dispatch the userLogout action with the token
       await dispatch(userLogout(token));
-      if(logoutDataStatus.logout === "succeeded"){
+      if (logoutDataStatus.logout === "succeeded") {
         localStorage.removeItem('Token');
         navigate('/');
         toast.success("Logout successfully !")
       }
-      // Remove the token from local storage on successful logout
-
-      // Set the logout status to 'success'
-      // setLogoutStatus('success');
-
-      // Redirect the user to the '/' route
     } catch (error) {
-      // If there's an error during logout, set the logout status to 'error'
-      // setLogoutStatus('error');
-    
+      throw error
     }
   };
+
+  const editProfile = () => {
+    const id = userDetails.id
+
+    if (id) {
+      dispatch(getupdateUserData({ id: id, token }))
+      navigate(`/dashboard/edit-profile/${id}`)
+    }
+  }
 
   return (
     <>
@@ -52,19 +59,47 @@ const Topbar = () => {
         {/* Topbar profile section */}
         <div className="topbar-profile">
           <div className="profile">
-            <FaUserAlt />
+            <span>{`${userDetails && userDetails.first_name ? userDetails.first_name : "User"} ${userDetails && userDetails.last_name ? userDetails.last_name : "Name"}`}</span>
+            <img src={`${ImgUrl}${userDetails && userDetails.profile_image ? userDetails.profile_image : <FaUserAlt />}`} alt="Profile Image" />
           </div>
           <div className="topbar-user">
-            {/* Topbar user elements */}
+            {/* Dashboard */}
+            <div className="topbar-user-element" style={{ borderTop: '1px solid #c8c8c8', paddingTop: '3px' }} onClick={() => navigate("/dashboard")}>
+              <div className="element-icon">
+                <AiFillDashboard style={{ fontSize: '16px' }} />
+              </div>
+              <div className="element-text">
+                <p>Dashboard</p>
+              </div>
+            </div>
+            {/* Edit Profile */}
+            <div className="topbar-user-element" style={{ borderTop: '1px solid #c8c8c8', paddingTop: '3px' }} onClick={editProfile}>
+              <div className="element-icon">
+                <ImProfile style={{ fontSize: '16px' }} />
+              </div>
+              <div className="element-text">
+                <p>Edit Profile</p>
+              </div>
+            </div>
+            {/* Change Password */}
+            <div className="topbar-user-element" style={{ borderTop: '1px solid #c8c8c8', paddingTop: '3px' }} onClick={editProfile}>
+              <div className="element-icon">
+                <FaKey style={{ fontSize: '16px' }} />
+              </div>
+              <div className="element-text">
+                <p>Change Password</p>
+              </div>
+            </div>
+            {/* Logout */}
             <div className="topbar-user-element" style={{ borderTop: '1px solid #c8c8c8', paddingTop: '3px' }} onClick={logout}>
               <div className="element-icon">
                 <AiOutlineLogout style={{ fontSize: '16px' }} />
               </div>
               <div className="element-text">
-                {/* Trigger the logout function when the user clicks */}
                 <p>Logout</p>
               </div>
             </div>
+
           </div>
         </div>
       </div>

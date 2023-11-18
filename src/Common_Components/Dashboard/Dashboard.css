@@ -1,3 +1,21 @@
+
+.dashboard, .main-content {
+  display: flex;
+  width: 100%;
+}
+
+.dashboard .dashboard-left-container {
+  padding: 1rem;
+  width: 75%;
+}
+
+.dashboard-header {
+  color: #333;
+  font-size: 1.2rem;
+  margin: 0;
+  padding: 0;
+  text-transform: capitalize;
+}
 .registration-card-container {
   grid-gap: 1.2rem;
   display: grid;
@@ -6,4 +24,102 @@
   margin: 2rem 0;
   position: relative;
   width: 100%;
+}
+
+.status-container {
+  margin: 1rem 0;
+}
+
+.dashboard .dashboard-right-container {
+  background-color: #f8f4f0;
+  height: 100%;
+  padding: .5rem;
+  width: 25%;
+}
+
+.user-dp-container {
+  display: flex;
+  flex-direction: row;
+  margin: 1rem 0;
+}
+
+
+.user-dp-container .imgBx {
+  border: 1px dashed #ccc;
+  border-radius: 50%;
+  height: 90px;
+  padding: 2px;
+  width: 90px;
+}
+
+
+.user-dp-container .imgBx img {
+  border: 1px dashed #ccc;
+  border-radius: 50%;
+  height: 100%;
+  width: 100%;
+}
+
+
+.user-detail-container {
+  padding: .5rem;
+}
+
+.user-dp-container h4 {
+  font-size: 1.1rem;
+  font-weight: 650;
+  line-height: 1.2;
+  margin-bottom: .4rem;
+}
+
+.user-dp-container h4 span {
+  color: #9f8754;
+  font-size: 16px;
+}
+
+
+.user-detail-container a div {
+  align-items: center;
+  border: 1px solid #333;
+  display: flex;
+  justify-content: flex-start;
+  margin: .4rem 0;
+  padding: 0 .2rem;
+  width: -webkit-max-content;
+  width: max-content;
+}
+
+.user-detail-container a div svg {
+  font-size: .8rem;
+  margin-right: .3rem;
+}
+
+.user-detail-container a div span {
+  font-size: .7rem;
+}
+
+.user-detail-container p {
+  align-items: center;
+  color: #000;
+  display: flex;
+  font-size: .8rem;
+  justify-content: flex-start;
+  margin: .4rem 0;
+}
+
+.user-detail-container button {
+  align-items: center;
+  background-color: #000;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  margin: .4rem 0;
+  padding: .2rem 1rem;
+}
+
+.user-detail-container button svg {
+  font-weight: 600;
+  margin-right: .2rem;
 }

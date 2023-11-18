@@ -3,10 +3,11 @@ import api from "../Config/Apis";
 
 export const userLogin = createAsyncThunk("userLogin", async (userCredential) => {
   const request = await api.post("user/login", userCredential);
-  const response = request.data.data;
+  const response = request.data;
   const token = request.data.token;
 
   localStorage.setItem('Token', token);
+  localStorage.setItem('UserData', JSON.stringify(response.data));
 
   return response; // You might want to return some data here if needed
 });
@@ -28,7 +29,7 @@ export const userLogout = createAsyncThunk("userLogout", async (token, { rejectW
     if (response.status === 200) {
       // Successful logout, you can perform additional actions if needed.
       localStorage.removeItem('Token');
-      console.log("response logout", response);
+      localStorage.removeItem('UserData')
       return response.data; // This will be the data returned by the API on successful logout.
     } else {
       // Handle the case where the logout was not successful.
