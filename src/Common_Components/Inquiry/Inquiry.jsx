@@ -11,16 +11,17 @@ import { getDepartmentData } from '../../APIs/DepartmentSlice';
 import { getCustomerData } from '../../APIs/CustomerSlice'
 import { getSourceOfInquiryData } from '../../APIs/SourceOfInquirySlice'
 import './Inquiry.css'
-import { useCookies } from 'react-cookie';
 import { getEmployerData } from '../../APIs/EmployerSlice';
-import { createInquiryData, deleteInquiryDetailsData, deleteInquiryDetailsDataFailed, deleteInquiryDetailsDataSuccess, getupdateInquiryData, updateInquiryData, updateInquiryDetails } from '../../APIs/InquirySlice'
+import { createInquiryData, deleteInquiryDetailsData,   getupdateInquiryData, updateInquiryData, updateInquiryDetails } from '../../APIs/InquirySlice'
+import api from '../../Config/Apis';
 
 const Inquiry = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-
   const fData = new FormData();
-  const stateStaus = useSelector((state) => state.Inquiry.status)
+
+  const {inqId} = useParams()
+
   const token = localStorage.getItem('Token');
   const Department = useSelector((state) => state.Department.DepartmentData)
   const Employer = useSelector((state) => state.Employer.EmployerData)
@@ -30,7 +31,7 @@ const Inquiry = () => {
   const updatedInquiry = useSelector((state) => state.Inquiry.updateInquiryData)
   const [isUpdating, setIsUpdating] = useState(false);
   const [editingIndex, setEditingIndex] = useState(-1); // -1 means no row is being edited initially
-  const [status, setStatus] = useState(stateStaus)
+
 
   const [formData, setFormData] = useState({
     client_reference_no: null,
@@ -183,7 +184,34 @@ const Inquiry = () => {
 
     }
   }
-
+  const handleInquiryUser = async () => {
+    try {
+      // setLoading(true)
+      const response = await api.get(`/inquiry/${inqId}`, {
+        headers: {
+          Authorization: `token ${token}`
+        }
+      });
+      const updateInquiryBYId = response.data;
+      console.log("updateInquiryBYId",updateInquiryBYId);
+    
+      setFormData({
+        client_reference_no: updateInquiryBYId && updateInquiryBYId.inquiry.client_reference_no ? updateInquiryBYId.inquiry.client_reference_no : null,
+        inquirydate: updateInquiryBYId && updateInquiryBYId.inquiry.inquirydate  ? updateInquiryBYId.inquiry.inquirydate : null,
+        submission_date: updateInquiryBYId && updateInquiryBYId.inquiry.submission_date ? updateInquiryBYId.inquiry.submission_date : null,
+        customer: updateInquiryBYId && updateInquiryBYId.inquiry.customer.id ? updateInquiryBYId.inquiry.customer.id : null,
+        employer: updateInquiryBYId && updateInquiryBYId.inquiry.employer.id ? updateInquiryBYId.inquiry.employer.id : null,
+        source_of_inquiry: updateInquiryBYId && updateInquiryBYId.inquiry.source_of_inquiry.id ? updateInquiryBYId.inquiry.source_of_inquiry.id : null,
+        department: updateInquiryBYId &&  updateInquiryBYId.inquiry.department.id  ? updateInquiryBYId.inquiry.department.id : null,
+        estimator: updateInquiryBYId && updateInquiryBYId.inquiry.estimator.id ? updateInquiryBYId.inquiry.estimator.id : null,
+        salesman: updateInquiryBYId && updateInquiryBYId.inquiry.salesman.id ? updateInquiryBYId.inquiry.salesman.id : null,
+        scope_of_work: updateInquiryBYId && updateInquiryBYId.inquiry.scope_of_work ? updateInquiryBYId.inquiry.scope_of_work : null,
+        details: updateInquiryBYId && updateInquiryBYId.detail ? updateInquiryBYId.detail : null,
+      });
+    } catch (error) {
+      
+    }
+  }
 
   useEffect(() => {
     AOS.init();
@@ -191,24 +219,8 @@ const Inquiry = () => {
     dispatch(getEmployerData(token))
     dispatch(getCustomerData(token))
     dispatch(getSourceOfInquiryData(token))
-    dispatch(getUserData(token))
-
-    if (updatedInquiry) {
-      setFormData({
-        client_reference_no: updatedInquiry.inquiry.client_reference_no,
-        inquirydate: updatedInquiry.inquiry.inquirydate,
-        submission_date: updatedInquiry.inquiry.submission_date,
-        customer: String(updatedInquiry.inquiry.customer.id),
-        employer: String(updatedInquiry.inquiry.employer.id),
-        source_of_inquiry: String(updatedInquiry.inquiry.source_of_inquiry.id),
-        department: String(updatedInquiry.inquiry.department.id),
-        estimator: String(updatedInquiry.inquiry.estimator.id),
-        salesman: String(updatedInquiry.inquiry.salesman.id),
-        scope_of_work: updatedInquiry.inquiry.scope_of_work,
-        details: updatedInquiry.detail,
-      });
-    }
-  }, [token, updatedInquiry]);
+    handleInquiryUser()
+  }, [token]);
 
   return (
     <>

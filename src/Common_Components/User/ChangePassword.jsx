@@ -1,23 +1,26 @@
-import React, {  useState } from "react";
-import {  toast } from "react-toastify";
+import React, { useState } from "react";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import "./ChangePassword.css"
 import "./EditProfile.css"
+import CommonLoading from '../../Components/Loader/CommonLoading';
+
 import api from "../../Config/Apis";
 
 const ChangePassword = () => {
   const navigate = useNavigate();
 
   const token = localStorage.getItem('Token');
-  
+
   const [user, setUser] = useState({
     currentPassword: "",
     newPassword: "",
     confirmNewPassword: "",
   });
-//   const islogout = localStorage.getItem('islogout')
+
+  const [loading, setLoading] = useState(false)
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
@@ -42,6 +45,7 @@ const ChangePassword = () => {
     setIsPasswordValid(passwordRegex.test(value));
     setUser((prevData) => ({ ...prevData, newPassword: value }));
   };
+
   const FormValidation = () => {
     if (user.newPassword !== user.confirmNewPassword) {
       toast.error("New passwords do not match!", { autoClose: 3000 });
@@ -59,9 +63,11 @@ const ChangePassword = () => {
     }
     return true;
   };
+
   const ChangePassword = async () => {
     try {
-     await api.put(
+      setLoading(true)
+      await api.put(
         "user/change_password",
         { old_password: user.currentPassword, new_password: user.newPassword },
         {
@@ -71,14 +77,16 @@ const ChangePassword = () => {
           },
         }
       );
-     
+
       toast.success("Password changed successfully!", { autoClose: 3000 });
-      setTimeout(() => { navigate("/login") }, 2500)
+      setTimeout(() => { navigate("/dashboard") }, 2500)
+      setLoading(false)
     } catch (error) {
-      console.log(error);
       toast.error("Error while changing password. Please try again later.", {
         autoClose: 3000,
       });
+    }finally{
+      setLoading(false)
     }
   };
 
@@ -199,9 +207,9 @@ const ChangePassword = () => {
           </div>
         </div>
         <div className="reset-password-button">
-          <button className="login-button" type="submit">
-          Reset Password
-          </button>
+          {loading ? <CommonLoading /> : <button className="login-button" type="submit">
+            Reset Password
+          </button>}
         </div>
       </form>
     </div>

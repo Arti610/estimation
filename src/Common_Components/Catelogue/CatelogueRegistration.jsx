@@ -28,11 +28,13 @@ const CatelogueRegistration = () => {
   const [discountError, setDiscountError] = useState('');
   const [baseOfPricing, setBaseOfPricing] = useState('');
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
+
   const token = localStorage.getItem('Token');
   const Tax = useSelector((state) => state.Tax.TaxData)
   const CatelogueData = useSelector((state) => state.Catelogue.updateCatelogueData)
   const updatedCatelogue = useSelector((state) => state.Catelogue.updateCatelogueData)
-  const Status = useSelector((state) => state.Catelogue.status)
+
 
   const [formData, setFormData] = useState({
     name: null,
@@ -117,37 +119,37 @@ const CatelogueRegistration = () => {
     }));
   };
   //Delete handler
-// Declare a global variable to store the id
-let globalImageId = null;
-console.log("globalImageId==>", globalImageId);
+  // Declare a global variable to store the id
+  let globalImageId = null;
+  console.log("globalImageId==>", globalImageId);
 
-const DeleteImageId = (id) => {
-  // Use a promise to ensure that globalImageId is set before continuing
-  setDeleteModalOpen(true)
-  return new Promise((resolve) => {
-    globalImageId = id;
-    console.log("globalImageId", globalImageId);
-    resolve();
-  });
-};
+  const DeleteImageId = (id) => {
+    // Use a promise to ensure that globalImageId is set before continuing
+    setDeleteModalOpen(true)
+    return new Promise((resolve) => {
+      globalImageId = id;
+      console.log("globalImageId", globalImageId);
+      resolve();
+    });
+  };
 
-const deleteImagesHandler = async (someId) => {
-  // Call DeleteImageId and wait for the promise to resolve
-  await DeleteImageId(someId); // Replace someId with the actual ID you want to set
+  const deleteImagesHandler = async (someId) => {
+    // Call DeleteImageId and wait for the promise to resolve
+    await DeleteImageId(someId); // Replace someId with the actual ID you want to set
 
-  // Now globalImageId should be set correctly
-  const idToDelete = globalImageId;
+    // Now globalImageId should be set correctly
+    const idToDelete = globalImageId;
 
-  if (idToDelete) {
-    dispatch(deleteCatelogueImages({ token, id: idToDelete }));
-    dispatch(getCatelogueData(token));
-  } else {
-    console.error("No id available for deletion");
-  }
-};
+    if (idToDelete) {
+      dispatch(deleteCatelogueImages({ token, id: idToDelete }));
+      dispatch(getCatelogueData(token));
+    } else {
+      console.error("No id available for deletion");
+    }
+  };
 
-// Example usage
-// deleteImagesHandler();
+  // Example usage
+  // deleteImagesHandler();
 
 
   const deleteDatasheetHandler = (id) => {
@@ -286,40 +288,49 @@ const deleteImagesHandler = async (someId) => {
 
     }
   }
+  const handleUpdateUser = async () => {
+    try {
+      const response = await api.get(`/catalogue/${cateId}`, {
+        headers: {
+          Authorization: `token ${token}`
+        }
+      });
+      const updatedCatelogueById = response.data;
+
+
+      setFormData({
+        // id:  updatedCatelogue.catelogue.id,
+        name: updatedCatelogueById && updatedCatelogueById.catelouge && updatedCatelogueById.catelouge.name ? updatedCatelogueById.catelouge.name : null,
+        unit_of_measurement: updatedCatelogueById && updatedCatelogueById.catelouge && updatedCatelogueById.catelouge.unit_of_measurement ? updatedCatelogueById.catelouge.unit_of_measurement : null,
+        type: updatedCatelogueById && updatedCatelogueById.catelouge && updatedCatelogueById.catelouge.type ? updatedCatelogueById.catelouge.type : null,
+        category: updatedCatelogueById && updatedCatelogueById.catelouge && updatedCatelogueById.catelouge.category ? updatedCatelogueById.catelouge.category : null,
+        sub_category: updatedCatelogueById && updatedCatelogueById.catelouge && updatedCatelogueById.catelouge.sub_category ? updatedCatelogueById.catelouge.sub_category : null,
+        type_sub_category: updatedCatelogueById && updatedCatelogueById.catelouge && updatedCatelogueById.catelouge.type_sub_category ? updatedCatelogueById.catelouge.type_sub_category : null,
+        origin: updatedCatelogueById && updatedCatelogueById.catelouge && updatedCatelogueById.catelouge.origin ? updatedCatelogueById.catelouge.origin : null,
+        finish: updatedCatelogueById && updatedCatelogueById.catelouge && updatedCatelogueById.catelouge.finish ? updatedCatelogueById.catelouge.finish : null,
+        brand: updatedCatelogueById && updatedCatelogueById.catelouge && updatedCatelogueById.catelouge.brand ? updatedCatelogueById.catelouge.brand : null,
+        series: updatedCatelogueById && updatedCatelogueById.catelouge && updatedCatelogueById.catelouge.series ? updatedCatelogueById.catelouge.series : null,
+        model: updatedCatelogueById && updatedCatelogueById.catelouge && updatedCatelogueById.catelouge.model ? updatedCatelogueById.catelouge.model : null,
+        size: updatedCatelogueById && updatedCatelogueById.catelouge && updatedCatelogueById.catelouge.size ? updatedCatelogueById.catelouge.size : null,
+        specification: updatedCatelogueById && updatedCatelogueById.catelouge && updatedCatelogueById.catelouge.specification ? updatedCatelogueById.catelouge.specification : null,
+        list_price: updatedCatelogueById && updatedCatelogueById.catelouge && updatedCatelogueById.catelouge.list_price ? updatedCatelogueById.catelouge.list_price : null,
+        currency: updatedCatelogueById && updatedCatelogueById.catelouge && updatedCatelogueById.catelouge.currency ? updatedCatelogueById.catelouge.currency : null,
+        discount: updatedCatelogueById && updatedCatelogueById.catelouge && updatedCatelogueById.catelouge.discount ? updatedCatelogueById.catelouge.discount : null,
+        tax: updatedCatelogueById && updatedCatelogueById.catelouge && updatedCatelogueById.catelouge.tax && updatedCatelogueById.catelouge.tax.id ? updatedCatelogueById.catelouge.tax.id : null,
+        base_of_pricing: updatedCatelogueById && updatedCatelogueById.catelouge && updatedCatelogueById.catelouge.base_of_pricing ? updatedCatelogueById.catelouge.base_of_pricing : null,
+        is_active: updatedCatelogueById && updatedCatelogueById.catelouge && updatedCatelogueById.catelouge.is_active ? updatedCatelogueById.catelouge.is_active : null,
+        // primary_image: updatedCatelogueById && updatedCatelogueById.catelouge && updatedCatelogueById.catelouge. ? updatedCatelogueById.catelouge.primary_imag : nulle
+        imgFile: updatedCatelogueById && updatedCatelogueById.catelouge && updatedCatelogueById.catelouge.primary_image ? updatedCatelogueById.catelouge.primary_image : null,
+        // images: updatedCatelogueById && updatedCatelogueById.catelouge && updatedCatelogueById.catelouge. ? updatedCatelogueById.image : nulls
+      });
+    } catch (error) {
+
+    }
+  }
   useEffect(() => {
     AOS.init();
     dispatch(getTaxData(token))
-    dispatch(getupdateCatelogueData({ id: cateId, token }))
-    if (cateId) {
-      setFormData({
-        // id:  updatedCatelogue.catelogue.id,
-        name: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.name ? updatedCatelogue.catelouge.name : null,
-        unit_of_measurement: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.unit_of_measurement ? updatedCatelogue.catelouge.unit_of_measurement : null,
-        type: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.type ? updatedCatelogue.catelouge.type : null,
-        category: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.category ? updatedCatelogue.catelouge.category : null,
-        sub_category: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.sub_category ? updatedCatelogue.catelouge.sub_category : null,
-        type_sub_category: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.type_sub_category ? updatedCatelogue.catelouge.type_sub_category : null,
-        origin: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.origin ? updatedCatelogue.catelouge.origin : null,
-        finish: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.finish ? updatedCatelogue.catelouge.finish : null,
-        brand: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.brand ? updatedCatelogue.catelouge.brand : null,
-        series: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.series ? updatedCatelogue.catelouge.series : null,
-        model: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.model ? updatedCatelogue.catelouge.model : null,
-        size: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.size ? updatedCatelogue.catelouge.size : null,
-        specification: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.specification ? updatedCatelogue.catelouge.specification : null,
-        list_price: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.list_price ? updatedCatelogue.catelouge.list_price : null,
-        currency: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.currency ? updatedCatelogue.catelouge.currency : null,
-        discount: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.discount ? updatedCatelogue.catelouge.discount : null,
-        tax: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.tax && updatedCatelogue.catelouge.tax.id ? updatedCatelogue.catelouge.tax.id : null,
-        base_of_pricing: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.base_of_pricing ? updatedCatelogue.catelouge.base_of_pricing : null,
-        is_active: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.is_active ? updatedCatelogue.catelouge.is_active : null,
-        // primary_image: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge. ? updatedCatelogue.catelouge.primary_imag : nulle
-        imgFile: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge.primary_image ? updatedCatelogue.catelouge.primary_image : null,
-        // images: updatedCatelogue && updatedCatelogue.catelouge && updatedCatelogue.catelouge. ? updatedCatelogue.image : nulls
-      });
-
-    }
-
-
+    handleUpdateUser()
   }, []);
 
   return (
@@ -734,7 +745,7 @@ const deleteImagesHandler = async (someId) => {
                 placeholder="Enter Specification"
                 fullWidth
                 required
-                style={{ padding: "3px 20px", height: "150px", width: "100%", fontSize: "18px" }}
+                style={{ padding: "3px 10px", height: "150px", width: "100%", fontSize: "16px" }}
 
               />
             </Grid>
@@ -770,7 +781,7 @@ const deleteImagesHandler = async (someId) => {
                         />
                       )}
                       {/* <span style={{ cursor: "pointer" }} onClick={() => deleteImagesHandler(image.id)}><AiFillDelete /></span> */}
-                      <span style={{ cursor: "pointer" }} onClick={()=>DeleteImageId(image.id)}><AiFillDelete /></span>
+                      <span style={{ cursor: "pointer" }} onClick={() => DeleteImageId(image.id)}><AiFillDelete /></span>
                     </div>
                   )) : "No Images Uploaded"}
 

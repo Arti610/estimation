@@ -56,6 +56,7 @@ const Dashboard = () => {
     dispatch(getEmployerData(token))
     dispatch(getUserData(token))
     dispatch(getUserLog(token))
+    dispatch(getupdateUserData({id: userDetails.id, token}))
   }, [])
 
   return (
@@ -77,10 +78,14 @@ const Dashboard = () => {
             <div className="registration-card-wrapper">
               <h1 className="dashboard-header">User Log</h1>
               <div className='userlog-container'>
-                {UserLog ? UserLog.data.map((item, i) => {
+                {UserLog ? UserLog.data.map((item, i) => {  
                   return (
                     <>
-                     <p> <span>{item.transactions_reference}</span>  <span>at&nbsp;{item.timestamp}</span></p>
+                      <p>
+                        <span>{item.transactions_reference}</span>
+                        <span>at&nbsp;{new Date(item.timestamp).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }).replace(/(\d{1,2}\/\d{1,2}\/\d{4}), (\d{1,2}:\d{1,2}:\d{1,2})/, '$1 $2')}</span>
+                      </p>
+
                     </>
                   )
                 }) : "No logs available"}
@@ -95,18 +100,18 @@ const Dashboard = () => {
             </div>
             <div className="user-detail-container">
               <h4>Hello, <span>{`${userDetails && userDetails.first_name ? userDetails.first_name : "User"} ${userDetails && userDetails.last_name ? userDetails.last_name : "Name"}`}</span> </h4>
-              <Link onClick={editProfile}>
+              <button onClick={editProfile}>
                 <div>
                   <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                   <span>My Account</span>
                 </div>
-              </Link>
-              <Link onClick={editProfile}>
+              </button>
+              <button onClick={editProfile}>
                 <div>
                   <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke-linejoin="round" stroke-width="32" d="M218.1 167.17c0 13 0 25.6 4.1 37.4-43.1 50.6-156.9 184.3-167.5 194.5a20.17 20.17 0 00-6.7 15c0 8.5 5.2 16.7 9.6 21.3 6.6 6.9 34.8 33 40 28 15.4-15 18.5-19 24.8-25.2 9.5-9.3-1-28.3 2.3-36s6.8-9.2 12.5-10.4 15.8 2.9 23.7 3c8.3.1 12.8-3.4 19-9.2 5-4.6 8.6-8.9 8.7-15.6.2-9-12.8-20.9-3.1-30.4s23.7 6.2 34 5 22.8-15.5 24.1-21.6-11.7-21.8-9.7-30.7c.7-3 6.8-10 11.4-11s25 6.9 29.6 5.9c5.6-1.2 12.1-7.1 17.4-10.4 15.5 6.7 29.6 9.4 47.7 9.4 68.5 0 124-53.4 124-119.2S408.5 48 340 48s-121.9 53.37-121.9 119.17zM400 144a32 32 0 11-32-32 32 32 0 0132 32z"></path></svg>
                   <span>Change Password</span>
                 </div>
-              </Link>
+              </button>
               <p>Status :&nbsp;<AiFillCheckCircle />&nbsp;<span>{userDetails && userDetails.account_status ? userDetails.account_status : "Account Status"}</span> </p>
 
             </div>

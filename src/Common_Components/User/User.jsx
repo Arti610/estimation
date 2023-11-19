@@ -170,9 +170,6 @@ const User = () => {
       if (formData.profile_image) {
         fData.append("profile_image", formData.profile_image);
       }
-      // fData.append("profile_image", formData.profile_image);
-      // dispatch(updateUserData({ fData, token, id: userId }))
-      // navigate("/dashboard/settings/users")
       try {
         const response = await api.put(`/updateuser/${userId}`, fData, {
           headers: {
@@ -202,9 +199,6 @@ const User = () => {
       fData.append("user_type", formData.user_type);
       fData.append("password", formData.password);
       fData.append("account_status", formData.account_status);
-
-      // dispatch(createUserData({ fData, token }))
-      // navigate("/dashboard/settings/users")
       try {
         const response = await api.put(`/createuser`, fData, {
           headers: {
@@ -250,8 +244,8 @@ const User = () => {
         department: updatedUserById.department.id ? updatedUserById.department.id : null,
         account_status: updatedUserById.account_status ? updatedUserById.account_status : null,
       });
-    } catch (error) {
-      throw error
+    }catch(error){
+      
     }
   }
   
