@@ -3,23 +3,27 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ImgUrl } from '../../Config/Config'
 import './CatelogueDetails.css'
 import { FaFilePdf } from 'react-icons/fa'
-import { deleteCatelogueData, getupdateCatelogueData } from '../../APIs/CatelogueSlice'
+import { deleteCatelogueData, getCatelogueData, getupdateCatelogueData } from '../../APIs/CatelogueSlice'
 import { useNavigate, useParams } from 'react-router-dom'
 import "react-multi-carousel/lib/styles.css";
 import { useEffect } from 'react'
+import { ToastContainer, toast } from 'react-toastify'
 import DeleteConfirmationModal from '../../Components/DeleteConfirmModal/DeleteConfirmationModal'
+import api from '../../Config/Apis'
+
 
 
 const Catelogue = (props) => {
-  
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const {cateId}  = useParams()
+  const { cateId } = useParams()
 
   const [imagesToggle, setImagesToggle] = useState(true)
   const [certificatesToggle, setCertificatesToggle] = useState(false)
   const [datasheetsToggle, setDatasheetsToggle] = useState(false)
   const [specificationToggle, setSpecificationToggle] = useState(false)
+  const [deleteId, setDeleteId] = useState(null)
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
   const CatelogueData = useSelector((state) => state.Catelogue.updateCatelogueData)
   const token = localStorage.getItem('Token');
@@ -28,7 +32,7 @@ const Catelogue = (props) => {
   const toggleShowMore = () => {
     setShowMore(!showMore);
   };
-  
+
   const truncateText = (text, maxLength) => {
     if (!text) return "";
     if (!maxLength) return text;
@@ -37,15 +41,31 @@ const Catelogue = (props) => {
   };
 
   const updateHandler = (cateId) => {
-    dispatch(getupdateCatelogueData({  id: cateId, token }))
     navigate(`/dashboard/sales/catelogue-registration/${cateId}`)
   }
 
   const deleteHandle = (id) => {
-    dispatch(deleteCatelogueData({ token, id }))
-    navigate("/dashboard/sales/catelogue")
+    setDeleteId(id)
+    setDeleteModalOpen(true)
   }
 
+  const deleteDataHandler = () => {
+    if (deleteId) {
+      try {
+        const response = api.delete(`/delete_catalogue/${deleteId}`, {
+          headers: { Authorization: `token ${token}` }
+        })
+        if (response.status === "OK" || response.statusText === "200") {
+          setDeleteModalOpen(false)
+          navigate("/dashboard/sales/catelogue")
+          toast.success("Deleted successfully")
+          dispatch(getCatelogueData(token))
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  }
   const imagesHandler = () => {
     setImagesToggle(true)
     setDatasheetsToggle(false)
@@ -72,13 +92,13 @@ const Catelogue = (props) => {
   }
 
 
-  useEffect(()=>{
-    dispatch(getupdateCatelogueData({id: cateId, token}))
-  },[])
-  
+  useEffect(() => {
+    dispatch(getupdateCatelogueData({ id: cateId, token }))
+  }, [])
+
   return (
     <>
-    
+
       <div data-aos="fade-left" data-aos-duration="1000">
         <div className="registration_top_header">
           <p>
@@ -123,7 +143,7 @@ const Catelogue = (props) => {
               </div>
             </div>
           </div>
-          
+
           <div className="details-container-heading">
             <div className={`heading-container ${imagesToggle ? 'active-container' : ''}`}>
               <h5
@@ -163,7 +183,7 @@ const Catelogue = (props) => {
                   )
                 }) : (<p>No Images Found</p>)}
               </div> : null}
-            
+
               {specificationToggle ? <div className="specification-container">
                 <div className="detail-container">
                   <div className='left-detail-container'>
@@ -219,8 +239,8 @@ const Catelogue = (props) => {
         </div>
 
       </div>
-      {/* <DeleteConfirmationModal open={deleteModalOpen} handleClose={() => setDeleteModalOpen(false)} title="User" deleteData={deleteData} /> */}
-
+      <DeleteConfirmationModal open={deleteModalOpen} handleClose={() => setDeleteModalOpen(false)} title="Catalogue" deleteData={deleteDataHandler} />
+   
     </>
   )
 }

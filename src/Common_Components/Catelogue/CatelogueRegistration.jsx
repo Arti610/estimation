@@ -28,7 +28,7 @@ const CatelogueRegistration = () => {
   const [discountError, setDiscountError] = useState('');
   const [baseOfPricing, setBaseOfPricing] = useState('');
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
-  const [loading, setLoading] = useState(false)
+ 
 
   const token = localStorage.getItem('Token');
   const Tax = useSelector((state) => state.Tax.TaxData)
@@ -206,7 +206,7 @@ const CatelogueRegistration = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (updatedCatelogue) {
+    if (cateId) {
       fData.append("name", formData.name);
       fData.append("unit_of_measurement", formData.unit_of_measurement);
       fData.append("type", formData.type);
@@ -249,9 +249,8 @@ const CatelogueRegistration = () => {
       }
 
       dispatch(updateCatelogueData({ fData, token, id: cateId }))
+      toast.success("Catalogue updated successfully !")
       navigate("/dashboard/sales/catelogue")
-      // if (Status.update === "succeeded") {
-      // }
 
     } else {
       fData.append("name", formData.name);
@@ -284,6 +283,7 @@ const CatelogueRegistration = () => {
         fData.append(`certificate`, file);
       });
       dispatch(createCatelogueData({ fData, token }))
+      toast.success("Catalogue created successfully !")
       navigate("/dashboard/sales/catelogue")
 
     }
@@ -324,7 +324,7 @@ const CatelogueRegistration = () => {
         // images: updatedCatelogueById && updatedCatelogueById.catelouge && updatedCatelogueById.catelouge. ? updatedCatelogueById.image : nulls
       });
     } catch (error) {
-
+      console.error(error)
     }
   }
   useEffect(() => {
@@ -682,7 +682,7 @@ const CatelogueRegistration = () => {
                 </ImageList>
               </div>
             </Grid> */}
-            {updatedCatelogue ? null : <Grid item xs={12} sm={6} md={4}>
+            {cateId ? null : <Grid item xs={12} sm={6} md={4}>
               <label>
                 UPLOAD OTHER PHOTOS <span style={{ color: "red" }}>*</span>
               </label>
@@ -694,11 +694,11 @@ const CatelogueRegistration = () => {
                   accept=".jpg, .jpeg, .png"
                   multiple
                   onChange={handleImageChange}
-                  required={!updatedCatelogue}
+                  required={!cateId}
                 />
               </div>
             </Grid>}
-            {updatedCatelogue ? null : <Grid item xs={12} sm={6} md={4}>
+            {cateId ? null : <Grid item xs={12} sm={6} md={4}>
               <label>UPLOAD DATASHEETS <span style={{ color: "red" }}>*</span></label>
               <div className="App">
                 <label htmlFor="upload-photo">
@@ -709,13 +709,13 @@ const CatelogueRegistration = () => {
                     type="file"
                     multiple
                     onChange={handleSinglePdfChange}
-                    required={!updatedCatelogue}
+                    required={!cateId}
 
                   />
                 </label>{" "}
               </div>
             </Grid>}
-            {updatedCatelogue ? null : <Grid item xs={12} sm={6} md={4}>
+            {cateId ? null : <Grid item xs={12} sm={6} md={4}>
               <label>UPLOAD CERTIFICATES </label>
               <div className="App">
                 <label htmlFor="upload-photo">
@@ -726,7 +726,7 @@ const CatelogueRegistration = () => {
                     type="file"
                     multiple
                     onChange={handleFileChange}
-                    required={!updatedCatelogue}
+                    required={!cateId}
 
                   />
                 </label>{" "}
@@ -751,7 +751,7 @@ const CatelogueRegistration = () => {
             </Grid>
           </Grid>
           <Grid container spacing={2}>
-            {updatedCatelogue ?
+            {cateId ?
               <Grid item xs={12} sm={6} md={12}>
                 <label>
                   OTHER IMAGES
@@ -765,7 +765,7 @@ const CatelogueRegistration = () => {
                       type="file"
                       multiple
                       onChange={handleImageChange}
-                      required={!updatedCatelogue}
+                      required={!cateId}
                     />
                   </label>
                 </div>
@@ -802,7 +802,7 @@ const CatelogueRegistration = () => {
               </Grid> : null}
           </Grid>
           <Grid container spacing={2}>
-            {updatedCatelogue ?
+            {cateId ?
               <Grid item xs={12} sm={6} md={12}>
                 <label>
                   DATASHEETS
@@ -816,7 +816,7 @@ const CatelogueRegistration = () => {
                       type="file"
                       multiple
                       onChange={handleSinglePdfChange}
-                      required={!updatedCatelogue}
+                      required={!cateId}
 
                     />
                   </label>{" "}
@@ -837,7 +837,7 @@ const CatelogueRegistration = () => {
               </Grid> : null}
           </Grid>
           <Grid container spacing={2}>
-            {updatedCatelogue ?
+            {cateId ?
               <Grid item xs={12} sm={6} md={12}>
                 <label>
                   CERTIFICATES
@@ -851,7 +851,7 @@ const CatelogueRegistration = () => {
                       type="file"
                       multiple
                       onChange={handleFileChange}
-                      required={!updatedCatelogue}
+                      required={!cateId}
 
                     />
                   </label>{" "}
@@ -875,7 +875,7 @@ const CatelogueRegistration = () => {
 
           <div style={{ width: "100%", paddingBlock: "20px", display: 'flex', justifyContent: "center", alignItems: "center" }}>
 
-            {updatedCatelogue ? (
+            {cateId ? (
 
               <button type="submit" variant="contained" className="btn-bgColor">
                 Update

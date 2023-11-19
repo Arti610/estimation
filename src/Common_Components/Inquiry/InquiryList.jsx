@@ -135,7 +135,7 @@ const InquiryList = () => {
         />}
 
       <DeleteConfirmationModal open={deleteModalOpen} handleClose={() => setDeleteModalOpen(false)} title="Inquiry" deleteData={deleteDataHandler} />
-        <ToastContainer/>
+      <ToastContainer />
     </>
   )
 }

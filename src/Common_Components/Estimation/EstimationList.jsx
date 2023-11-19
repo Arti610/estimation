@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { format } from "date-fns";
 import { BasicTable } from '../../Components/Table list/BasicTable'
@@ -6,14 +6,21 @@ import { useEffect } from 'react'
 import { deleteEstimationData, getEstimationData, getupdateEstimationData, updateEstimationData } from '../../APIs/EstimationSlice'
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
+import api from '../../Config/Apis';
+import { ToastContainer, toast } from 'react-toastify';
+import DeleteConfirmationModal from '../../Components/DeleteConfirmModal/DeleteConfirmationModal';
 const EstimationList = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const token = localStorage.getItem('Token');
   const EstimationDataBlank = ["Data Not Found"]
+
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [deleteId, setDeleteId] = useState(null)
+
   const EstimationData = useSelector((state) => state.Estimation.EstimationData)
 
-  
+
   const header = [
     {
       Header: "Serial No",
@@ -78,21 +85,32 @@ const EstimationList = () => {
   }
 
   const deleteHandler = (id) => {
-
-    dispatch(deleteEstimationData({token, id}))
-      .then(() => {
-        // Once the delete action is completed successfully, dispatch the get action
-        dispatch(getEstimationData(token));
-      })
-      .catch((error) => {
-        // Handle any errors from the delete operation
-        alert("wait")
-      });
+    setDeleteId(id)
+    setDeleteModalOpen(true)
   };
+
+  const deleteDataHandler = () => {
+    if (deleteId) {
+      try {
+        const response = api.delete(`/delete_estimation/${deleteId}`,
+          {
+            headers: { Authorization: `token ${token}` }
+          })
+        if (response.status === "OK" || response.statusText === "200") {
+          setDeleteModalOpen(false)
+          toast.success("Deleted successfully")
+          dispatch(getEstimationData(token))
+        }
+      } catch (error) {
+        throw error
+      }
+
+    }
+  }
   useEffect(() => {
     dispatch(getEstimationData(token))
   }, [])
-  console.log("EstimationData",EstimationData);
+  console.log("EstimationData", EstimationData);
   return (
     <>
       {EstimationData ? (
@@ -115,6 +133,9 @@ const EstimationList = () => {
         tableHeading="All Estimations"
         pageHeading='Estimation'
       />)}
+
+      <DeleteConfirmationModal open={deleteModalOpen} handleClose={() => setDeleteModalOpen(false)} title="Estimation" deleteData={deleteDataHandler} />
+      <ToastContainer />
     </>
   )
 }

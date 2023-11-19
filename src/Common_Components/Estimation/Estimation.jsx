@@ -22,6 +22,7 @@ import { PiExportBold } from 'react-icons/pi'
 import { GlobalFilter } from '../../Components/Table list/GlobalFilter';
 import { getCatelogueData } from '../../APIs/CatelogueSlice';
 import { getupdateEmployerData } from '../../APIs/EmployerSlice';
+import { toast } from 'react-toastify';
 
 
 const Estimation = () => {
@@ -125,7 +126,7 @@ const Estimation = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const token = localStorage.getItem('Token');
-  const {estiId} = useParams()
+  const { estiId } = useParams()
   const fData = new FormData();
 
   const [selectedItemId, setSelectedItemId] = useState(null);
@@ -135,7 +136,6 @@ const Estimation = () => {
   const [cateModalOpen, setCateModalOpen] = useState({ modalValue: false, index: null })
   const Inquiry = useSelector((state) => state.Inquiry.InquiryData)
   const InquiryData = useSelector((state) => state.Inquiry.updateInquiryData)
-  const updatedEstimation = useSelector((state) => state.Estimation.updateUserData)
   const CatelogueData = useSelector((state) => state.Catelogue.updateCatelogueData)
   const quantities = InquiryData ? InquiryData.detail.map(item => item.quantity) : null;
   const details_id = InquiryData ? InquiryData.detail.map(item => item.id) : null;
@@ -509,7 +509,7 @@ const Estimation = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (updatedEstimation) {
+    if (estiId) {
       fData.append("inquiry_no", estimationDetails.inquiry_no);
       fData.append("estimation_date", estimationDetails.estimation_date);
       fData.append("inquirydetail", estimationDetails.inquirydetail);
@@ -521,7 +521,8 @@ const Estimation = () => {
       fData.append("net_total", estimationDetails.net_total);
 
       dispatch(updateEstimationData({ fData, token, id: estiId }))
-          navigate("/dashboard/sales/estimation")
+      toast.success("Estimation updated successfully !")
+      navigate("/dashboard/sales/estimation")
     } else {
       fData.append("inquiry_no", estimationDetails.inquiry_no);
       fData.append("estimation_date", estimationDetails.estimation_date);
@@ -555,6 +556,7 @@ const Estimation = () => {
       fData.append("net_total", estimationDetails.net_total);
 
       dispatch(createEstimationData({ fData, token }))
+      toast.success("Estimation created successfully !")
       navigate("/dashboard/sales/estimation")
     }
   }
@@ -577,26 +579,42 @@ const Estimation = () => {
       inquirydetail: details_id  // Round the sum to two decimal places if needed
     });
   }, [estimationDetails.sales_price]);
+
+  const handleEstimationData = async () => {
+    try {
+
+      const response = await api.get(`/estimation/${estiId}`, {
+        headers: {
+          Authorization: `token ${token}`
+        }
+      });
+      const updateEstimationById = response.data;
+
+      setEstimationDetails({
+        inquiry_no: updateEstimationById && updateEstimationById.inquiry_no.id ? updateEstimationById.inquiry_no.id : null,
+        estimation_date: updateEstimationById && updateEstimationById.estimation_date ? updateEstimationById.estimation_date : null,
+        inquirydetail: updateEstimationById && updateEstimationById.inquirydetail.id ? updateEstimationById.inquirydetail.id : null,
+        vat_tax: updateEstimationById && updateEstimationById.vat_tax.id ? updateEstimationById.vat_tax.id : null,
+        markup: updateEstimationById && updateEstimationById.markup ? updateEstimationById.markup : null,
+        taxable: updateEstimationById && updateEstimationById.taxable ? updateEstimationById.taxable : null,
+        NetTotal: updateEstimationById && updateEstimationById.NetTotal ? updateEstimationById.NetTotal : null,
+        salesprice: updateEstimationById && updateEstimationById.salesprice ? updateEstimationById.salesprice : null,
+        estimation_rate: updateEstimationById && updateEstimationById.estimation_rate ? updateEstimationById.estimation_rate : null,
+      });
+
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   useEffect(() => {
     AOS.init();
-    dispatch(getupdateEmployerData({id:estiId, token}))
+    dispatch(getupdateEmployerData({ id: estiId, token }))
     dispatch(getInquiryData(token))
     dispatch(getCatelogueData(token))
     dispatch(getTaxData(token))
-    if (updatedEstimation) {
-      setEstimationDetails({
-        inquiry_no: updatedEstimation.inquiry_no.id,
-        estimation_date: updatedEstimation.estimation_date,
-        inquirydetail: updatedEstimation.inquirydetail.id,
-        vat_tax: updatedEstimation.vat_tax.id,
-        markup: updatedEstimation.markup,
-        taxable: updatedEstimation.taxable,
-        NetTotal: updatedEstimation.NetTotal,
-        salesprice: updatedEstimation.salesprice,
-        estimation_rate: updatedEstimation.estimation_rate,
-      });
-    }
-  }, [token, updatedEstimation]);
+    handleEstimationData()
+  }, [token]);
 
   // Catelogue Modal Logic
   const tableRef = useRef(null);
@@ -1203,24 +1221,24 @@ const Estimation = () => {
                       </tr>
                     )
                   })}
-                </tbody>     
+                </tbody>
               </table>
               <div className="estimation-resouce-list-net-total">
-                    <label style={{fontSize:"15px", fontWeight:"bold"}}>NET TOTAL</label>
-                    <TextField
-                      type="text"
-                      className="inputfield bg-color"
-                      fullWidth
-                      required
-                      value={estimationDetails.net_total}
-                      readOnly
-                    />
-                  </div>
+                <label style={{ fontSize: "15px", fontWeight: "bold" }}>NET TOTAL</label>
+                <TextField
+                  type="text"
+                  className="inputfield bg-color"
+                  fullWidth
+                  required
+                  value={estimationDetails.net_total}
+                  readOnly
+                />
+              </div>
             </Grid>
           </Grid>
           <div style={{ width: "100%", paddingBlock: "20px", display: 'flex', justifyContent: "center", alignItems: "center" }}>
 
-            {updatedEstimation ? (
+            {estiId ? (
 
               <button type="submit" variant="contained" className="btn-bgColor">
                 Update
