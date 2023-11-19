@@ -149,3 +149,21 @@
   font-weight: 600;
   margin-right: .2rem;
 }
+
+@media only screen and (max-width: 1025px){
+  .dashboard{
+      flex-direction: column;
+  }
+  .dashboard .dashboard-left-container{
+      width:100%;
+   
+  }
+  .dashboard .dashboard-right-container{    
+      width:100%;
+    
+  }
+  .main-content{
+      margin-bottom: 2rem;
+  }
+}
+  

@@ -41,7 +41,7 @@ export const deleteDepartmentData = createAsyncThunk("deleteDepartmentData", asy
                 }
             }
         )
-        return response.data
+        return {data: response.data, statusText : response.statusText, statusCode: response.statusCode}
     } catch (error) {
         throw error;
     }

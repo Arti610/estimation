@@ -41,6 +41,7 @@ const Routing = () => {
             <Route path="inquiry-registration" element={<Inquiry />} />
             <Route path="inquiry-registration/:inqId" element={<Inquiry />} />
             <Route path="estimation-registration" element={<Estimation />} />
+            <Route path="estimation-registration/:estiId" element={<Estimation />} />
             <Route path="estimation-registration-detail" element={<EstimationDetails/>} />
           </Route>
 

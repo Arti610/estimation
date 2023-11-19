@@ -5,6 +5,8 @@ import { BasicTable } from '../../Components/Table list/BasicTable';
 import { getDepartmentData, deleteDepartmentData, createDepartmentData, updateDepartmentData } from '../../APIs/DepartmentSlice';
 import DepartmentModal from '../../Components/Modal/DepartmentModal';
 import { ToastContainer, toast } from 'react-toastify';
+import DeleteConfirmationModal from '../../Components/DeleteConfirmModal/DeleteConfirmationModal';
+import api from '../../Config/Apis';
 
 
 const DepartmentList = () => {
@@ -18,6 +20,8 @@ const DepartmentList = () => {
   const token = localStorage.getItem('Token');
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState(null)
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
   const [modalData, setModalData] = useState({
     name: "",
     description: "",
@@ -65,12 +69,12 @@ const DepartmentList = () => {
           }
         )
       );
-      if(status.update === "succeeded"){
+      if (status.update === "succeeded") {
         toast.success("Department update successfully !")
       }
     } else {
       dispatch(createDepartmentData({ modalData, token }));
-      if(status.create === "succeeded"){
+      if (status.create === "succeeded") {
         toast.success("Department create successfully !")
       }
     }
@@ -88,16 +92,26 @@ const DepartmentList = () => {
 
 
   const deleteHandler = (id) => {
-    dispatch(deleteDepartmentData({id, token}))
-      .then(() => {
-        // Once the delete action is completed successfully, dispatch the get action
-        dispatch(getDepartmentData(token));
-      })
-      .catch((error) => {
-        // Handle any errors from the delete operation
-        alert("wait")
-      });
+    setDeleteId(id)
+    setDeleteModalOpen(true)
   };
+
+  const deleteDataHandler = async () => {
+    if (deleteId) {
+      // dispatch(deleteUser({ id: deleteId, token }));
+      try {
+          const response = await api.delete(`/delete_department/${deleteId}`, { headers: { Authorization: `token ${token}` } });
+          if (response.status === "200" || response.statusText === "OK") {
+              setDeleteModalOpen(false);
+              toast.success("Deleted successfully");
+              dispatch(getDepartmentData(token))
+          }
+          return response
+      } catch (error) {
+          throw error
+      }
+  }
+  }
 
   useEffect(() => {
 
@@ -124,7 +138,7 @@ const DepartmentList = () => {
 
   return (
     <>
-    <ToastContainer/>
+      <ToastContainer />
       {DepartmentData ? (
         <BasicTable
           colHeader={header}
@@ -134,18 +148,20 @@ const DepartmentList = () => {
           createHandler={openModal}
           tableHeading="All Departments"
           pageHeading='Department'
-          />
-          ) : <BasicTable
-          colHeader={header}
-          rowData={DepartmentDataBlank}
-          updateHandler={editHandler}
-          deleteHandler={deleteHandler}
-          createHandler={openModal}
-          tableHeading="All Departments"
-          pageHeading='Department'
+        />
+      ) : <BasicTable
+        colHeader={header}
+        rowData={DepartmentDataBlank}
+        updateHandler={editHandler}
+        deleteHandler={deleteHandler}
+        createHandler={openModal}
+        tableHeading="All Departments"
+        pageHeading='Department'
       />}
 
       <DepartmentModal modalOpen={modalOpen} handleModalInputChange={handleModalInputChange} handleAutoComplete={handleAutoComplete} createOrUpdateHandler={createOrUpdateHandler} openModal={openModal} closeModal={closeModal} modalData={modalData} label="ADD DEPARTMENT" heading="Department" />
+      <DeleteConfirmationModal open={deleteModalOpen} handleClose={() => setDeleteModalOpen(false)} title="Department" deleteData={deleteDataHandler} />
+
     </>
   );
 };

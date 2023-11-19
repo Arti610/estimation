@@ -12,15 +12,16 @@ import { getCustomerData } from '../../APIs/CustomerSlice'
 import { getSourceOfInquiryData } from '../../APIs/SourceOfInquirySlice'
 import './Inquiry.css'
 import { getEmployerData } from '../../APIs/EmployerSlice';
-import { createInquiryData, deleteInquiryDetailsData,   getupdateInquiryData, updateInquiryData, updateInquiryDetails } from '../../APIs/InquirySlice'
+import { createInquiryData, deleteInquiryDetailsData, getupdateInquiryData, updateInquiryData, updateInquiryDetails } from '../../APIs/InquirySlice'
 import api from '../../Config/Apis';
+import { toast } from 'react-toastify';
 
 const Inquiry = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const fData = new FormData();
 
-  const {inqId} = useParams()
+  const { inqId } = useParams()
 
   const token = localStorage.getItem('Token');
   const Department = useSelector((state) => state.Department.DepartmentData)
@@ -28,7 +29,6 @@ const Inquiry = () => {
   const Customer = useSelector((state) => state.Customer.CustomerData)
   const SourceOfInquiry = useSelector((state) => state.SourceOfInquiry.SourceOfInquiryData)
   const Estimator_salesman = useSelector((state) => state.User.UserData)
-  const updatedInquiry = useSelector((state) => state.Inquiry.updateInquiryData)
   const [isUpdating, setIsUpdating] = useState(false);
   const [editingIndex, setEditingIndex] = useState(-1); // -1 means no row is being edited initially
 
@@ -62,7 +62,7 @@ const Inquiry = () => {
     dispatch(getupdateInquiryData({ id, token }))
   }, [dispatch, formData.details, token,]);
 
-    const handleDocRender = () => {
+  const handleDocRender = () => {
     setFormData((prevState) => ({
       ...prevState,
       details: [
@@ -140,7 +140,7 @@ const Inquiry = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (updatedInquiry) {
+    if (inqId) {
       fData.append("client_reference_no", formData.client_reference_no);
       fData.append("inquirydate", formData.inquirydate);
       fData.append("submission_date", formData.submission_date);
@@ -154,7 +154,8 @@ const Inquiry = () => {
       if (formData.attachments) {
         fData.append("attachments", formData.attachments);
       }
-      dispatch(updateInquiryData({ fData, token, id: updatedInquiry.inquiry.id }))
+      dispatch(updateInquiryData({ fData, token, id: inqId }))
+      toast.success("Inquiry updated successfully !")
       navigate("/dashboard/sales/inquiry")
     } else {
       fData.append("client_reference_no", formData.client_reference_no);
@@ -179,11 +180,12 @@ const Inquiry = () => {
         fData.append(`total_price`, file.total_price);
       });
       dispatch(createInquiryData({ fData, token }))
-
+      toast.success("Inquiry created successfully !")
       navigate("/dashboard/sales/inquiry")
 
     }
   }
+
   const handleInquiryUser = async () => {
     try {
       // setLoading(true)
@@ -193,23 +195,22 @@ const Inquiry = () => {
         }
       });
       const updateInquiryBYId = response.data;
-      console.log("updateInquiryBYId",updateInquiryBYId);
-    
+
       setFormData({
         client_reference_no: updateInquiryBYId && updateInquiryBYId.inquiry.client_reference_no ? updateInquiryBYId.inquiry.client_reference_no : null,
-        inquirydate: updateInquiryBYId && updateInquiryBYId.inquiry.inquirydate  ? updateInquiryBYId.inquiry.inquirydate : null,
+        inquirydate: updateInquiryBYId && updateInquiryBYId.inquiry.inquirydate ? updateInquiryBYId.inquiry.inquirydate : null,
         submission_date: updateInquiryBYId && updateInquiryBYId.inquiry.submission_date ? updateInquiryBYId.inquiry.submission_date : null,
         customer: updateInquiryBYId && updateInquiryBYId.inquiry.customer.id ? updateInquiryBYId.inquiry.customer.id : null,
         employer: updateInquiryBYId && updateInquiryBYId.inquiry.employer.id ? updateInquiryBYId.inquiry.employer.id : null,
         source_of_inquiry: updateInquiryBYId && updateInquiryBYId.inquiry.source_of_inquiry.id ? updateInquiryBYId.inquiry.source_of_inquiry.id : null,
-        department: updateInquiryBYId &&  updateInquiryBYId.inquiry.department.id  ? updateInquiryBYId.inquiry.department.id : null,
+        department: updateInquiryBYId && updateInquiryBYId.inquiry.department.id ? updateInquiryBYId.inquiry.department.id : null,
         estimator: updateInquiryBYId && updateInquiryBYId.inquiry.estimator.id ? updateInquiryBYId.inquiry.estimator.id : null,
         salesman: updateInquiryBYId && updateInquiryBYId.inquiry.salesman.id ? updateInquiryBYId.inquiry.salesman.id : null,
         scope_of_work: updateInquiryBYId && updateInquiryBYId.inquiry.scope_of_work ? updateInquiryBYId.inquiry.scope_of_work : null,
         details: updateInquiryBYId && updateInquiryBYId.detail ? updateInquiryBYId.detail : null,
       });
     } catch (error) {
-      
+
     }
   }
 
@@ -218,6 +219,7 @@ const Inquiry = () => {
     dispatch(getDepartmentData(token));
     dispatch(getEmployerData(token))
     dispatch(getCustomerData(token))
+    dispatch(getUserData(token))
     dispatch(getSourceOfInquiryData(token))
     handleInquiryUser()
   }, [token]);
@@ -464,7 +466,7 @@ const Inquiry = () => {
                     type="file"
                     accept=".jpg, .jpeg, .png"
                     onChange={handleImageChange}
-                    required={!updatedInquiry}
+                    required={!inqId}
                     style={{ width: "100%" }}
                   />
                 </label>{" "}
@@ -497,16 +499,9 @@ const Inquiry = () => {
                   <div key={index} className='inquiry-details-container'>
                     <div className="action-btn">
 
-                      {/* {updatedInquiry &&
-                        <p>
-                          {isDisabled ?
-                            <BiSolidEditAlt onClick={() => handleDocEdit(index)} title="Edit" className='delete-update-handle-btn' style={{ color: "#7c5e1e" }} />
-                            :
-                            <button onClick={() => handleSaveDetails(index)} style={{ marginInline: "10px" }}>Save</button>
-                          }
-                        </p>} */}
+
                       <div className="btn-width">
-                        {updatedInquiry &&
+                        {inqId &&
                           <div>
                             {isDisabled ?
                               <div onClick={() => handleDocEdit(index)} className='btn-style'>
@@ -518,7 +513,7 @@ const Inquiry = () => {
                               </div>}
                           </div>
                         }
-                        {updatedInquiry ?
+                        {inqId ?
                           <div onClick={() => deleteDetailsHandler(index)} className='btn-style'>
                             <AiFillDelete title='Delete' style={{ color: "red" }} />
                           </div>
@@ -544,7 +539,7 @@ const Inquiry = () => {
                           placeholder="Ex: 523689"
                           fullWidth
                           required
-                          disabled={updatedInquiry && isDisabled}
+                          disabled={inqId && isDisabled}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6} md={2}>
@@ -559,7 +554,7 @@ const Inquiry = () => {
                           // placeholder="Ex: "
                           fullWidth
                           required
-                          disabled={updatedInquiry && isDisabled}
+                          disabled={inqId && isDisabled}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6} md={2}>
@@ -574,7 +569,7 @@ const Inquiry = () => {
                           // placeholder="Ex: "
                           fullWidth
                           required
-                          disabled={updatedInquiry && isDisabled}
+                          disabled={inqId && isDisabled}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6} md={2}>
@@ -589,7 +584,7 @@ const Inquiry = () => {
                           fullWidth
                           required
                           className='quantity1'
-                          disabled={updatedInquiry && isDisabled}
+                          disabled={inqId && isDisabled}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6} md={2}>
@@ -603,7 +598,7 @@ const Inquiry = () => {
                           placeholder="Ex: 10"
                           fullWidth
                           required
-                          disabled={updatedInquiry && isDisabled}
+                          disabled={inqId && isDisabled}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6} md={2}>
@@ -622,13 +617,13 @@ const Inquiry = () => {
                   </div>
                 )
               })}
-              {updatedInquiry ? null : <p className="AddMore"
+              {inqId ? null : <p className="AddMore"
                 onClick={handleDocRender}>Add More +</p>}
             </Grid>
           </Grid>
           <div style={{ width: "100%", paddingBlock: "20px", display: 'flex', justifyContent: "center", alignItems: "center" }}>
 
-            {updatedInquiry ? (
+            {inqId ? (
 
               <button type="submit" variant="contained" className="btn-bgColor">
                 Update

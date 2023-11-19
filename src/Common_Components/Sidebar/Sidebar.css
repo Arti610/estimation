@@ -24,7 +24,6 @@
 
 .sidebar {
   width: 8%;
-  /* background-color: var(--secondary-color); */
   background-color: white;
   height: 100%;
   position: fixed;
@@ -139,5 +138,17 @@
 
   .sidebar-title {
     color: var(--primary-font-color);
+  }
+}
+
+@media only screen and (max-width : 1025px){
+  .contentbar{
+    width: 100%;  
+    margin-left: 0%;
+    height: 1000vh;
+    background-color: #f9fafb
+  }
+  .sidebar {
+   display: none;
   }
 }

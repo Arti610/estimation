@@ -13,6 +13,7 @@ const EstimationList = () => {
   const EstimationDataBlank = ["Data Not Found"]
   const EstimationData = useSelector((state) => state.Estimation.EstimationData)
 
+  
   const header = [
     {
       Header: "Serial No",
@@ -71,11 +72,9 @@ const EstimationList = () => {
 
   const createHandler = () => {
     navigate("/dashboard/sales/Estimation-registration")
-    window.location.reload();
   }
   const editHandler = (id) => {
-    dispatch(getupdateEstimationData({ id, token }))
-    navigate("/dashboard/sales/Estimation-registration")
+    navigate(`/dashboard/sales/Estimation-registration/${id}`)
   }
 
   const deleteHandler = (id) => {

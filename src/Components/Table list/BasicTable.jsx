@@ -16,9 +16,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { PiExportBold } from 'react-icons/pi'
 import { MdOutlineAdd } from 'react-icons/md'
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-// import { PropaneSharp } from "@mui/icons-material";
+
 
 export const BasicTable = ({
   colHeader,
@@ -31,7 +29,7 @@ export const BasicTable = ({
   createBtn,
   showEditIcon = true,
 }) => {
-  const navigate = useNavigate()
+
   const tableRef = useRef(null);
   const [densityState, setDensityState] = useState("hoverEffect");
   const [gg, setGg] = useState(true);
@@ -44,30 +42,9 @@ export const BasicTable = ({
   const handleMouseLeave = () => {
     setIsHovered(false);
   };
-  const handleState = (e) => {
 
-
-    switch (e.target.value) {
-      case "density1":
-        setDensityState("density1");
-        break;
-      case "density2":
-        setDensityState("density2");
-        break;
-      case "density3":
-        setDensityState("density3");
-        break;
-
-      default:
-        setDensityState("");
-        break;
-    }
-  };
 
   const columns = useMemo(() => colHeader, []);
-  // const data = useMemo(() => {rowData}, []);
-  // const columns = useMemo(() => COLUMNS, []);
-  // const data = useMemo(() => MOCK_DATA, []);
 
   const {
     getTableProps,
@@ -124,7 +101,10 @@ export const BasicTable = ({
     }, 700);
   };
   const detailsRef = useRef(null);
-
+  const userDetailsString = localStorage.getItem('UserData');
+  // Parse the JSON string to get an object
+  const userDetails = JSON.parse(userDetailsString);
+  console.log("userDetails", userDetails.user_type);
   useEffect(() => {
     AOS.init();
     const handleClickOutside = (event) => {
@@ -145,6 +125,8 @@ export const BasicTable = ({
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
+
+
   return (
     <>
       <div
@@ -255,17 +237,17 @@ export const BasicTable = ({
                                     updateHandler(row.original.id);
                                   }}
                                 />
-                              ) : 
-                              // <MdVisibility
-                              //   color="#004987"
-                              //   fontSize="17px"
-                              //   paddingInline="5px 15px"
-                              //   cursor="pointer"
-                              //   margin="5px"
-                              //   title="View"
-                              //   onClick={() => navigate("/dashboard/sales/estimation-registration-detail")}
-                              // />
-                              null
+                              ) :
+                                // <MdVisibility
+                                //   color="#004987"
+                                //   fontSize="17px"
+                                //   paddingInline="5px 15px"
+                                //   cursor="pointer"
+                                //   margin="5px"
+                                //   title="View"
+                                //   onClick={() => navigate("/dashboard/sales/estimation-registration-detail")}
+                                // />
+                                null
                               }
                               {/* <button onClick={()=>updateHandler(row.original.id)}>Edit</button> */}
 

@@ -9,6 +9,7 @@ export const getEstimationData = createAsyncThunk("getEstimationData", async (to
                 Authorization: `token ${token}`,
             },
         })
+        console.log("response.data",response.data);
         return response.data
     } catch (error) {
         throw error;

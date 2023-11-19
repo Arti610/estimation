@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { format } from 'date-fns'
 import { BasicTable } from '../../Components/Table list/BasicTable'
@@ -6,13 +6,20 @@ import { useEffect } from 'react'
 import { deleteInquiryData, getInquiryData, getupdateInquiryData, updateInquiryData } from '../../APIs/InquirySlice'
 import { useCookies } from 'react-cookie';
 import { useNavigate, useParams } from 'react-router-dom';
+import api from '../../Config/Apis'
+import { ToastContainer, toast } from 'react-toastify'
+import DeleteConfirmationModal from '../../Components/DeleteConfirmModal/DeleteConfirmationModal'
 const InquiryList = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const {inqId} = useParams()
+
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [deleteId, setDeleteId] = useState(null)
+
   const token = localStorage.getItem('Token');
   const InquiryDataBlank = ["Data Not Found"]
   const InquiryData = useSelector((state) => state.Inquiry.InquiryData)
+
   const header = [
 
     {
@@ -28,7 +35,7 @@ const InquiryList = () => {
       accessor: "inquirydate",
       Cell: ({ value }) => {
         if (value && !isNaN(new Date(value))) {
-          return format(new Date(value) , "dd/MM/yyyy");
+          return format(new Date(value), "dd/MM/yyyy");
         }
         // Handle cases where the date is missing or invalid
       },
@@ -79,22 +86,29 @@ const InquiryList = () => {
     navigate("/dashboard/sales/inquiry-registration")
   }
   const editHandler = (inqId) => {
-    dispatch(getupdateInquiryData({ id : inqId, token }))
+    dispatch(getupdateInquiryData({ id: inqId, token }))
     navigate(`/dashboard/sales/inquiry-registration/${inqId}`)
   }
 
   const deleteHandler = (id) => {
-    dispatch(deleteInquiryData({id,token}))
-      .then(() => {
-        // Once the delete action is completed successfully, dispatch the get action
-        dispatch(getInquiryData(token));
-      })
-      .catch((error) => {
-        // Handle any errors from the delete operation
-        alert("wait")
-      });
+    setDeleteId(id)
+    setDeleteModalOpen(true)
   };
 
+  const deleteDataHandler = async () => {
+    if (deleteId) {
+      try {
+        const response = await api.delete(`/delete_inquiry/${deleteId}`, { headers: { Authorization: `token ${token}` } })
+        if (response.statusText === "OK" || response.status === "200") {
+          setDeleteModalOpen(false)
+          toast.success("Deleted Successfully")
+          dispatch(getInquiryData(token))
+        }
+      } catch {
+        throw console.error();
+      }
+    }
+  }
   useEffect(() => {
     dispatch(getInquiryData(token))
   }, [])
@@ -119,6 +133,9 @@ const InquiryList = () => {
           tableHeading="All Inquiries"
           pageHeading='Inquiry'
         />}
+
+      <DeleteConfirmationModal open={deleteModalOpen} handleClose={() => setDeleteModalOpen(false)} title="Inquiry" deleteData={deleteDataHandler} />
+        <ToastContainer/>
     </>
   )
 }

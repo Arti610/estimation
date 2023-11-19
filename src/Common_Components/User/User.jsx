@@ -439,7 +439,7 @@ const User = () => {
                 </label>{" "}
               </div>
             </Grid>
-            {!updatedUser && <Grid item xs={12} sm={6} md={4}>
+            {!userId && <Grid item xs={12} sm={6} md={4}>
               <label>
                 PASSWORD <span style={{ color: "red" }}>*</span>
                 <span style={{ color: "red", fontSize: "12px", fontWeight: "bold" }}>Generate a strong password.</span>
@@ -466,7 +466,7 @@ const User = () => {
                 }}
               />
             </Grid>}
-            {!updatedUser &&
+            {!userId &&
               <Grid item xs={12} sm={6} md={4}>
                 <label>
                   CONFIRM PASSWORD <span style={{ color: "red" }}>*</span>
@@ -531,20 +531,8 @@ const User = () => {
             </Grid>
           </Grid>
           <div style={{ width: "100%", paddingBlock: "20px", display: 'flex', justifyContent: "center", alignItems: "center" }}>
-            {/* <button
-            variant="outlined"
-            type="submit"
-            style={{
-              marginTop: "15px",
-              fontSize: "12px",
 
-            }}
-            onClick={createOrUpdateHandler}
-          >
-           { console.log("formdata.id", formData.id)}
-            {formData.id ? "UPDATE" : "SUBMIT"}
-          </button> */}
-            {updatedUser ? (
+            {userId ? (
               // If updatedData exists, it's an update form, show the "Update" button
               <button type="submit" variant="contained" className="btn-bgColor">
                 Update

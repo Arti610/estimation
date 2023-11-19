@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Autocomplete, Box, Grid, Modal, TextField } from '@mui/material';
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -21,6 +21,7 @@ import { useReactToPrint } from "react-to-print";
 import { PiExportBold } from 'react-icons/pi'
 import { GlobalFilter } from '../../Components/Table list/GlobalFilter';
 import { getCatelogueData } from '../../APIs/CatelogueSlice';
+import { getupdateEmployerData } from '../../APIs/EmployerSlice';
 
 
 const Estimation = () => {
@@ -124,6 +125,7 @@ const Estimation = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const token = localStorage.getItem('Token');
+  const {estiId} = useParams()
   const fData = new FormData();
 
   const [selectedItemId, setSelectedItemId] = useState(null);
@@ -173,6 +175,7 @@ const Estimation = () => {
   const openERModal = () => {
     setErModal({ erModalValue: true, i: null })
   }
+
   const closeERModal = () => {
     setErModal({ erModalValue: false, i: null })
     setEstiFormData({
@@ -189,6 +192,7 @@ const Estimation = () => {
     })
     setEstiRateTrue({ estistate: true })
   }
+
   const handleModalOpen = (itemId, index) => {
     setMyInqIndex({ index: index })
     setEstiRateTrue({ estistate: false })
@@ -236,6 +240,7 @@ const Estimation = () => {
       [fieldName]: selectedValue,
     }));
   };
+
   const handleChange = (e) => {
 
     const { name, value } = e.target
@@ -244,6 +249,7 @@ const Estimation = () => {
       [name]: value,
     }));
   };
+
   const catelogueModalClose = () => {
     setCateModalOpen({ modalValue: false })
   }
@@ -514,9 +520,8 @@ const Estimation = () => {
       fData.append("taxable", estimationDetails.taxable);
       fData.append("net_total", estimationDetails.net_total);
 
-      dispatch(updateEstimationData({ fData, token, id: updatedEstimation.id }))
-      // alert("updated successfully")
-      navigate("/dashboard/sales/estimation")
+      dispatch(updateEstimationData({ fData, token, id: estiId }))
+          navigate("/dashboard/sales/estimation")
     } else {
       fData.append("inquiry_no", estimationDetails.inquiry_no);
       fData.append("estimation_date", estimationDetails.estimation_date);
@@ -574,15 +579,16 @@ const Estimation = () => {
   }, [estimationDetails.sales_price]);
   useEffect(() => {
     AOS.init();
+    dispatch(getupdateEmployerData({id:estiId, token}))
     dispatch(getInquiryData(token))
     dispatch(getCatelogueData(token))
     dispatch(getTaxData(token))
     if (updatedEstimation) {
       setEstimationDetails({
-        inquiry_no: String(updatedEstimation.inquiry_no.id),
+        inquiry_no: updatedEstimation.inquiry_no.id,
         estimation_date: updatedEstimation.estimation_date,
-        inquirydetail: String(updatedEstimation.inquirydetail.id),
-        vat_tax: String(updatedEstimation.vat_tax.id),
+        inquirydetail: updatedEstimation.inquirydetail.id,
+        vat_tax: updatedEstimation.vat_tax.id,
         markup: updatedEstimation.markup,
         taxable: updatedEstimation.taxable,
         NetTotal: updatedEstimation.NetTotal,
