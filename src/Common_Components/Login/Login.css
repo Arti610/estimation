@@ -108,25 +108,16 @@
     background-color: #efe8d8;
   }
   
-
-  .warning-message {
-    position: absolute;
-    top: 2rem;
-    right: 2rem;
-    width: 250px;
-    color: #ffffff;
-    border: 1px solid #dc8585;
-    padding: 20px;
-    background: #f6653c;
-    border-radius: 10px;
-    border-left: 10px solid #881511;
-    font-weight: bold;
-    box-shadow: 1px 1px 6px #ffffff;
-    z-index: 200;
-  }
-  
-  #OTPname::-webkit-outer-spin-button,
-  #OTPname::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
+  .login-button {
+    background-color: #836628;
+    color: #fff;
+    text-align: center;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: bolder;
+    font-size: 15px;
+    text-transform: uppercase;
+}
