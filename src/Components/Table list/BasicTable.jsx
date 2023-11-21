@@ -104,7 +104,7 @@ export const BasicTable = ({
   const userDetailsString = localStorage.getItem('UserData');
   // Parse the JSON string to get an object
   const userDetails = JSON.parse(userDetailsString);
-  console.log("userDetails", userDetails.user_type);
+
   useEffect(() => {
     AOS.init();
     const handleClickOutside = (event) => {
@@ -197,7 +197,7 @@ export const BasicTable = ({
                           {column.render("Header")}
                         </th>
                       ))}
-                      {gg && <th>Action</th>}
+                        <th>Action</th>
                     </tr>
                   ))}
                 </thead>
@@ -225,46 +225,23 @@ export const BasicTable = ({
                         {gg && (
                           <td className={densityState} style={{ width: "15px", paddingInline: "15px" }}>
                             <div id="btn_action">
-                              {showEditIcon ? (
-                                <FaEdit
-                                  color="#7c5e1e"
-                                  fontSize="17px"
-                                  paddingInline="5px 15px"
+                            
+                                < FaEdit style={{ color: "#7c5e1e", fontSize: "17px", paddingInline: "5px 15ps", cursor: "pointer", margin: "5px" }}
+                                  title="Edit Details"
+                                  onClick={() => { updateHandler(row.original.id); }}
+                                />
+                              
+                              {userDetails && userDetails.user_type === "Admin" &&
+                                <MdDelete
+                                  color="#c02e42"
+                                  fontSize="18px"
+                                  paddingInline="5px 10px"
                                   cursor="pointer"
                                   margin="5px"
-                                  title="Edit Details"
-                                  onClick={() => {
-                                    updateHandler(row.original.id);
-                                  }}
+                                  title="Delete "
+                                  onClick={() => { deleteHandler(row.original.id); }}
                                 />
-                              ) :
-                                // <MdVisibility
-                                //   color="#004987"
-                                //   fontSize="17px"
-                                //   paddingInline="5px 15px"
-                                //   cursor="pointer"
-                                //   margin="5px"
-                                //   title="View"
-                                //   onClick={() => navigate("/dashboard/sales/estimation-registration-detail")}
-                                // />
-                                null
                               }
-                              {/* <button onClick={()=>updateHandler(row.original.id)}>Edit</button> */}
-
-                              <MdDelete
-                                // color="#7c5e1e"
-                                color="#c02e42"
-                                // opacity="0.65"
-                                fontSize="18px"
-                                paddingInline="5px 10px"
-                                cursor="pointer"
-                                margin="5px"
-                                title="Delete "
-                                onClick={() => {
-                                  console.log(`${row.original.id} for Delete`);
-                                  deleteHandler(row.original.id);
-                                }}
-                              />
                             </div>
                           </td>
                         )}

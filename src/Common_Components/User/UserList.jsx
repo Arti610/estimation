@@ -79,10 +79,10 @@ const UserList = () => {
       Header: "User Type",
       accessor: "user_type",
     },
-    {
-      Header: "Account Status",
-      accessor: "account_status",
-    }
+    // {
+    //   Header: "Account Status",
+    //   accessor: "account_status",
+    // }
 
   ];
 

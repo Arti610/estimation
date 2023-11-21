@@ -106,82 +106,6 @@ const CategoryList = () => {
     },
   ];
 
-  const headerTable = [
-    {
-      Header: "Image",
-      accessor: "profile_image",
-      disableFilters: true,
-      Cell: props => (
-        <img
-          src={`${ImgUrl}${props.row.original.primary_image}`}
-          width={50}
-          height={50}
-          style={{ borderRadius: "50%", cursor: "pointer" }}
-          alt={<FaUserAlt />}
-        />)
-    },
-    {
-      Header: "Name",
-      accessor: "name",
-    },
-    {
-      Header: "Type",
-      accessor: "type",
-    },
-    {
-      Header: "Category",
-      accessor: "category",
-    },
-    {
-      Header: "Sub-Category",
-      accessor: "sub_category",
-    },
-    {
-      Header: "Type-Sub-Category",
-      accessor: "type_sub_category",
-    },
-    {
-      Header: "Origin",
-      accessor: "origin",
-    },
-    {
-      Header: "Finish",
-      accessor: "finish",
-    },
-    {
-      Header: "Brand",
-      accessor: "brand",
-    },
-    {
-      Header: "Series",
-      accessor: "series",
-    },
-    {
-      Header: "Model",
-      accessor: "model",
-    },
-    {
-      Header: "List Price",
-      accessor: "list_price",
-    },
-    {
-      Header: "Currency",
-      accessor: "currency",
-    },
-    {
-      Header: "Discount",
-      accessor: "discount",
-    },
-    {
-      Header: "Unit Of Measurement",
-      accessor: "unit_of_measurement",
-    },
-    {
-      Header: "Base of Pricing",
-      accessor: "base_of_pricing",
-    },
-  ];
-
 
   const createHandler = () => {
     navigate("/dashboard/sales/catelogue-registration")
@@ -221,22 +145,14 @@ const CategoryList = () => {
   return (
 
     <>
-      <button onClick={() => setBtnToggle(!btnToggle)}>{btnToggle ? "List View" : "Card View"}</button>
+      {/* <button onClick={() => setBtnToggle(!btnToggle)}>{btnToggle ? "List View" : "Card View"}</button> */}
       {btnToggle ? <ProductTable
         colHeader={header}
         rowData={catelogueData}
         createHandler={createHandler}
         tableHeading="All Catelogues"
         pageHeading="Catelogue" /> :
-        <BasicTable
-          colHeader={headerTable}
-          rowData={catelogueData}
-          updateHandler={updateHandler}
-          deleteHandler={deleteHandle}
-          createHandler={createHandler}
-          tableHeading="All Catelogues"
-          pageHeading="Catelogue"
-        />}
+       "Catalogue not found"}
       <DeleteConfirmationModal open={deleteModalOpen} handleClose={() => setDeleteModalOpen(false)} title="Catalogue" deleteData={deleteDataHandler} />
       <ToastContainer />
     </>

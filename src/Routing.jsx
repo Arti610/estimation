@@ -22,11 +22,13 @@ import Estimation from "./Common_Components/Estimation/Estimation";
 import EstimationDetails from './Common_Components/Estimation/EstimationDetails'
 import ProfileContainer from "./Common_Components/User/ProfileContainer";
 import ForgetPassword from "./Common_Components/Login/ForgetPassword";
+import Register from "./Common_Components/Login/Register";
 const Routing = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/forget_password" element={<ForgetPassword />} />
         <Route path="/dashboard" element={<Sidebar />}>
           <Route index element={<Dashboard />} />

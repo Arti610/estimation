@@ -1,32 +1,16 @@
 import React, { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
 import { TextField, Grid, InputAdornment, IconButton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { getTaxAgencyData } from "../../APIs/TaxAgencySlice";
 import "./Login.css"
 import "../../Components/Modal/Modal.css"
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { userLogin } from "../../APIs/LoginSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+
+
 const Login = (props) => {
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    backgroundColor: "#fff",
-    // border: "1px solid #6e85b7",
-    width: "400px",
-    flexDirection: "column",
-    borderRadius: "10px",
-    display: "flex",
-    height: "80%",
-    overflow: "auto",
-    "@media (max-width: 576px)": {
-      width: "90%",
-    },
-  };
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
@@ -113,9 +97,12 @@ const Login = (props) => {
                     }}
                   />
                 </div>
-                <button className="login-button" type="submit">Login </button>
+                <button className="login-button" type="submit" style={{marginBottom:"2rem", display:"flex", alignItems:"center", textAlign:"center"}}>Login </button>
               </form>
-              <div style={{marginTop : "0.5rem,", display:"flex", justifyContent:"space-between", flexWrap:"wrap", gap:"10px"}}><a href="/forget_password" style={{color: "rgb(190, 187, 158)", fontSize : "0.95rem"}}> Forget Password ?</a><a href="/register" style={{color: "rgb(131, 102, 40)", fontSize:"0.95rem", fontWeight:"bold"}}>Create <span style={{textTransform:"lowercase"}}>an account</span></a></div>
+              <div style={{ display:"flex", justifyContent:"space-between", flexWrap:"wrap", gap:"10px"}}>
+                <Link to="/forget_password" style={{color: "black",fontWeight:"bold", fontSize : "0.95rem"}}> Forget Password ?</Link>
+                <Link to="/register" style={{color: "rgb(131, 102, 40)", fontSize:"0.95rem", fontWeight:"bold"}}>Create <span style={{textTransform:"lowercase"}}>an account</span></Link>
+              </div>
             </div>
           </div>
         </div>
