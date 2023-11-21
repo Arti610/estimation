@@ -178,8 +178,7 @@ const User = () => {
           }
         })
 
-        if (response.statusText === "OK" || response.status === "200" || response.statusText === "Created" || response.status === "201") {
-
+        if (response.statusText === "OK" || response.status === "200" || response.statusText === "Created" || response.status === "201" ) {
           navigate('/dashboard/settings/users')
           toast.success("User update successfully")
         }
@@ -200,6 +199,7 @@ const User = () => {
       fData.append("password", formData.password);
       fData.append("account_status", formData.account_status);
       try {
+       
         const response = await api.post(`/createuser`, fData, {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -207,7 +207,7 @@ const User = () => {
           }
         })
 
-        if (response.statusText === "OK" || response.status === "200" || response.statusText === "Created" || response.status === "201") {
+        if (response.statusText === "OK" || response.status === "200") {
 
           navigate('/dashboard/settings/users')
           toast.success("User create successfully")

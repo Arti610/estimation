@@ -13,9 +13,9 @@ import {
 } from '../../APIs/CustomerSlice';
 import ModalComp from '../../Components/Modal/ModalComp';
 import { ToastContainer, toast } from 'react-toastify';
+import DeleteConfirmationModal from '../../Components/DeleteConfirmModal/DeleteConfirmationModal';
 
 const CustomerList = () => {
-
 
   const dispatch = useDispatch();
   const CustomerDataBlank = ["Data Not Found"];
@@ -27,6 +27,8 @@ const CustomerList = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   // State variables for form input and validation
+  const [deleteModalOpen, setDeleteModalOpen] = (false)
+  const [deleteId, setDeleteId] = useState(null)
   const [nameError, setNameError] = useState('');
   const [lastNameError, setLastNameError] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -144,14 +146,14 @@ const CustomerList = () => {
             token
           }
         )
-        );
-        if(status.update === "succeeded"){
-          toast.success("Customer update successfully !")
-        }
+      );
+      if (status.update === "succeeded") {
+        toast.success("Customer update successfully !")
+      }
     } else {
       // Dispatch a create action if 'id' does not exist in modalData
       dispatch(createCustomerData({ modalData, token }));
-      if(status.create === "succeeded"){
+      if (status.create === "succeeded") {
         toast.success("Customer create successfully !")
       }
     }
@@ -171,17 +173,14 @@ const CustomerList = () => {
 
   // Function to handle deleting data
   const deleteHandler = (id) => {
-    dispatch(deleteCustomerData({id, token}))
-      .then(() => {
-        // Once the delete action is completed successfully, dispatch the get action
-        dispatch(getCustomerData(token));
-      })
-      .catch((error) => {
-        // Handle any errors from the delete operation
-       throw error
-      });
+    dispatch(deleteCustomerData({ id, token }))
+    setDeleteId(id)
+    setDeleteModalOpen(true)
   };
 
+  const deleteDataHandler = () =>{
+    
+  }
   // Use useEffect to fetch customer data on component mount or when the modal is open
   useEffect(() => {
     dispatch(getCustomerData(token));
@@ -266,7 +265,8 @@ const CustomerList = () => {
         emailError={emailError}
         countryError={countryError}
       />
-      <ToastContainer/>
+      <DeleteConfirmationModal open={deleteModalOpen} handleClose={() => setDeleteModalOpen(false)} title="Estimation" deleteData={deleteDataHandler} />
+      <ToastContainer />
     </>
   );
 };
