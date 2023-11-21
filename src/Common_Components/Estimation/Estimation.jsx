@@ -17,6 +17,7 @@ import { FaUserAlt } from 'react-icons/fa';
 import { useTable, useGlobalFilter, usePagination } from "react-table";
 import '../../Components/Table list/ProductTable.css'
 import { useDownloadExcel } from "react-export-table-to-excel";
+import CommonLoading from '../../Components/Loader/CommonLoading'
 import { useReactToPrint } from "react-to-print";
 import { PiExportBold } from 'react-icons/pi'
 import { GlobalFilter } from '../../Components/Table list/GlobalFilter';
@@ -129,6 +130,7 @@ const Estimation = () => {
   const { estiId } = useParams()
   const fData = new FormData();
 
+  const [isLoading, setIsLoading] = useState(false)
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [myInqIndex, setMyInqIndex] = useState({ index: null })
   const [estiRateTrue, setEstiRateTrue] = useState({ estistate: true })
@@ -158,6 +160,7 @@ const Estimation = () => {
     vat_amount: [null],
     net_total: null
   })
+  console.log("estimationDetails", estimationDetails)
   const [estiFormData, setEstiFormData] = useState({
     cate_id: [null],
     item_name: [null],
@@ -507,7 +510,7 @@ const Estimation = () => {
     setEstiRateTrue({ estistate: true })
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (estiId) {
       fData.append("inquiry_no", estimationDetails.inquiry_no);
@@ -520,9 +523,24 @@ const Estimation = () => {
       fData.append("taxable", estimationDetails.taxable);
       fData.append("net_total", estimationDetails.net_total);
 
-      dispatch(updateEstimationData({ fData, token, id: estiId }))
-      toast.success("Estimation updated successfully !")
-      navigate("/dashboard/sales/estimation")
+      // dispatch(updateEstimationData({ fData, token, id: estiId }))
+      try {
+        setIsLoading(true)
+        const response = await api.put(`/estimation/${estiId}`, fData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `token ${token}`
+          }
+        })
+
+        if (response.statusText === "OK" || response.status === "200" || response.statusText === "Created" || response.status === "201") {
+          setIsLoading(false)
+          toast.success("Estimation updated successfully !")
+          navigate("/dashboard/sales/estimation")
+        }
+      } catch (error) {
+
+      }
     } else {
       fData.append("inquiry_no", estimationDetails.inquiry_no);
       fData.append("estimation_date", estimationDetails.estimation_date);
@@ -555,9 +573,25 @@ const Estimation = () => {
       })
       fData.append("net_total", estimationDetails.net_total);
 
-      dispatch(createEstimationData({ fData, token }))
-      toast.success("Estimation created successfully !")
-      navigate("/dashboard/sales/estimation")
+      // dispatch(createEstimationData({ fData, token }))
+
+      try {
+        setIsLoading(true)
+        const response = await api.post(`/estimation`, fData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `token ${token}`
+          }
+        })
+
+        if (response.statusText === "OK" || response.status === "200" || response.statusText === "Created" || response.status === "201") {
+          setIsLoading(false)
+          toast.success("Estimation created successfully !")
+          navigate("/dashboard/sales/estimation")
+        }
+      } catch (error) {
+        throw error
+      }
     }
   }
 
@@ -589,19 +623,20 @@ const Estimation = () => {
         }
       });
       const updateEstimationById = response.data;
-
-      setEstimationDetails({
-        inquiry_no: updateEstimationById && updateEstimationById.inquiry_no.id ? updateEstimationById.inquiry_no.id : null,
-        estimation_date: updateEstimationById && updateEstimationById.estimation_date ? updateEstimationById.estimation_date : null,
-        inquirydetail: updateEstimationById && updateEstimationById.inquirydetail.id ? updateEstimationById.inquirydetail.id : null,
-        vat_tax: updateEstimationById && updateEstimationById.vat_tax.id ? updateEstimationById.vat_tax.id : null,
-        markup: updateEstimationById && updateEstimationById.markup ? updateEstimationById.markup : null,
-        taxable: updateEstimationById && updateEstimationById.taxable ? updateEstimationById.taxable : null,
-        NetTotal: updateEstimationById && updateEstimationById.NetTotal ? updateEstimationById.NetTotal : null,
-        salesprice: updateEstimationById && updateEstimationById.salesprice ? updateEstimationById.salesprice : null,
-        estimation_rate: updateEstimationById && updateEstimationById.estimation_rate ? updateEstimationById.estimation_rate : null,
-      });
-
+      console.log("updateEstimationById", updateEstimationById);
+      if (estiId) {
+        setEstimationDetails({
+          inquiry_no: updateEstimationById && updateEstimationById.estimation_header.inquiry_no.id ? updateEstimationById.estimation_header.inquiry_no.id : null,
+          estimation_date: updateEstimationById && updateEstimationById.estimation_header.estimation_date ? updateEstimationById.estimation_header.estimation_date : null,
+          inquirydetail: updateEstimationById && updateEstimationById.inquirydetail.id ? updateEstimationById.inquirydetail.id : null,
+          vat_tax: updateEstimationById && updateEstimationById.estimation_details.vat_tax.id ? updateEstimationById.estimation_details.vat_tax.id : null,
+          markup: updateEstimationById && updateEstimationById.estimation_details.markup ? updateEstimationById.estimation_details.markup : null,
+          taxable: updateEstimationById && updateEstimationById.estimation_details.taxable ? updateEstimationById.estimation_details.taxable : null,
+          NetTotal: updateEstimationById && updateEstimationById.estimation_details.NetTotal ? updateEstimationById.estimation_details.NetTotal : null,
+          salesprice: updateEstimationById && updateEstimationById.estimation_details.salesprice ? updateEstimationById.estimation_details.salesprice : null,
+          estimation_rate: updateEstimationById && updateEstimationById.estimation_details.estimation_rate ? updateEstimationById.estimation_details.estimation_rate : null,
+        });
+      }
     } catch (error) {
       console.error(error)
     }
@@ -609,7 +644,6 @@ const Estimation = () => {
 
   useEffect(() => {
     AOS.init();
-    dispatch(getupdateEmployerData({ id: estiId, token }))
     dispatch(getInquiryData(token))
     dispatch(getCatelogueData(token))
     dispatch(getTaxData(token))
@@ -779,7 +813,7 @@ const Estimation = () => {
                 value={estimationDetails.estimation_date}
                 // placeholder="Enter Last Name"
                 fullWidth
-                required
+                required={!estiId}
               />
             </Grid>
 
@@ -1238,7 +1272,7 @@ const Estimation = () => {
           </Grid>
           <div style={{ width: "100%", paddingBlock: "20px", display: 'flex', justifyContent: "center", alignItems: "center" }}>
 
-            {estiId ? (
+            {isLoading ? <CommonLoading /> : estiId ? (
 
               <button type="submit" variant="contained" className="btn-bgColor">
                 Update

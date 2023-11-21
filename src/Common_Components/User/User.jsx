@@ -11,6 +11,8 @@ import { ImgUrl } from '../../Config/Config';
 import { MdVisibilityOff, MdVisibility } from 'react-icons/md'
 import api from '../../Config/Apis';
 import { toast } from 'react-toastify';
+import CommonLoading from '../../Components/Loader/CommonLoading'
+
 const User = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -21,6 +23,7 @@ const User = () => {
 
   const [showpass, setShowPass] = useState(false)
   const [showConfirmPass, setShowConfirmPass] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const [nameError, setNameError] = useState('');
   const [lastNameError, setLastNameError] = useState('');
@@ -171,6 +174,7 @@ const User = () => {
         fData.append("profile_image", formData.profile_image);
       }
       try {
+        setIsLoading(true)
         const response = await api.put(`/updateuser/${userId}`, fData, {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -180,12 +184,11 @@ const User = () => {
 
         if (response.statusText === "OK" || response.status === "200" || response.statusText === "Created" || response.status === "201" ) {
           navigate('/dashboard/settings/users')
+          setIsLoading(false)
           toast.success("User update successfully")
         }
       } catch (error) {
-        throw error
-      } finally {
-        // setLoading(false)
+        
       }
     } else {
       fData.append("first_name", formData.first_name);
@@ -199,7 +202,7 @@ const User = () => {
       fData.append("password", formData.password);
       fData.append("account_status", formData.account_status);
       try {
-       
+        setIsLoading(true)
         const response = await api.post(`/createuser`, fData, {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -207,24 +210,21 @@ const User = () => {
           }
         })
 
-        if (response.statusText === "OK" || response.status === "200") {
+        if (response.statusText === "OK" || response.status === "200" || response.statusText === "Created" || response.status === "201") {
 
           navigate('/dashboard/settings/users')
+          setIsLoading(false)
           toast.success("User create successfully")
         }
       } catch (error) {
         throw error
-      } finally {
-        // setLoading(false)
-      }
-
-
+      } 
     }
   }
 
   const handleUpdateUser = async () => {
     try {
-      // setLoading(true)
+      
       const response = await api.get(`/user/${userId}`, {
         headers: {
           Authorization: `token ${token}`
@@ -532,7 +532,7 @@ const User = () => {
           </Grid>
           <div style={{ width: "100%", paddingBlock: "20px", display: 'flex', justifyContent: "center", alignItems: "center" }}>
 
-            {userId ? (
+          {isLoading ? <CommonLoading/> :  userId ? (
               // If updatedData exists, it's an update form, show the "Update" button
               <button type="submit" variant="contained" className="btn-bgColor">
                 Update
@@ -542,6 +542,7 @@ const User = () => {
               <button type="submit" variant="contained" className="btn-bgColor">
                 Create
               </button>
+          
             )}
           </div>
         </form>

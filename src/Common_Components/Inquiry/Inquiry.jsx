@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createUserData, getUserData, updateUserData } from '../../APIs/UserSlice';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Autocomplete, Button, Grid, TextField } from '@mui/material';
+import { Autocomplete,  Grid, TextField } from '@mui/material';
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { BiSolidEditAlt } from 'react-icons/bi'
@@ -15,6 +15,7 @@ import { getEmployerData } from '../../APIs/EmployerSlice';
 import { createInquiryData, deleteInquiryDetailsData, getupdateInquiryData, updateInquiryData, updateInquiryDetails } from '../../APIs/InquirySlice'
 import api from '../../Config/Apis';
 import { toast } from 'react-toastify';
+import CommonLoading from '../../Components/Loader/CommonLoading'
 
 const Inquiry = () => {
   const navigate = useNavigate()
@@ -31,7 +32,7 @@ const Inquiry = () => {
   const Estimator_salesman = useSelector((state) => state.User.UserData)
   const [isUpdating, setIsUpdating] = useState(false);
   const [editingIndex, setEditingIndex] = useState(-1); // -1 means no row is being edited initially
-
+  const [isLoading, setIsLoading] = useState(false)
 
   const [formData, setFormData] = useState({
     client_reference_no: null,
@@ -56,7 +57,7 @@ const Inquiry = () => {
       },
     ],
   })
-
+console.log("formdata", formData);
   const deleteDetailsHandler = useCallback((index, id) => {
     dispatch(deleteInquiryDetailsData({ token, id: formData.details[index].id }));
     dispatch(getupdateInquiryData({ id, token }))
@@ -69,6 +70,7 @@ const Inquiry = () => {
         ...prevState.details, {}]
     }))
   }
+
   const handleDocRemove = (index) => {
     const newFormVal = { ...formData };
     newFormVal.details.splice(index, 1);
@@ -79,6 +81,7 @@ const Inquiry = () => {
     setIsUpdating(true);
     setEditingIndex(index);
   };
+
   const handleSaveDetails = (index) => {
     dispatch(
       updateInquiryDetails({
@@ -100,6 +103,7 @@ const Inquiry = () => {
       [fieldName]: selectedValue,
     }));
   };
+
   const handleChange = (e) => {
 
     const { name, value } = e.target
@@ -108,6 +112,7 @@ const Inquiry = () => {
       [name]: value,
     }));
   };
+
   const handleChangePrice = (index, name, value) => {
     const newDetails = [...formData.details];
     newDetails[index] = {
@@ -129,6 +134,7 @@ const Inquiry = () => {
       details: newDetails,
     }));
   }
+
   const handleImageChange = (e) => {
     const { files } = e.target;
 
@@ -138,7 +144,7 @@ const Inquiry = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (inqId) {
       fData.append("client_reference_no", formData.client_reference_no);
@@ -154,9 +160,24 @@ const Inquiry = () => {
       if (formData.attachments) {
         fData.append("attachments", formData.attachments);
       }
-      dispatch(updateInquiryData({ fData, token, id: inqId }))
-      toast.success("Inquiry updated successfully !")
-      navigate("/dashboard/sales/inquiry")
+      // dispatch(updateInquiryData({ fData, token, id: inqId }))
+      try {
+        setIsLoading(true)
+        const response = await api.put(`/inquiry/${inqId}`, fData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `token ${token}`
+          }
+        })
+        
+        if (response.statusText === "OK" || response.status === "200" || response.statusText === "Created" || response.status === "201" ) {
+          setIsLoading(false)
+          toast.success("Inquiry updated successfully !")
+          navigate("/dashboard/sales/inquiry")
+        }
+      } catch (error) {
+        
+      }
     } else {
       fData.append("client_reference_no", formData.client_reference_no);
       fData.append("inquirydate", formData.inquirydate);
@@ -179,9 +200,25 @@ const Inquiry = () => {
         fData.append(`rate`, file.rate);
         fData.append(`total_price`, file.total_price);
       });
-      dispatch(createInquiryData({ fData, token }))
-      toast.success("Inquiry created successfully !")
-      navigate("/dashboard/sales/inquiry")
+      // dispatch(createInquiryData({ fData, token }))
+      try {
+        setIsLoading(true)
+        const response = await api.post(`/inquiry`, fData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `token ${token}`
+          }
+        })
+
+        if (response.statusText === "OK" || response.status === "200" || response.statusText === "Created" || response.status === "201") {
+
+         setIsLoading(false)
+          toast.success("Inquiry created successfully !")
+          navigate("/dashboard/sales/inquiry")
+        }
+      } catch (error) {
+        throw error
+      } 
 
     }
   }
@@ -195,21 +232,23 @@ const Inquiry = () => {
         }
       });
       const updateInquiryBYId = response.data;
-
-      setFormData({
-        client_reference_no: updateInquiryBYId && updateInquiryBYId.inquiry.client_reference_no ? updateInquiryBYId.inquiry.client_reference_no : null,
-        inquirydate: updateInquiryBYId && updateInquiryBYId.inquiry.inquirydate ? updateInquiryBYId.inquiry.inquirydate : null,
-        submission_date: updateInquiryBYId && updateInquiryBYId.inquiry.submission_date ? updateInquiryBYId.inquiry.submission_date : null,
-        customer: updateInquiryBYId && updateInquiryBYId.inquiry.customer.id ? updateInquiryBYId.inquiry.customer.id : null,
-        employer: updateInquiryBYId && updateInquiryBYId.inquiry.employer.id ? updateInquiryBYId.inquiry.employer.id : null,
-        source_of_inquiry: updateInquiryBYId && updateInquiryBYId.inquiry.source_of_inquiry.id ? updateInquiryBYId.inquiry.source_of_inquiry.id : null,
-        department: updateInquiryBYId && updateInquiryBYId.inquiry.department.id ? updateInquiryBYId.inquiry.department.id : null,
-        estimator: updateInquiryBYId && updateInquiryBYId.inquiry.estimator.id ? updateInquiryBYId.inquiry.estimator.id : null,
-        salesman: updateInquiryBYId && updateInquiryBYId.inquiry.salesman.id ? updateInquiryBYId.inquiry.salesman.id : null,
-        scope_of_work: updateInquiryBYId && updateInquiryBYId.inquiry.scope_of_work ? updateInquiryBYId.inquiry.scope_of_work : null,
-        details: updateInquiryBYId && updateInquiryBYId.detail ? updateInquiryBYId.detail : null,
-      });
-    } catch (error) {
+      console.log("updateInquiryBYId",updateInquiryBYId);
+      if (inqId) {
+        setFormData({
+          client_reference_no: updateInquiryBYId &&  updateInquiryBYId.inquiry && updateInquiryBYId.inquiry.client_reference_no ? updateInquiryBYId.inquiry.client_reference_no : null,
+          inquirydate: updateInquiryBYId && updateInquiryBYId.inquiry && updateInquiryBYId.inquiry.inquirydate ? updateInquiryBYId.inquiry.inquirydate : null,
+          submission_date: updateInquiryBYId && updateInquiryBYId.inquiry.submission_date ? updateInquiryBYId.inquiry.submission_date : null,
+          customer: updateInquiryBYId && updateInquiryBYId.inquiry.customer.id ? updateInquiryBYId.inquiry.customer.id : null,
+          employer: updateInquiryBYId && updateInquiryBYId.inquiry.employer.id ? updateInquiryBYId.inquiry.employer.id : null,
+          source_of_inquiry: updateInquiryBYId && updateInquiryBYId.inquiry.source_of_inquiry.id ? updateInquiryBYId.inquiry.source_of_inquiry.id : null,
+          department: updateInquiryBYId && updateInquiryBYId.inquiry.department.id ? updateInquiryBYId.inquiry.department.id : null,
+          estimator: updateInquiryBYId && updateInquiryBYId.inquiry.estimator.id ? updateInquiryBYId.inquiry.estimator.id : null,
+          salesman: updateInquiryBYId && updateInquiryBYId.inquiry.salesman.id ? updateInquiryBYId.inquiry.salesman.id : null,
+          scope_of_work: updateInquiryBYId && updateInquiryBYId.inquiry.scope_of_work ? updateInquiryBYId.inquiry.scope_of_work : null,
+          details: updateInquiryBYId && updateInquiryBYId.detail ? updateInquiryBYId.detail : null,
+        });
+      }
+      } catch (error) {
 
     }
   }
@@ -623,7 +662,7 @@ const Inquiry = () => {
           </Grid>
           <div style={{ width: "100%", paddingBlock: "20px", display: 'flex', justifyContent: "center", alignItems: "center" }}>
 
-            {inqId ? (
+           {isLoading ? <CommonLoading/> : inqId ? (
 
               <button type="submit" variant="contained" className="btn-bgColor">
                 Update
