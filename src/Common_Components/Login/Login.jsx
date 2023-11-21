@@ -63,6 +63,7 @@ const Login = (props) => {
           <h1>WELCOME BACK !</h1>
           <p>You can sign in to access with your existing profile</p>
         </div>
+        
         <div className="login-right-container">
           <div className="login-module-container">
 
@@ -114,6 +115,7 @@ const Login = (props) => {
                 </div>
                 <button className="login-button" type="submit">Login </button>
               </form>
+              <div style={{marginTop : "0.5rem,", display:"flex", justifyContent:"space-between", flexWrap:"wrap", gap:"10px"}}><a href="/forget_password" style={{color: "rgb(190, 187, 158)", fontSize : "0.95rem"}}> Forget Password ?</a><a href="/register" style={{color: "rgb(131, 102, 40)", fontSize:"0.95rem", fontWeight:"bold"}}>Create <span style={{textTransform:"lowercase"}}>an account</span></a></div>
             </div>
           </div>
         </div>
