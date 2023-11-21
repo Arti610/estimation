@@ -24,6 +24,10 @@ import ProfileContainer from "./Common_Components/User/ProfileContainer";
 import ForgetPassword from "./Common_Components/Login/ForgetPassword";
 import Register from "./Common_Components/Login/Register";
 const Routing = () => {
+
+  const userDetailsString = localStorage.getItem('UserData')
+  const userDetails = JSON.parse(userDetailsString)
+
   return (
     <BrowserRouter>
       <Routes>
@@ -46,7 +50,7 @@ const Routing = () => {
             <Route path="inquiry-registration/:inqId" element={<Inquiry />} />
             <Route path="estimation-registration" element={<Estimation />} />
             <Route path="estimation-registration/:estiId" element={<Estimation />} />
-            <Route path="estimation-registration-detail" element={<EstimationDetails/>} />
+            <Route path="estimation-registration-detail" element={<EstimationDetails />} />
           </Route>
 
           <Route path="settings">
@@ -54,9 +58,9 @@ const Routing = () => {
             <Route path="employer" element={<EmployerList />} />
             <Route path="department" element={<DepartmentList />} />
             <Route path="source-of-inquiry" element={<SourceOfInquiryList />} />
-            <Route path="users" element={<UserList />} />
-            <Route path="user-registration" element={<User />} />
-            <Route path="user-registration/:userId" element={<User />} />
+            {userDetails && userDetails.user_type === "Admin" && <Route path="users" element={<UserList />} />}
+            {userDetails && userDetails.user_type === "Admin" && <Route path="user-registration" element={<User />} />}
+            {userDetails && userDetails.user_type === "Admin" && <Route path="user-registration/:userId" element={<User />} />}
             <Route path="tax" element={<TaxList />} />
             <Route path="tax-agencies" element={<TaxAgenciesList />} />
           </Route>

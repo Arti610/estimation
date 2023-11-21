@@ -19,6 +19,9 @@ const Sidebar = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    const userDetailsString = localStorage.getItem('userData')
+    const userDetails = JSON.parse(userDetailsString)
+
     // Function to determine if a link is active
     const isLinkActive = (path) => {
         return location.pathname === path;
@@ -81,10 +84,10 @@ const Sidebar = () => {
                                 <div className="submenu-icons"><AiOutlineContacts /></div>
                                 <div className="submenu-title">Source of Inquiry</div>
                             </Link>
-                            <Link to="/dashboard/settings/users" className="submenu">
+                            {userDetails && userDetails.user_type === "Admin" && <Link to="/dashboard/settings/users" className="submenu">
                                 <div className="submenu-icons"><BsFillPersonCheckFill/></div>
                                 <div className="submenu-title">User</div>
-                            </Link>
+                            </Link>}
                             <Link to="/dashboard/settings/tax" className="submenu">
                                 <div className="submenu-icons"><MdRealEstateAgent /></div>
                                 <div className="submenu-title">Tax</div>

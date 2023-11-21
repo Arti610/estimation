@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Autocomplete, Grid, IconButton, ImageList, ImageListItem, InputAdornment, MenuItem, Select, TextField } from '@mui/material';
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -15,6 +15,7 @@ import CommonLoading from '../../Components/Loader/CommonLoading';
 const EditProfile = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const {id} = useParams()
   const fData = new FormData();
   const token = localStorage.getItem('Token');
 
@@ -189,7 +190,7 @@ const EditProfile = () => {
           setLoading(false)
         }
       } catch (error) {
-       
+
         toast.error("Error while updating user. Please try again later.", {
           autoClose: 3000,
         });
@@ -292,6 +293,11 @@ const EditProfile = () => {
                 required
                 error={Boolean(emailError)}
                 helperText={emailError}
+                sx={{
+                  '& input': {
+                    cursor: 'no-drop', // Apply the cursor style to the input field
+                  }
+                }}
               />
             </Grid>
           </Grid>
@@ -331,7 +337,7 @@ const EditProfile = () => {
             </Grid>
           </Grid>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6} md={4}>
+            {/* <Grid item xs={12} sm={6} md={4}>
               <label>USER TYPE <span style={{ color: "red" }}>*</span></label>
               <Select
                 name="user_type"
@@ -339,14 +345,18 @@ const EditProfile = () => {
                 onChange={handleChange}
                 fullWidth
                 required
-              >
+                >
                 {userType.map((status) => (
-                  <MenuItem key={status} value={status}>
+                  <MenuItem key={status} value={status} sx={{
+                    '& input': {
+                        cursor: 'no-drop', // Apply the cursor style to the input field
+                    }
+                }}>
                     {status}
                   </MenuItem>
                 ))}
               </Select>
-            </Grid>
+            </Grid> */}
             <Grid item xs={12} sm={6} md={4}>
               <label>
                 DEPARTMENT <span style={{ color: "red" }}>*</span>
@@ -375,27 +385,6 @@ const EditProfile = () => {
                 )}
               />
             </Grid>
-
-            <Grid item xs={12} sm={6} md={4}>
-              <label>ACCOUNT TYPE <span style={{ color: "red" }}>*</span></label>
-              <Select
-                name="account_status"
-                value={formData.account_status}
-                onChange={handleChange}
-                fullWidth
-                required
-              >
-                {accountType.map((status) => (
-                  <MenuItem key={status} value={status}>
-                    {status}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
-          </Grid>
-          <Grid container spacing={2}>
-
-
             <Grid item xs={12} sm={6} md={4}>
               <label>UPLOAD PHOTO <span style={{ color: "red" }}>*</span></label>
               <div className="App">
@@ -407,72 +396,15 @@ const EditProfile = () => {
                     type="file"
                     accept=".jpg, .jpeg, .png"
                     onChange={handleImageChange}
-                    required={!updatedUser}
+                    required={!id}
                     style={{ width: "100%" }}
                   />
                 </label>{" "}
               </div>
             </Grid>
-            {!updatedUser && <Grid item xs={12} sm={6} md={4}>
-              <label>
-                PASSWORD <span style={{ color: "red" }}>*</span>
-                <span style={{ color: "red", fontSize: "12px", fontWeight: "bold" }}>Generate a strong password.</span>
-              </label>
-              <TextField
-                type={showpass ? "text" : "password"}
-                className="inputfield bg-color"
-                name="password"
-                onChange={handleChange}
-                value={formData.password}
-                placeholder="Enter Password"
-                fullWidth
-                required
-                error={Boolean(passwordError)}
-                helperText={passwordError}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton onClick={passwordHandler}>
-                        {showpass ? <MdVisibility /> : <MdVisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Grid>}
-            {!updatedUser &&
-              <Grid item xs={12} sm={6} md={4}>
-                <label>
-                  CONFIRM PASSWORD <span style={{ color: "red" }}>*</span>
-                </label>
-                <TextField
-                  type={showConfirmPass ? "text" : "password"}
-                  className="inputfield bg-color"
-                  name="confirm_password"
-                  onChange={handleChange}
-                  value={confirmPassword}
-                  placeholder="Confirm Password"
-                  fullWidth
-                  required
-                  error={Boolean(confirmPasswordError)}
-                  helperText={confirmPasswordError}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton onClick={confirmPassHandler}>
-                          {showConfirmPass ? <MdVisibility /> : <MdVisibilityOff />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>}
-
-          </Grid>
-          <Grid container spacing={2}>
             <Grid item xs={12} sm={4} md={4}>
               <div style={{ marginBlock: "5%" }}>
-                <ImageList sx={{ width: 400, height: "auto" }} cols={2} rowHeight={"auto"}>
+                <ImageList sx={{ width: 200, height: "auto" }} cols={2} rowHeight={"auto"}>
                   <ImageListItem>
                     {formData.imgFile && (
                       <img
@@ -494,10 +426,31 @@ const EditProfile = () => {
                 </ImageList>
               </div>
             </Grid>
+            {/* <Grid item xs={12} sm={6} md={4}>
+              <label>ACCOUNT TYPE <span style={{ color: "red" }}>*</span></label>
+              <Select
+                name="account_status"
+                value={formData.account_status}
+                onChange={handleChange}
+                fullWidth
+                required
+                sx={{
+                  '& input': {
+                      cursor: 'no-drop', // Apply the cursor style to the input field
+                  }
+              }}
+              >
+                {accountType.map((status) => (
+                  <MenuItem key={status} value={status}>
+                    {status}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Grid> */}
           </Grid>
           <div style={{ width: "100%", paddingBlock: "20px", display: 'flex', justifyContent: "center", alignItems: "center" }}>
 
-            {loading ? <CommonLoading/> :
+            {loading ? <CommonLoading /> :
               <button type="submit" variant="contained" className="btn-bgColor">
                 Update
               </button>

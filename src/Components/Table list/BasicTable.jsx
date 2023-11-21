@@ -231,7 +231,7 @@ export const BasicTable = ({
                                   onClick={() => { updateHandler(row.original.id); }}
                                 />
                               
-                              {userDetails && userDetails.user_type === "Admin" &&
+                              {userDetails && userDetails.user_type === "Admin"  &&
                                 <MdDelete
                                   color="#c02e42"
                                   fontSize="18px"
