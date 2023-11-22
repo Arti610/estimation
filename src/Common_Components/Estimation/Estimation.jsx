@@ -623,7 +623,7 @@ const Estimation = () => {
         }
       });
       const updateEstimationById = response.data;
-      console.log("updateEstimationById", updateEstimationById);
+
       if (estiId) {
         setEstimationDetails({
           inquiry_no: updateEstimationById && updateEstimationById.estimation_header.inquiry_no.id ? updateEstimationById.estimation_header.inquiry_no.id : null,

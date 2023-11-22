@@ -1,0 +1,115 @@
+.header-print,
+.header-space,
+.footer-print,
+.footer-space {
+    height: 100px;
+}
+
+.header-print {
+    position: fixed;
+    top: 0;
+}
+
+.footer-print {
+    position: fixed;
+    bottom: 0;
+}
+
+
+
+.header-space {
+    display: block;
+    text-align: center;
+    border-bottom: 2px solid black;
+    width: 100vw;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
+.footer-space {
+    /* margin-block: 20px;
+    display: block;
+    text-align: center;
+    width: 100vw;
+    height: 80px; */
+    display: block;
+    text-align: center;
+    /* border-top: 2px solid black; */
+    width: 100vw;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
+
+.amount-tbody {
+    width: 100vw;
+}
+
+.amount-detail {
+    width: 18rem;
+    float: right;
+    margin-block: 30px;
+    padding: 10px;
+    line-height: 5px;
+    right: 0;
+    line-height: 1.6rem;
+}
+
+
+
+
+/* Quotation Print Preview @start */
+.q-print-btn {
+    position: absolute;
+    top: 87px;
+    right: 85px;
+  }
+  
+  .print-preview {
+    width: 100%;
+    padding: 5rem;
+  }
+  
+  .quotation-table {
+    width: 100%;
+    margin-block: 1rem;
+  }
+  
+  .date-content {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .quotation-date {
+    display: flex;
+    gap: 2.5rem;
+    justify-content: space-between;
+  }
+  
+  .q-user-detaill {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .quotation-detail-table {
+    width: 100%;
+  }
+  
+  .quotation-detail-table th {
+    text-align: start;
+  }
+  
+  .q-service-body tr:nth-child(odd) {
+    background-color: #f1ebda;
+    height: 35px;
+  }
+  
+  .q-service-body tr:nth-child(even) {
+    background-color: #dcd4d6a6;
+    height: 35px;
+  }
+  
+  
+  
+  /* Quotation Print Preview @end */
+  

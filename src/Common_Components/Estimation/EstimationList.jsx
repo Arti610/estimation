@@ -5,10 +5,11 @@ import { BasicTable } from '../../Components/Table list/BasicTable'
 import { useEffect } from 'react'
 import { deleteEstimationData, getEstimationData, getupdateEstimationData, updateEstimationData } from '../../APIs/EstimationSlice'
 import { useCookies } from 'react-cookie';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../../Config/Apis';
 import { ToastContainer, toast } from 'react-toastify';
 import DeleteConfirmationModal from '../../Components/DeleteConfirmModal/DeleteConfirmationModal';
+import { MenuItem } from '@mui/material';
 const EstimationList = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -46,22 +47,12 @@ const EstimationList = () => {
       Header: "Customer",
       accessor: "inquiry_no.customer.name",
     },
-    // {
-    //   Header: "Employer",
-    //   accessor: "inquiry_no.employer.name",
-    // },
-    // {
-    //   Header: "Source Of Inquiry",
-    //   accessor: "inquiry_no.source_of_inquiry.name",
-    // },
+
     {
       Header: "Department",
       accessor: "inquiry_no.department.name",
     },
-    // {
-    //   Header: "Estimator",
-    //   accessor: "inquiry_no.estimator.first_name",
-    // },
+
     {
       Header: "Salesman",
       accessor: "inquiry_no.salesman.first_name",
@@ -70,11 +61,18 @@ const EstimationList = () => {
       Header: "Net Amount",
       accessor: "net_total",
     },
-    // {
-    //   Header: "Scope Of Work",
-    //   accessor: "inquiry_no.scope_of_work",
-    // },
-
+    {
+      Header: "Action",
+      accessor: "action",
+      Cell: ({ row }) => {
+        return (
+      
+                <Link to={`/dashboard/sales/print-estimation/${row.original.id}`} target="_blank">Print</Link>
+             
+        )
+          
+          } 
+        }
   ];
 
   const createHandler = () => {

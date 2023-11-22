@@ -26,6 +26,7 @@ import Register from "./Common_Components/Login/Register";
 import ForgetPasswordOTP from "./Common_Components/Login/ForgetPasswordOTP";
 import SetNewPassword from "./Common_Components/Login/SetNewPassword";
 import ConfirmedMessage from "./Common_Components/Login/ConfirmedMessage";
+import PrintEstimation from "./Common_Components/Estimation/PrintEstimation";
 const Routing = () => {
 
   const userDetailsString = localStorage.getItem('UserData')
@@ -57,6 +58,7 @@ const Routing = () => {
             <Route path="estimation-registration" element={<Estimation />} />
             <Route path="estimation-registration/:estiId" element={<Estimation />} />
             <Route path="estimation-registration-detail" element={<EstimationDetails />} />
+       
           </Route>
 
           <Route path="settings">
@@ -72,6 +74,7 @@ const Routing = () => {
           </Route>
 
         </Route>
+          <Route path="/dashboard/sales/print-estimation/:printId" element={<PrintEstimation />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
