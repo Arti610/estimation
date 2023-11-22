@@ -10,6 +10,7 @@ import api from '../../Config/Apis';
 import { ToastContainer, toast } from 'react-toastify';
 import DeleteConfirmationModal from '../../Components/DeleteConfirmModal/DeleteConfirmationModal';
 import { MenuItem } from '@mui/material';
+import { MdLocalPrintshop } from 'react-icons/md';
 const EstimationList = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -62,13 +63,12 @@ const EstimationList = () => {
       accessor: "net_total",
     },
     {
-      Header: "Action",
+      Header: "Print",
       accessor: "action",
       Cell: ({ row }) => {
         return (
-      
-                <Link to={`/dashboard/sales/print-estimation/${row.original.id}`} target="_blank">Print</Link>
-             
+                      <Link to={`/dashboard/sales/print-estimation/${row.original.id}`} target="_blank"><MdLocalPrintshop style={{color:"#9d8656", fontSize:"18px"}}/></Link>
+            
         )
           
           } 
