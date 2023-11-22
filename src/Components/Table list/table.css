@@ -273,6 +273,7 @@ tfoot td {
 #btn_action {
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
 }
 
 .registration_top_header p {

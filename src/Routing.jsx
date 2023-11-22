@@ -23,6 +23,9 @@ import EstimationDetails from './Common_Components/Estimation/EstimationDetails'
 import ProfileContainer from "./Common_Components/User/ProfileContainer";
 import ForgetPassword from "./Common_Components/Login/ForgetPassword";
 import Register from "./Common_Components/Login/Register";
+import ForgetPasswordOTP from "./Common_Components/Login/ForgetPasswordOTP";
+import SetNewPassword from "./Common_Components/Login/SetNewPassword";
+import ConfirmedMessage from "./Common_Components/Login/ConfirmedMessage";
 const Routing = () => {
 
   const userDetailsString = localStorage.getItem('UserData')
@@ -34,6 +37,9 @@ const Routing = () => {
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forget_password" element={<ForgetPassword />} />
+        <Route path="/forget_password/verify_otp" element={<ForgetPasswordOTP />} />
+        <Route path="/forget_password/reset_password" element={<SetNewPassword />} />
+        <Route path="/forget_password/reset_password/confirmed" element={<ConfirmedMessage />} />
         <Route path="/dashboard" element={<Sidebar />}>
           <Route index element={<Dashboard />} />
           <Route path="/dashboard/edit-profile/:id" element={<ProfileContainer />} />
@@ -58,9 +64,9 @@ const Routing = () => {
             <Route path="employer" element={<EmployerList />} />
             <Route path="department" element={<DepartmentList />} />
             <Route path="source-of-inquiry" element={<SourceOfInquiryList />} />
-            {userDetails && userDetails.user_type === "Admin" && <Route path="users" element={<UserList />} />}
-            {userDetails && userDetails.user_type === "Admin" && <Route path="user-registration" element={<User />} />}
-            {userDetails && userDetails.user_type === "Admin" && <Route path="user-registration/:userId" element={<User />} />}
+            <Route path="users" element={<UserList />} />
+            <Route path="user-registration" element={<User />} />
+            <Route path="user-registration/:userId" element={<User />} />
             <Route path="tax" element={<TaxList />} />
             <Route path="tax-agencies" element={<TaxAgenciesList />} />
           </Route>

@@ -78,12 +78,21 @@ const Dashboard = () => {
             <div className="registration-card-wrapper">
               <h1 className="dashboard-header">User Log</h1>
               <div className='userlog-container'>
-                {UserLog ? UserLog.data.map((item, i) => {  
+              {UserLog ? UserLog.data.slice().reverse().map((item, i) => {
                   return (
                     <>
                       <p>
                         <span>{item.transactions_reference}</span>
-                        <span>at&nbsp;{new Date(item.timestamp).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }).replace(/(\d{1,2}\/\d{1,2}\/\d{4}), (\d{1,2}:\d{1,2}:\d{1,2})/, '$1 $2')}</span>
+                        {/* <span>at&nbsp;{new Date(item.timestamp).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }).replace(/(\d{1,2}\/\d{1,2}\/\d{4}), (\d{1,2}:\d{1,2}:\d{1,2})/, '$1 $2')}</span> */}
+                        <span>at {new Intl.DateTimeFormat('en-US', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true,
+                        timeZone: 'Etc/GMT',
+                      }).format(new Date(item.timestamp))}</span>
                       </p>
 
                     </>

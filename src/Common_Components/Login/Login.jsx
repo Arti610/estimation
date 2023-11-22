@@ -101,7 +101,7 @@ const Login = (props) => {
               </form>
               <div style={{ display:"flex", justifyContent:"space-between", flexWrap:"wrap", gap:"10px"}}>
                 <Link to="/forget_password" style={{color: "black",fontWeight:"bold", fontSize : "0.95rem"}}> Forget Password ?</Link>
-                <Link to="/register" style={{color: "rgb(131, 102, 40)", fontSize:"0.95rem", fontWeight:"bold"}}>Create <span style={{textTransform:"lowercase"}}>an account</span></Link>
+                {/* <Link to="/register" style={{color: "rgb(131, 102, 40)", fontSize:"0.95rem", fontWeight:"bold"}}>Create <span style={{textTransform:"lowercase"}}>an account</span></Link> */}
               </div>
             </div>
           </div>

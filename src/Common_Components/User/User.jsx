@@ -217,7 +217,7 @@ const User = () => {
           toast.success("User create successfully")
         }
       } catch (error) {
-        throw error
+        
       } 
     }
   }

@@ -30,8 +30,8 @@ const Topbar = () => {
       // Dispatch the userLogout action with the token
       await dispatch(userLogout(token));
       if (logoutDataStatus.logout === "succeeded") {
-        localStorage.removeItem('Token');
         navigate('/');
+        localStorage.removeItem('Token');
         toast.success("Logout successfully !")
       }
     } catch (error) {

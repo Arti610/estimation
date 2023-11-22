@@ -293,6 +293,7 @@ const EditProfile = () => {
                 required
                 error={Boolean(emailError)}
                 helperText={emailError}
+                readOnly
                 sx={{
                   '& input': {
                     cursor: 'no-drop', // Apply the cursor style to the input field

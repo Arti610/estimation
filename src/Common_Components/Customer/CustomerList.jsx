@@ -27,7 +27,7 @@ const CustomerList = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   // State variables for form input and validation
-  const [deleteModalOpen, setDeleteModalOpen] = (false)
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
   const [deleteId, setDeleteId] = useState(null)
   const [nameError, setNameError] = useState('');
   const [lastNameError, setLastNameError] = useState('');

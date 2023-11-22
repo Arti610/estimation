@@ -84,10 +84,10 @@ const Sidebar = () => {
                                 <div className="submenu-icons"><AiOutlineContacts /></div>
                                 <div className="submenu-title">Source of Inquiry</div>
                             </Link>
-                            {userDetails && userDetails.user_type === "Admin" && <Link to="/dashboard/settings/users" className="submenu">
+                            <Link to="/dashboard/settings/users" className="submenu">
                                 <div className="submenu-icons"><BsFillPersonCheckFill/></div>
                                 <div className="submenu-title">User</div>
-                            </Link>}
+                            </Link>
                             <Link to="/dashboard/settings/tax" className="submenu">
                                 <div className="submenu-icons"><MdRealEstateAgent /></div>
                                 <div className="submenu-title">Tax</div>
