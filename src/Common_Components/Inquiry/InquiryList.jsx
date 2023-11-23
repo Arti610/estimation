@@ -4,12 +4,18 @@ import { format } from 'date-fns'
 import { BasicTable } from '../../Components/Table list/BasicTable'
 import { useEffect } from 'react'
 import { deleteInquiryData, getInquiryData, getupdateInquiryData, updateInquiryData } from '../../APIs/InquirySlice'
-import { useCookies } from 'react-cookie';
+import { Badge, MenuItem } from '@mui/material';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import api from '../../Config/Apis'
 import { ToastContainer, toast } from 'react-toastify'
 import DeleteConfirmationModal from '../../Components/DeleteConfirmModal/DeleteConfirmationModal'
 import { MdLocalPrintshop } from 'react-icons/md'
+import EditIcon from '@mui/icons-material/Edit';
+import PrintIcon from '@mui/icons-material/Print';
+import DeleteIcon from '@mui/icons-material/Delete';
+import DropdownMenu from '../../Components/DropdownMenu'
+
+
 const InquiryList = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -18,6 +24,10 @@ const InquiryList = () => {
   const [deleteId, setDeleteId] = useState(null)
 
   const token = localStorage.getItem('Token');
+  const userDetailsString = localStorage.getItem('UserData')
+  const userDetails = JSON.parse(userDetailsString)
+
+
   const InquiryDataBlank = ["Data Not Found"]
   const InquiryData = useSelector((state) => state.Inquiry.InquiryData)
 
@@ -76,16 +86,35 @@ const InquiryList = () => {
       Header: "Salesman",
       accessor: "salesman.first_name",
     },
+    // {
+    //   Header: "Print",
+    //   accessor: "action",
+    //   Cell: ({ row }) => {
+    //     return (
+    //       <Link to={`/dashboard/sales/print-invoice/${row.original.id}`} target="_blank"><MdLocalPrintshop style={{ color: "#9d8656", fontSize: "18px" }} /></Link>
+    //     )
+    //   }
+    // }
     {
-      Header: "Print",
+      Header: "Action",
       accessor: "action",
       Cell: ({ row }) => {
         return (
-          <Link to={`/dashboard/sales/print-invoice/${row.original.id}`} target="_blank"><MdLocalPrintshop style={{ color: "#9d8656", fontSize: "18px" }} /></Link>
-        )
-      }
+          <DropdownMenu menus={userDetails && userDetails.user_type === "Admin" ?
+            <>
+              <MenuItem disableRipple><Link to={`/dashboard/sales/print-invoice/${row.original.id}`} target="_blank" style={{color:"black"}}><PrintIcon />Print</Link></MenuItem>
+              <MenuItem onClick={() => editHandler(row.original.id)} disableRipple><EditIcon />Edit</MenuItem>
+              <MenuItem onClick={() => deleteHandler(row.original.id)} ><DeleteIcon sx={{ fontSize: "40px" }} /><span>Delete</span></MenuItem>
+            </>
+            :
+            <>
+              <MenuItem disableRipple><PrintIcon /><Link to={`/dashboard/sales/print-invoice/${row.original.id}`} target="_blank">Print</Link></MenuItem>
+              <MenuItem onClick={() => editHandler(row.original.id)} disableRipple><EditIcon />Edit</MenuItem>
+            </>
+          } />
+        );
+      },
     }
-
   ];
 
   const createHandler = () => {
@@ -125,6 +154,7 @@ const InquiryList = () => {
     <>
       {InquiryData ?
         <BasicTable
+         actionFlag={true}
           colHeader={header}
           rowData={InquiryData}
           updateHandler={editHandler}
@@ -134,6 +164,7 @@ const InquiryList = () => {
           pageHeading='Inquiry'
         />
         : <BasicTable
+         actionFlag={true}
           colHeader={header}
           rowData={InquiryDataBlank}
           updateHandler={editHandler}

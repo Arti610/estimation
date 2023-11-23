@@ -4,17 +4,26 @@ import { format } from "date-fns";
 import { BasicTable } from '../../Components/Table list/BasicTable'
 import { useEffect } from 'react'
 import { deleteEstimationData, getEstimationData, getupdateEstimationData, updateEstimationData } from '../../APIs/EstimationSlice'
-import { useCookies } from 'react-cookie';
+import EditIcon from '@mui/icons-material/Edit';
+import PrintIcon from '@mui/icons-material/Print';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../../Config/Apis';
 import { ToastContainer, toast } from 'react-toastify';
 import DeleteConfirmationModal from '../../Components/DeleteConfirmModal/DeleteConfirmationModal';
 import { Badge, MenuItem } from '@mui/material';
 import { MdLocalPrintshop } from 'react-icons/md';
+import DropdownMenu from '../../Components/DropdownMenu';
+
+
 const EstimationList = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
   const token = localStorage.getItem('Token');
+  const userDetailsString = localStorage.getItem('UserData')
+  const userDetails = JSON.parse(userDetailsString)
+
   const EstimationDataBlank = ["Data Not Found"]
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
@@ -22,6 +31,37 @@ const EstimationList = () => {
 
   const EstimationData = useSelector((state) => state.Estimation.EstimationData)
 
+  const createHandler = () => {
+    navigate("/dashboard/sales/Estimation-registration")
+  }
+
+  const editHandler = (id) => {
+    navigate(`/dashboard/sales/Estimation-registration/${id}`)
+  }
+
+  const deleteHandler = (id) => {
+    setDeleteId(id)
+    setDeleteModalOpen(true)
+  };
+
+  const deleteDataHandler = () => {
+    if (deleteId) {
+      try {
+        const response = api.delete(`/delete_estimation/${deleteId}`,
+          {
+            headers: { Authorization: `token ${token}` }
+          })
+        if (response.status === "OK" || response.statusText === "200") {
+          setDeleteModalOpen(false)
+          toast.success("Deleted successfully")
+          dispatch(getEstimationData(token))
+        }
+      } catch (error) {
+        throw error
+      }
+
+    }
+  }
 
   const header = [
     {
@@ -62,68 +102,39 @@ const EstimationList = () => {
       Header: "Net Amount",
       accessor: "net_total",
     },
+
     {
-      Header: "Payment Status",
-      accessor: "is_paid",
-      Cell: ({ row }) => {
-        return (
-          <span >
-            {row.original.is_paid ? <Badge badgeContent="paid" color="success"/> : <Badge badgeContent="unpaid" color="warning"/>}
-          </span>
-        )
-      }
-    },
-    {
-      Header: "Print",
+      Header: "Action",
       accessor: "action",
       Cell: ({ row }) => {
         return (
-          <Link to={`/dashboard/sales/print-estimation/${row.original.id}`} target="_blank"><MdLocalPrintshop style={{ color: "#9d8656", fontSize: "18px" }} /></Link>
-
-        )
-
-      }
+          <DropdownMenu menus={userDetails && userDetails.user_type === "Admin" ?
+            <>
+              <MenuItem disableRipple><PrintIcon /><Link to={`/dashboard/sales/print-estimation/${row.original.id}`} target="_blank" style={{color:"black"}}>Print</Link></MenuItem>
+              <MenuItem onClick={() => editHandler(row.original.id)} disableRipple><EditIcon />Edit</MenuItem>
+              <MenuItem onClick={() => deleteHandler(row.original.id)} ><DeleteIcon  sx={{ fontSize: "40px" }} /><span>Delete</span></MenuItem>
+            </>
+            :
+            <>
+              <MenuItem disableRipple><PrintIcon /><Link to={`/dashboard/sales/print-estimation/${row.original.id}`} target="_blank">Print</Link></MenuItem>
+              <MenuItem onClick={() => editHandler(row.original.id)} disableRipple><EditIcon />Edit</MenuItem>
+            </>
+          } />
+        );
+      },
     }
+
   ];
 
-  const createHandler = () => {
-    navigate("/dashboard/sales/Estimation-registration")
-  }
-  const editHandler = (id) => {
-    navigate(`/dashboard/sales/Estimation-registration/${id}`)
-  }
-
-  const deleteHandler = (id) => {
-    setDeleteId(id)
-    setDeleteModalOpen(true)
-  };
-
-  const deleteDataHandler = () => {
-    if (deleteId) {
-      try {
-        const response = api.delete(`/delete_estimation/${deleteId}`,
-          {
-            headers: { Authorization: `token ${token}` }
-          })
-        if (response.status === "OK" || response.statusText === "200") {
-          setDeleteModalOpen(false)
-          toast.success("Deleted successfully")
-          dispatch(getEstimationData(token))
-        }
-      } catch (error) {
-        throw error
-      }
-
-    }
-  }
   useEffect(() => {
     dispatch(getEstimationData(token))
   }, [])
-  console.log("EstimationData", EstimationData);
+
   return (
     <>
       {EstimationData ? (
         <BasicTable
+          actionFlag={true}
           colHeader={header}
           rowData={EstimationData}
           updateHandler={editHandler}
@@ -134,6 +145,7 @@ const EstimationList = () => {
           showEditIcon={false}
         />
       ) : (<BasicTable
+        actionFlag={true}
         colHeader={header}
         rowData={EstimationDataBlank}
         updateHandler={editHandler}

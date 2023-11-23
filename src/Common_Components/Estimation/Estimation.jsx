@@ -24,6 +24,8 @@ import { GlobalFilter } from '../../Components/Table list/GlobalFilter';
 import { getCatelogueData } from '../../APIs/CatelogueSlice';
 import { getupdateEmployerData } from '../../APIs/EmployerSlice';
 import { toast } from 'react-toastify';
+import { BsFillTagsFill } from 'react-icons/bs';
+import { AiFillCheckCircle, AiFillCloseCircle } from 'react-icons/ai';
 
 
 const Estimation = () => {
@@ -124,6 +126,7 @@ const Estimation = () => {
       accessor: "base_of_pricing",
     },
   ];
+
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const token = localStorage.getItem('Token');
@@ -160,7 +163,7 @@ const Estimation = () => {
     vat_amount: [null],
     net_total: null
   })
-  console.log("estimationDetails", estimationDetails)
+
   const [estiFormData, setEstiFormData] = useState({
     cate_id: [null],
     item_name: [null],
@@ -256,6 +259,7 @@ const Estimation = () => {
   const catelogueModalClose = () => {
     setCateModalOpen({ modalValue: false })
   }
+
   const catelogModal = (e) => {
     const index = e.target.name.split("-")[1]
     setCateModalOpen({ modalValue: true, index: index })
@@ -341,6 +345,7 @@ const Estimation = () => {
       };
     });
   };
+
   const handleEstimationDetails = (name, value, index) => {
     setEstimationDetails((prevData) => {
       const updatedMarkup = [...prevData.markup];
@@ -384,6 +389,7 @@ const Estimation = () => {
         break;
     }
   };
+
   const handleEstimationDetailsTax = (value, selectedIndex, index) => {
     setEstimationDetails((prev) => {
       const UpdatedId = [...prev.vat_id];
@@ -728,6 +734,7 @@ const Estimation = () => {
     content: () => tableRef.current,
     documentTitle: "dem",
   });
+
   const generatePdf = () => {
     setGg(false);
     setTimeout(() => {
@@ -737,6 +744,7 @@ const Estimation = () => {
       setGg(true);
     }, 700);
   };
+
   const detailsRef = useRef(null);
 
   useEffect(() => {
@@ -759,9 +767,11 @@ const Estimation = () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
+
   useEffect(() => {
 
   }, [estimationDetails, estiFormData])
+
   return (
     <>
       <div data-aos="fade-left" data-aos-duration="1000">
@@ -959,7 +969,6 @@ const Estimation = () => {
                             />
                           </div>
                         </td>
-
                         <td>
                           <div className='estimation-inquiry-details'>
                             <TextField
@@ -1010,7 +1019,6 @@ const Estimation = () => {
                             />
                           </div>
                         </td>
-
                         <td>
                           <div className='estimation-inquiry-details'>
                             <TextField
@@ -1023,12 +1031,7 @@ const Estimation = () => {
                           </div>
                         </td>
                         {/* Estimation Rate Modal Start  */}
-                        <Modal
-                          open={erModal.erModalValue}
-                          // onClose={props.closeERModal}
-                          aria-labelledby="modal-modal-title"
-                          aria-describedby="modal-modal-description"
-                        >
+                        <Modal open={erModal.erModalValue} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
                           <Box sx={style} >
                             <div className="modal-top-container">
                               <h4> ESTIMATION RESOURCE DETAILS</h4>
@@ -1047,8 +1050,6 @@ const Estimation = () => {
                                         type="text"
                                         className="inputfield bg-color"
                                         name={`item_name-${myI}`}
-                                        // value={estiFormData.item_name[index]}
-                                        // onChange={handleModalInputChange}
                                         value={estiFormData && estiFormData.item_name[myI]}
                                         placeholder="Select Catelogue"
                                         fullWidth
@@ -1165,6 +1166,7 @@ const Estimation = () => {
                                         readOnly // Make it read-only to prevent user input
                                       />
                                     </div>
+
                                     {/* Catelogue Modal Start New */}
                                     <Modal open={cateModalOpen.modalValue}>
                                       <Box style={CateModalstyle}>
@@ -1189,21 +1191,39 @@ const Estimation = () => {
 
                                                     const cellId = row.original.id;
                                                     return (
-                                                      <div {...row.getRowProps()} className="product-container-main" onClick={(e) => handleClick(e, myIOuter, cellId)}>
+                                                      <div {...row.getRowProps()} className="catelogue-card-container" onClick={(e) => handleClick(e, myIOuter, cellId)}>
 
-                                                        <div className="product-container">
-                                                          <img src={`${ImgUrl}${row.original.primary_image}`} alt="Product Image" height='100px' />
-                                                          <div className="product-details-container">
-                                                            <strong>{row.original.name}</strong>
-                                                            <div className="currency-container">
-                                                              <span>{row.original.currency}</span>&nbsp;<span>{row.original.list_price}</span>
+                                                        <div className="catelogue-card"
+                                                          data-content={`
+                                                          ${row.original.origin ? `Origin: ${row.original.origin}` : ''}
+                                                          ${row.original.finish ? `Finish: ${row.original.finish}` : ''}
+                                                          ${row.original.model ? `Model: ${row.original.model}` : ''}
+                                                          ${row.original.base_of_pricing ? `Base of Pricing: ${row.original.base_of_pricing}` : ''}
+                                                          --------------------------------------------------------
+                                                          ${(row.original.specification || '').slice(0, 300)}
+                                                        `} >
+                                                          {/* <img src={`${ImgUrl}${row.original.primary_image}`} alt="Product Image" height='100px' /> */}
+                                                          <div style={{ height: "60vh", width: "100vw" }}>
+                                                            <img src={`${ImgUrl}${row.original.primary_image}`} alt="Product Image" style={{ width: "280px", height: "220px" }} />
+                                                          </div>
+                                                          <div className="catalogue-card-data-container">
+                                                            <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                                                              <h4 style={{ display: "inline-flex", color: "black", fontWeight: "bold" }}>{row.original.name}</h4>
+                                                              <p style={{ display: "inline-flex", fontSize: "18px", fontWeight: "bold", color: "green" }}>{row.original.currency}&nbsp;{row.original.base_of_pricing}</p>
+                                                              <p style={{ fontSize: "14px", display: "flex", flexDirection: "column", padding: "4px 0px 4px 10px", color: "#4c4c4c" }}>
+                                                                <span><BsFillTagsFill />&nbsp;&nbsp;{row.original.model}</span>
+                                                                <span><BsFillTagsFill />&nbsp;&nbsp;{row.original.series}</span>
+                                                                <span><BsFillTagsFill />&nbsp;&nbsp;{row.original.category}</span>
+                                                                <span><BsFillTagsFill />&nbsp;&nbsp;{row.original.origin}</span>
+                                                                <span><BsFillTagsFill />&nbsp;&nbsp;{row.original.size}</span>
+                                                                <span><BsFillTagsFill />&nbsp;&nbsp;{row.original.sub_category}</span>
+                                                                <span><BsFillTagsFill />&nbsp;&nbsp;{row.original.type}</span>
+                                                                <span><BsFillTagsFill />&nbsp;&nbsp;{row.original.type_sub_category}</span>
+                                                              </p>
                                                             </div>
+                                                            {row.original.is_active ? <p style={{ display: "flex", justifyContent: "flex-end", color: "green", fontSize: "12.5px", fontWeight: "bold" }}><AiFillCheckCircle style={{ fontSize: "15px" }} />&nbsp;Acive</p> : <p style={{ display: "flex", justifyContent: "flex-end", color: "#cc2138", fontSize: "12.5px", fontWeight: "bold" }}><AiFillCloseCircle style={{ fontSize: "15px" }} />&nbsp;Inacive</p>}
                                                           </div>
                                                         </div>
-                                                        <span className="product-container-span">Brand :  <span style={{ color: "#" }}>{row.original.brand}</span></span>
-                                                        <span className="product-container-span">Model :  <span style={{ color: "#" }}>{row.original.model}</span></span>
-                                                        <span className="product-container-span" style={{ display: "flex", justifyContent: "space-between", alignContent: "center" }}><span style={{ color: "#" }}>Origin :  {row.original.origin}</span><span className="view-container" onClick={() => handleClick(cellId)}>
-                                                        </span></span>
                                                       </div>
                                                     );
                                                   })}
@@ -1233,20 +1253,8 @@ const Estimation = () => {
                               </div>
                               <div style={{ padding: "10px" }}> <button onClick={handleAddMore}>Add More</button></div>
                               <div className="saveBtn">
-                                <button
-                                  variant="outlined"
-                                  type="submit"
-                                  onClick={(e) => estiHandleSubmit(e, index, selectedItemId)} // Use selectedItemId
-                                >
-                                  Save
-                                </button>
-                                <button
-                                  variant="outlined"
-                                  type="submit"
-                                  onClick={closeERModal} // Use selectedItemId
-                                >
-                                  Close
-                                </button>
+                                <button variant="outlined" type="submit" onClick={(e) => estiHandleSubmit(e, index, selectedItemId)}>Save</button>
+                                <button variant="outlined" type="submit" onClick={closeERModal}>Close</button>
                               </div>
                             </form>
                           </Box>

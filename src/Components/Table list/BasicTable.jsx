@@ -27,6 +27,7 @@ export const BasicTable = ({
   tableHeading,
   createHandler,
   createBtn,
+  actionFlag,
   showEditIcon = true,
 }) => {
 
@@ -197,79 +198,79 @@ export const BasicTable = ({
                           {column.render("Header")}
                         </th>
                       ))}
-                        <th>Action</th>
-                    </tr>
+                   {!actionFlag && gg && (<th>Action</th>)}
+                </tr>
                   ))}
-                </thead>
-                <tbody {...getTableBodyProps()}>
-                  {page.map((row, i) => {
-                    prepareRow(row);
+              </thead>
+              <tbody {...getTableBodyProps()}>
+                {page.map((row, i) => {
+                  prepareRow(row);
 
-                    return (
-                      <tr {...row.getRowProps()}>
-                        {row.cells.map((cell, i) => {
-                          {
-                            /* console.log(cell.row.values.id , "cell") */
-                          }
-                          return (
-                            <td
-                              className={densityState}
-                              id="td_column"
-                              {...cell.getCellProps()}
-                            >
-                              {cell.render("Cell")}
-                            </td>
-                          );
-                        })}
-
-                        {gg && (
-                          <td className={densityState} style={{ width: "15px", paddingInline: "15px" }}>
-                            <div id="btn_action">
-                            
-                                < FaEdit style={{ color: "#7c5e1e", fontSize: "17px", paddingInline: "5px 15ps", cursor: "pointer", margin: "5px" }}
-                                  title="Edit Details"
-                                  onClick={() => { updateHandler(row.original.id); }}
-                                />
-                              
-                              {userDetails && userDetails.user_type === "Admin"  &&
-                                <MdDelete
-                                  color="#c02e42"
-                                  fontSize="18px"
-                                  paddingInline="5px 10px"
-                                  cursor="pointer"
-                                  margin="5px"
-                                  title="Delete "
-                                  onClick={() => { deleteHandler(row.original.id); }}
-                                />
-                              }
-                            </div>
+                  return (
+                    <tr {...row.getRowProps()}>
+                      {row.cells.map((cell, i) => {
+                        {
+                          /* console.log(cell.row.values.id , "cell") */
+                        }
+                        return (
+                          <td
+                            className={densityState}
+                            id="td_column"
+                            {...cell.getCellProps()}
+                          >
+                            {cell.render("Cell")}
                           </td>
-                        )}
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-            <div className="Navigation">
-              <div className="NavigationButton">
-                <div>
-                  <span>page<strong> {pageIndex + 1} of {pageOptions.length}</strong></span>
-                </div>
-                <div style={{ display: "flex", float: "right", gap: '10px' }}>
-                  <button className="secondary-btn" onClick={() => previousPage()} disabled={!canPreviousPage}>
-                    {/* <GrPrevious className="btn-hover-color" /> */}
-                    Previous
-                  </button>
-                  <button className="secondary-btn" onClick={() => nextPage()} disabled={!canNextPage}>
-                    {/* <GrNext className="btn-hover-color" /> */} Next
-                  </button>
-                </div>
+                        );
+                      })}
+
+                      {!actionFlag && gg && (
+                        <td className={densityState} style={{ width: "15px", paddingInline: "15px" }}>
+                          <div id="btn_action">
+
+                            < FaEdit style={{ color: "#7c5e1e", fontSize: "17px", paddingInline: "5px 15ps", cursor: "pointer", margin: "5px" }}
+                              title="Edit Details"
+                              onClick={() => { updateHandler(row.original.id); }}
+                            />
+
+                            {userDetails && userDetails.user_type === "Admin" &&
+                              <MdDelete
+                                color="#c02e42"
+                                fontSize="18px"
+                                paddingInline="5px 10px"
+                                cursor="pointer"
+                                margin="5px"
+                                title="Delete "
+                                onClick={() => { deleteHandler(row.original.id); }}
+                              />
+                            }
+                          </div>
+                        </td>
+                      )}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <div className="Navigation">
+            <div className="NavigationButton">
+              <div>
+                <span>page<strong> {pageIndex + 1} of {pageOptions.length}</strong></span>
+              </div>
+              <div style={{ display: "flex", float: "right", gap: '10px' }}>
+                <button className="secondary-btn" onClick={() => previousPage()} disabled={!canPreviousPage}>
+                  {/* <GrPrevious className="btn-hover-color" /> */}
+                  Previous
+                </button>
+                <button className="secondary-btn" onClick={() => nextPage()} disabled={!canNextPage}>
+                  {/* <GrNext className="btn-hover-color" /> */} Next
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div >
     </>
   );
 };

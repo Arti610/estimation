@@ -7,17 +7,22 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ImgUrl } from '../../Config/Config';
 import { FaUserAlt } from 'react-icons/fa'
 import { ToastContainer } from 'react-toastify';
+import { Badge } from '@mui/material';
 const UserList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
+
   const UserData = useSelector((state) => state.User.UserData);
+
   const UserDataBlank = ["Data Not Found"]
+  
   const token = localStorage.getItem('Token');
 
 
   const createHandler = () => {
     navigate("/dashboard/settings/user-registration")
   }
+
   const editHandler = (id) => {
     // dispatch(getupdateUserData({ id, token }));
     navigate(`/dashboard/settings/user-registration/${id}`); // Make sure to pass the user ID in the URL
@@ -78,11 +83,15 @@ const UserList = () => {
     {
       Header: "User Type",
       accessor: "user_type",
+      Cell: ({ row }) => (
+
+        <Badge
+          color={row.original.user_type === "Admin" ? "success" :
+            row.original.user_type === "Operator" ? "warning" : "error"}
+          badgeContent={row.original.user_type} />
+
+      )
     },
-    // {
-    //   Header: "Account Status",
-    //   accessor: "account_status",
-    // }
 
   ];
 
