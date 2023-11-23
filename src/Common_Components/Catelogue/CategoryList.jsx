@@ -19,6 +19,7 @@ const CategoryList = () => {
 
   const [btnToggle, setBtnToggle] = useState(true)
   const catelogueData = useSelector((state) => state.Catelogue.CatelogueData);
+  console.log("catelogueData",catelogueData);
   const [deleteId, setDeleteId] = useState(null)
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
 
@@ -111,7 +112,6 @@ const CategoryList = () => {
     navigate("/dashboard/sales/catelogue-registration")
   }
 
-
   const updateHandler = (cateId) => {
     navigate(`/dashboard/sales/catelogue-registration/${cateId}`)
   }
@@ -138,6 +138,7 @@ const CategoryList = () => {
       }
     }
   }
+
   useEffect(() => {
     dispatch(getCatelogueData(token));
   }, []);
@@ -147,8 +148,8 @@ const CategoryList = () => {
     <>
       {/* <button onClick={() => setBtnToggle(!btnToggle)}>{btnToggle ? "List View" : "Card View"}</button> */}
       {btnToggle ? <ProductTable
-        colHeader={header}
-        rowData={catelogueData}
+        colHeader={header && header}
+        rowData={catelogueData ? catelogueData : []}
         createHandler={createHandler}
         tableHeading="All Catelogues"
         pageHeading="Catelogue" /> :

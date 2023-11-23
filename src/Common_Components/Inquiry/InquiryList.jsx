@@ -5,10 +5,11 @@ import { BasicTable } from '../../Components/Table list/BasicTable'
 import { useEffect } from 'react'
 import { deleteInquiryData, getInquiryData, getupdateInquiryData, updateInquiryData } from '../../APIs/InquirySlice'
 import { useCookies } from 'react-cookie';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import api from '../../Config/Apis'
 import { ToastContainer, toast } from 'react-toastify'
 import DeleteConfirmationModal from '../../Components/DeleteConfirmModal/DeleteConfirmationModal'
+import { MdLocalPrintshop } from 'react-icons/md'
 const InquiryList = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -75,16 +76,22 @@ const InquiryList = () => {
       Header: "Salesman",
       accessor: "salesman.first_name",
     },
-    // {
-    //   Header: "Scope Of Work",
-    //   accessor: "scope_of_work",
-    // },
+    {
+      Header: "Print",
+      accessor: "action",
+      Cell: ({ row }) => {
+        return (
+          <Link to={`/dashboard/sales/print-invoice/${row.original.id}`} target="_blank"><MdLocalPrintshop style={{ color: "#9d8656", fontSize: "18px" }} /></Link>
+        )
+      }
+    }
 
   ];
 
   const createHandler = () => {
     navigate("/dashboard/sales/inquiry-registration")
   }
+
   const editHandler = (inqId) => {
     dispatch(getupdateInquiryData({ id: inqId, token }))
     navigate(`/dashboard/sales/inquiry-registration/${inqId}`)
@@ -109,9 +116,11 @@ const InquiryList = () => {
       }
     }
   }
+
   useEffect(() => {
     dispatch(getInquiryData(token))
   }, [])
+
   return (
     <>
       {InquiryData ?

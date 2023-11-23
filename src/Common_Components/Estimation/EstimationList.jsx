@@ -9,7 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import api from '../../Config/Apis';
 import { ToastContainer, toast } from 'react-toastify';
 import DeleteConfirmationModal from '../../Components/DeleteConfirmModal/DeleteConfirmationModal';
-import { MenuItem } from '@mui/material';
+import { Badge, MenuItem } from '@mui/material';
 import { MdLocalPrintshop } from 'react-icons/md';
 const EstimationList = () => {
   const dispatch = useDispatch()
@@ -63,16 +63,27 @@ const EstimationList = () => {
       accessor: "net_total",
     },
     {
+      Header: "Payment Status",
+      accessor: "is_paid",
+      Cell: ({ row }) => {
+        return (
+          <span >
+            {row.original.is_paid ? <Badge badgeContent="paid" color="success"/> : <Badge badgeContent="unpaid" color="warning"/>}
+          </span>
+        )
+      }
+    },
+    {
       Header: "Print",
       accessor: "action",
       Cell: ({ row }) => {
         return (
-                      <Link to={`/dashboard/sales/print-estimation/${row.original.id}`} target="_blank"><MdLocalPrintshop style={{color:"#9d8656", fontSize:"18px"}}/></Link>
-            
+          <Link to={`/dashboard/sales/print-estimation/${row.original.id}`} target="_blank"><MdLocalPrintshop style={{ color: "#9d8656", fontSize: "18px" }} /></Link>
+
         )
-          
-          } 
-        }
+
+      }
+    }
   ];
 
   const createHandler = () => {

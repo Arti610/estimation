@@ -27,6 +27,7 @@ import ForgetPasswordOTP from "./Common_Components/Login/ForgetPasswordOTP";
 import SetNewPassword from "./Common_Components/Login/SetNewPassword";
 import ConfirmedMessage from "./Common_Components/Login/ConfirmedMessage";
 import PrintEstimation from "./Common_Components/Estimation/PrintEstimation";
+import PrintInvoice from "./Common_Components/Inquiry/PrintInvoice";
 const Routing = () => {
 
   const userDetailsString = localStorage.getItem('UserData')
@@ -75,6 +76,7 @@ const Routing = () => {
 
         </Route>
           <Route path="/dashboard/sales/print-estimation/:printId" element={<PrintEstimation />} />
+          <Route path="/dashboard/sales/print-invoice/:printId" element={<PrintInvoice />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>

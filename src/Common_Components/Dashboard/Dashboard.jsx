@@ -31,7 +31,7 @@ const Dashboard = () => {
   const UserData = useSelector((state) => state.User.UserData)
   const EmployerData = useSelector((state) => state.Employer.EmployerData)
   const CatalogueData = useSelector((state) => state.Catelogue.CatelogueData)
-  console.log("UserLog", UserLog);
+
   const token = localStorage.getItem('Token');
   // Retrieve user data from localStorage
   const userDetailsString = localStorage.getItem('UserData');

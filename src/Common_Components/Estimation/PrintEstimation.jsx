@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './PrintEstimation.css'
 import { useEffect } from 'react';
 import { useCookies } from 'react-cookie';
@@ -17,17 +17,24 @@ const PrintEstimation = () => {
     const { printId } = useParams()
 
     const EstimationData = useSelector((state) => state.Estimation.updateEstimationData)
-    console.log("EstimationData", EstimationData);
+
 
     useEffect(() => {
-        window.print()
         dispatch(getupdateEstimationData({ id: printId, token }))
     }, [])
+
+    useEffect(() => {
+        setTimeout(() => {
+            window.print()
+        }, 3000);
+    })
+
     return (
         <>
             <header className='header-print'>
 
             </header>
+            
             <main className='main-print'>
                 <table>
                     <thead>
@@ -39,8 +46,7 @@ const PrintEstimation = () => {
                                             {/* {apilogo ? <img style={{ height: "80px", width: "auto" }} src={ImgUrl.apilogo} alt="company logo not uploded" /> : "company logo not uploaded"} */}
                                             {/* <img style={{height:"80px", width:"auto"}}  alt="User Image" /> */}
                                             {/* <h3>{userDetails && userDetails.first_name ? userDetails.first_name : "User Name"}</h3> */}
-                                            <div style={{ textAlign: "center" }}>  <h2 >ESTIMATE</h2></div>
-
+                                            <h2 >ESTIMATION</h2>
                                         </tbody>
                                     </table>
                                 </span>
@@ -170,16 +176,17 @@ const PrintEstimation = () => {
                             </td>
                         </tr>
                     </tbody>
+
                     <tfoot>
                         <tr>
                             <>
                                 <span class="footer-space">
                                     <table className="footer-print" style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", borderTop: "2px solid", width: "100%" }}>
                                         <tbody>
-                                            
-                                            Printed by&nbsp;&nbsp;<strong>{userDetails && userDetails.first_name + userDetails.last_name ? userDetails.first_name + userDetails.last_name :"Name"}</strong>
-                                            <p><span><strong>Phone :</strong>&nbsp;&nbsp;{userDetails && userDetails.phone_number ? userDetails.phone_number : "Phone No"}</span>&nbsp;&nbsp;|&nbsp;&nbsp;{userDetails && userDetails.address ? userDetails.address :  "Address"}</p>
-                                            <p><span><strong>Email :</strong>&nbsp;&nbsp;{userDetails && userDetails.email ? userDetails.email :"Email"}</span></p>
+
+                                            Estimate by&nbsp;&nbsp;<strong>{userDetails && userDetails.first_name + userDetails.last_name ? userDetails.first_name + userDetails.last_name : "Name"}</strong>
+                                            <p><span><strong>Phone :</strong>&nbsp;&nbsp;{userDetails && userDetails.phone_number ? userDetails.phone_number : "Phone No"}</span>&nbsp;&nbsp;|&nbsp;&nbsp;{userDetails && userDetails.address ? userDetails.address : "Address"}</p>
+                                            <p><span><strong>Email :</strong>&nbsp;&nbsp;{userDetails && userDetails.email ? userDetails.email : "Email"}</span></p>
                                         </tbody>
                                     </table>
                                 </span>
