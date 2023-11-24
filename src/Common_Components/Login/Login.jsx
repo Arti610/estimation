@@ -44,7 +44,7 @@ const Login = (props) => {
       <section className="login-section login-page">
 
         <div className="login-left-container">
-          <h1>WELCOME BACK !</h1>
+          <h2>WELCOME BACK !</h2>
           <p>You can sign in to access with your existing profile</p>
         </div>
         
