@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { TextField, Grid, InputAdornment, IconButton } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { TextField,  InputAdornment, IconButton } from "@mui/material";
+import { useDispatch } from "react-redux";
 import "./Login.css"
 import "../../Components/Modal/Modal.css"
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 
-const Login = (props) => {
+const Login = () => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -58,7 +58,7 @@ const Login = (props) => {
 
             <div className="container">
               <form className="login-form" onSubmit={handleSubmit}>
-                <div className="form-group">
+                <div style={{marginBlock:"20px"}}>
                   <label>
                     EMAIL <span style={{ color: "red" }}>*</span>
                   </label>
@@ -73,7 +73,7 @@ const Login = (props) => {
                     required
                   />
                 </div>
-                <div className="form-group">
+                <div style={{marginBlock:"20px"}}>
                   <label>
                     PASSWORD <span style={{ color: "red" }}>*</span>
                   </label>

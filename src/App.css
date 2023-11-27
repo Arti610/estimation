@@ -84,49 +84,11 @@ button:hover {
   align-items: center;
 }
 
-.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
-
-  padding: 10px 14px !important;
-}
-
-.css-md26zr-MuiInputBase-root-MuiOutlinedInput-root {
-  
-  border-radius: 8px !important;
-}
 
 label {
   font-size: 12px;
   font-weight: bold;
 }
-
-/* Dropdown mui */
-.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
-  
-  padding: 9.5px 14px !important;
-}
-
-.css-1ualgfl-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root {
-
-  border-radius: 8px !important;
-}
-
-.css-1h51icj-MuiAutocomplete-root .MuiOutlinedInput-root {
-  padding: 2px !important;
-}
-
-.css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root {
-
-  border-radius: 8px !important;
-
-}
-/* .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
-  padding: 8px 14px !important;
-} */
-.css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
-  padding: 10px 14px !important;
-}
-
-
 
 
 .border-bottom-heading{
@@ -151,15 +113,6 @@ width: 100%;
 
 
 
-/* MUI */
-.custom-select.Mui-focused .MuiOutlinedInput-notchedOutline {
-  border-color: #977e48 !important;
-}
-
-.selectInput {
-  margin-top: 0.5rem;
-}
-
 .MuiOutlinedInput-root .Mui-focused fieldset {
   border-color: "#977e48" !important;
 }
@@ -178,10 +131,10 @@ width: 100%;
   padding: 10.5px !important;
 }
 
-.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
-  border-radius: 12px !important;
+.MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select {
+  height: 0.7rem !important;
 }
 
-.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+/* .MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
   padding: 10.5px 14px !important;
-}
+} */

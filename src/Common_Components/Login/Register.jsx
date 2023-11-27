@@ -273,7 +273,7 @@ const Register = () => {
                             <form onSubmit={handleSubmit}>
                                 <Grid container spacing={2}>
                                     <Grid item xs={12} sm={6} md={4}>
-                                        <div className='form-group'>
+                                      
                                             <label>
                                                 FIRST NAME <span style={{ color: "red" }}>*</span>
                                             </label>
@@ -288,10 +288,10 @@ const Register = () => {
                                                 error={Boolean(nameError)}
                                                 helperText={nameError}
                                             />
-                                        </div>
+                                        
                                     </Grid>
                                     <Grid item xs={12} sm={6} md={4}>
-                                        <div className='form-group'>
+                                       
                                             <label>
                                                 LAST NAME <span style={{ color: "red" }}>*</span>
                                             </label>
@@ -307,10 +307,10 @@ const Register = () => {
                                                 error={Boolean(lastNameError)}
                                                 helperText={lastNameError}
                                             />
-                                        </div>
+                                      
                                     </Grid>
                                     <Grid item xs={12} sm={6} md={4}>
-                                        <div className='form-group'>
+                                       
                                             <label>
                                                 EMAIL <span style={{ color: "red" }}>*</span>
                                             </label>
@@ -326,12 +326,12 @@ const Register = () => {
                                                 error={Boolean(emailError)}
                                                 helperText={emailError}
                                             />
-                                        </div>
+                                       
                                     </Grid>
                                 </Grid>
                                 <Grid container spacing={2}>
                                     <Grid item xs={12} sm={6} md={4}>
-                                        <div className='form-group'>
+                                       
                                             <label>
                                                 PHONE NUMBER<span style={{ color: "red" }}>*</span>
                                             </label>
@@ -347,11 +347,11 @@ const Register = () => {
                                                 error={Boolean(phoneNumberError)}
                                                 helperText={phoneNumberError}
                                             />
-                                        </div>
+                                      
                                     </Grid>
 
                                     <Grid item xs={12} sm={6} md={8}>
-                                        <div className='form-group'>
+                                       
                                             <label>
                                                 ADDRESS<span style={{ color: "red" }}>*</span>
                                             </label>
@@ -365,12 +365,12 @@ const Register = () => {
                                                 fullWidth
                                                 required
                                             />
-                                        </div>
+                                      
                                     </Grid>
                                 </Grid>
                                 <Grid container spacing={2}>
                                     <Grid item xs={12} sm={6} md={4}>
-                                        <div className='form-group'>
+                                       
                                             <label>USER TYPE <span style={{ color: "red" }}>*</span></label>
                                             <Select
                                                 name="user_type"
@@ -385,11 +385,11 @@ const Register = () => {
                                                     </MenuItem>
                                                 ))}
                                             </Select>
-                                        </div>
+                                     
                                     </Grid>
 
                                     <Grid item xs={12} sm={6} md={4}>
-                                        <div className='form-group'>
+                                       
                                             <label>ACCOUNT TYPE <span style={{ color: "red" }}>*</span></label>
                                             <Select
                                                 name="account_status"
@@ -404,11 +404,11 @@ const Register = () => {
                                                     </MenuItem>
                                                 ))}
                                             </Select>
-                                        </div>
+                                      
                                     </Grid>
 
                                     <Grid item xs={12} sm={6} md={4}>
-                                        <div className='form-group'>
+                                       
                                             <label>UPLOAD PHOTO <span style={{ color: "red" }}>*</span></label>
                                             <label htmlFor="upload-photo">
                                                 <TextField
@@ -422,14 +422,14 @@ const Register = () => {
                                                 />
 
                                             </label>{" "}
-                                        </div>
+                                    
                                     </Grid>
                                 </Grid>
                                 <Grid container spacing={2}>
 
 
                                     {!userId && <Grid item xs={12} sm={6} md={4}>
-                                        <div className='form-group'>
+                                       
                                             <label>
                                                 PASSWORD <span style={{ color: "red" }}>*</span>
                                                 {/* <p style={{ color: "red", fontSize: "12px", fontWeight: "bold" }}>Generate a strong password.</p> */}
@@ -455,11 +455,11 @@ const Register = () => {
                                                     ),
                                                 }}
                                             />
-                                        </div>
+                                       
                                     </Grid>}
                                     {!userId &&
                                         <Grid item xs={12} sm={6} md={4}>
-                                            <div className='form-group'>
+                                           
                                                 <label>
                                                     CONFIRM PASSWORD <span style={{ color: "red" }}>*</span>
                                                 </label>
@@ -484,10 +484,10 @@ const Register = () => {
                                                         ),
                                                     }}
                                                 />
-                                            </div>
+                                          
                                         </Grid>}
                                     <Grid item xs={12} sm={4} md={4}>
-                                        <div className='form-group'>
+                                       
 
                                             <ImageList
                                                 sx={{ width: 400, height: "auto" }}
@@ -513,7 +513,7 @@ const Register = () => {
                                                     )}
                                                 </ImageListItem>
                                             </ImageList>
-                                        </div>
+                                   
 
                                     </Grid>
 
@@ -522,14 +522,13 @@ const Register = () => {
 
                                 {isLoading ? <CommonLoading /> : null}
 
-                                <div style={{ display: "flex", justifyContent: "center", marginTop: "1rem" }}>
-                                    <button className="login-button" style={{ width: "100%", marginTop: '8px' }}>Register</button>
-                                </div>
-                            </form>
+                                <div style={{ display: "flex", justifyContent: "center", marginTop: "1rem", gap:"30px", alignItems:"center" }}>
+                                    <button className="login-button" style={{ width: "fit-content", marginTop: '8px' }}>Register</button>
                             <div style={{ marginTop: "0.5rem", display: "flex", justifyContent: "center" }}>
                                 <Link to="/" style={{ color: "#836628", fontSize: "0.95rem", fontWeight: "bold", }}>Back to login</Link>
-
                             </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
