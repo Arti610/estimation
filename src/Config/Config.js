@@ -5,6 +5,6 @@
 // export const baseURL = "http://192.168.1.145:8000/api";
 // export const ImgUrl = "http://192.168.1.145:8000";
 
-export const baseURL = "https://estimation-36jn.onrender.com";
+export const baseURL = "https://estimation-36jn.onrender.com/api";
 export const ImgUrl = "https://estimation-36jn.onrender.com/media";
 
