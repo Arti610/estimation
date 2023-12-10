@@ -97,8 +97,7 @@
 }
 
 .details-container {
-    /* background-color: var(--secondary-color); */
-    width: 50%;
+    width: 80%;
     padding: 15px;
     margin-block: 10px;
 }

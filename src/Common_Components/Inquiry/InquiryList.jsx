@@ -78,14 +78,14 @@ const InquiryList = () => {
       Header: "Department",
       accessor: "department.name",
     },
-    {
-      Header: "Estimator",
-      accessor: "estimator.first_name",
-    },
-    {
-      Header: "Salesman",
-      accessor: "salesman.first_name",
-    },
+    // {
+    //   Header: "Estimator",
+    //   accessor: "estimator.first_name",
+    // },
+    // {
+    //   Header: "Salesman",
+    //   accessor: "salesman.first_name",
+    // },
     // {
     //   Header: "Print",
     //   accessor: "action",

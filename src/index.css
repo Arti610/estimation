@@ -1,33 +1,22 @@
-/* body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+ /* body {
+  background-color: #efe8d8;
+  background-image: url('/src/assets/Left_bg.png');
+  background-size: 100%;
+  background-attachment: fixed;
+} */
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-} */
+} 
+
 :root {
-
-  /* --primary-color: #b2c8df;
-  --primary-color: #6e85b7; */
-
-  /* --secondary-color: #6e85b7; */
-  /* --secondary-color: #b2c8df; */
-
-
-  /* --primary-color: #004987; */
   --primary-color: #9f8754;
   --secondary-color: #f5f5f5;
   --ternary-color: #555555;
   --border-color: #c8c8c8;
   --primary-font-color : white;
   --secondary-font-color : black;
-
 }
 
 

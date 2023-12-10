@@ -30,7 +30,7 @@ const EstimationList = () => {
   const [deleteId, setDeleteId] = useState(null)
 
   const EstimationData = useSelector((state) => state.Estimation.EstimationData)
-
+  console.log("EstimationData",EstimationData);
   const createHandler = () => {
     navigate("/dashboard/sales/Estimation-registration")
   }

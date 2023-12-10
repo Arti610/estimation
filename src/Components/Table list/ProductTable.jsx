@@ -158,7 +158,7 @@ export const ProductTable = ({
                                                         </p>
 
                                                     </div>
-                                                    {row.original.is_active ? <p style={{ display: "flex", justifyContent: "flex-end", color: "green", fontSize: "12.5px", fontWeight: "bold" }}><AiFillCheckCircle style={{ fontSize: "15px" }} />&nbsp;Acive</p> : <p style={{ display: "flex", justifyContent: "flex-end", color: "#cc2138", fontSize: "12.5px", fontWeight: "bold" }}><AiFillCloseCircle style={{ fontSize: "15px" }} />&nbsp;Inacive</p>}
+                                                    {!row.original.is_active ? <p style={{ display: "flex", justifyContent: "flex-end", color: "green", fontSize: "12.5px", fontWeight: "bold" }}><AiFillCheckCircle style={{ fontSize: "15px" }} />&nbsp;Acive</p> : <p style={{ display: "flex", justifyContent: "flex-end", color: "#cc2138", fontSize: "12.5px", fontWeight: "bold" }}><AiFillCloseCircle style={{ fontSize: "15px" }} />&nbsp;Inacive</p>}
                                                 </div>
                                             </div>
 

@@ -353,9 +353,7 @@ const CatelogueRegistration = () => {
                 placeholder="Enter Catelogue Name"
                 fullWidth
                 required
-                error={Boolean(nameError)}
-                helperText={nameError}
-              />
+                              />
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
               <label>

@@ -7,7 +7,7 @@ import { deleteCatelogueData, getCatelogueData, getupdateCatelogueData } from '.
 import { useNavigate, useParams } from 'react-router-dom'
 import "react-multi-carousel/lib/styles.css";
 import { useEffect } from 'react'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import DeleteConfirmationModal from '../../Components/DeleteConfirmModal/DeleteConfirmationModal'
 import api from '../../Config/Apis'
 
